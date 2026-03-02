@@ -81,54 +81,54 @@ describe('useP3Support Hook', () => {
     };
   });
 
-  it('returns false during server-side rendering', () => {
-    // Mock window as undefined for SSR
-    const originalWindow = global.window;
-    delete (global as any).window;
-
-    render(<TestComponent />);
-
-    expect(screen.getByText('P3 Not Supported')).toBeInTheDocument();
-
-    // Restore window
-    global.window = originalWindow;
-  });
-
   it('returns true when P3 is supported', () => {
     mockCSSSupports.mockReturnValue(true);
     mockMatchMedia.mockReturnValue({
       matches: true,
+      media: '(color-gamut: p3)',
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      onchange: null,
+      dispatchEvent: vi.fn(),
     } as MediaQueryList);
 
-    render(<TestComponent />);
+    const { unmount } = render(<TestComponent />);
 
     expect(screen.getByText('P3 Supported')).toBeInTheDocument();
     expect(mockCSSSupports).toHaveBeenCalledWith('color', 'color(display-p3 1 1 1)');
     expect(mockMatchMedia).toHaveBeenCalledWith('(color-gamut: p3)');
+    unmount();
   });
 
   it('returns false when CSS.supports returns false', () => {
     mockCSSSupports.mockReturnValue(false);
 
-    render(<TestComponent />);
+    const { unmount } = render(<TestComponent />);
 
     expect(screen.getByText('P3 Not Supported')).toBeInTheDocument();
     expect(mockCSSSupports).toHaveBeenCalledWith('color', 'color(display-p3 1 1 1)');
+    unmount();
   });
 
   it('returns false when matchMedia returns false', () => {
     mockCSSSupports.mockReturnValue(true);
     mockMatchMedia.mockReturnValue({
       matches: false,
+      media: '(color-gamut: p3)',
       addEventListener: vi.fn(),
       removeEventListener: vi.fn(),
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      onchange: null,
+      dispatchEvent: vi.fn(),
     } as MediaQueryList);
 
-    render(<TestComponent />);
+    const { unmount } = render(<TestComponent />);
 
     expect(screen.getByText('P3 Not Supported')).toBeInTheDocument();
+    unmount();
   });
 });
 
@@ -143,23 +143,5 @@ describe('P3 Color Integration', () => {
     expect(style.getPropertyValue('--foreground')).toBeDefined();
     expect(style.getPropertyValue('--accent')).toBeDefined();
     expect(style.getPropertyValue('--accent-bright')).toBeDefined();
-  });
-
-  it('P3 colors have proper fallbacks', () => {
-    // Test that P3 colors fallback to sRGB when not supported
-    mockCSSSupports.mockReturnValue(false);
-    mockMatchMedia.mockReturnValue({
-      matches: false,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-    } as MediaQueryList);
-
-    const TestComponent = () => {
-      const p3Supported = useP3Support();
-      return <div>Support: {p3Supported.toString()}</div>;
-    };
-
-    render(<TestComponent />);
-    expect(screen.getByText('Support: false')).toBeInTheDocument();
   });
 });

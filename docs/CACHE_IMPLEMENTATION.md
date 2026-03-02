@@ -9,7 +9,6 @@ This project implements Next.js 16 Cache Components with advanced caching strate
 - **`/src/utils/cached-services.ts`** - Services data caching with 'services' tag
 - **`/src/utils/cached-barbers.ts`** - Barber data caching with 'barbers' tag  
 - **`/src/utils/cached-business.ts`** - Business info caching with 'business' tag
-- **`/src/utils/cache-revalidation.ts`** - Cache revalidation utilities
 
 ### Cache Configuration
 ```typescript
@@ -24,11 +23,14 @@ Each cached function uses appropriate tags for granular revalidation:
 - `business` - Business details and contact info
 
 ### Revalidation Strategy
+
+Cache revalidation can be implemented using Next.js built-in `revalidateTag` function when needed:
+
 ```typescript
-import { revalidateServicesCache } from '@/utils/cache-revalidation';
+import { revalidateTag } from 'next/cache';
 
 // Use in API routes or server actions
-revalidateServicesCache(); // Invalidates services cache with stale-while-revalidate
+revalidateTag('services', 'max'); // Invalidates services cache with stale-while-revalidate
 ```
 
 ## Performance Benefits
@@ -59,13 +61,14 @@ const services = await getServicesData();
 ```
 
 ### Cache Revalidation
+
 ```typescript
-import { revalidateServicesCache } from '@/utils/cache-revalidation';
+import { revalidateTag } from 'next/cache';
 
 // In API route after data update
 export async function POST() {
   await updateServices();
-  revalidateServicesCache(); // Invalidate cache
+  revalidateTag('services', 'max'); // Invalidate cache
   return Response.json({ success: true });
 }
 ```

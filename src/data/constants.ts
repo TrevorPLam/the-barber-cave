@@ -4,11 +4,17 @@ export const BUSINESS_INFO = {
   description: 'Experience the art of barbering at The Barber Cave. Premium cuts, luxury grooming, and master barbers dedicated to your perfect look.',
   location: 'Dallas, Texas',
   fullLocation: 'Dallas, Texas\nDFW Metro Area',
+  address: '1234 Real Street, Dallas, TX 75201',
+  phone: '(214) 555-0123',
   rating: '4.9',
   totalReviews: '178',
   totalBarbers: '8',
   totalServices: '29',
-  newClientDiscount: '$10'
+  newClientDiscount: '$10',
+  coordinates: {
+    latitude: '32.7767',
+    longitude: '-96.7970'
+  }
 } as const;
 
 export const EXTERNAL_LINKS = {

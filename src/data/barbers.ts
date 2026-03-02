@@ -5,6 +5,7 @@ export interface Barber {
   rating: string;
   reviews: string;
   available: string;
+  image: string;
 }
 
 export const barbers: Barber[] = [
@@ -14,7 +15,8 @@ export const barbers: Barber[] = [
     title: 'Master Barber',
     rating: '4.8',
     reviews: '82',
-    available: 'Available Friday'
+    available: 'Available Friday',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'charlo-f',
@@ -22,7 +24,8 @@ export const barbers: Barber[] = [
     title: 'Fade Specialist',
     rating: '5.0',
     reviews: '28',
-    available: 'Tomorrow'
+    available: 'Tomorrow',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'daplug-jcox',
@@ -30,7 +33,8 @@ export const barbers: Barber[] = [
     title: 'Expert Barber',
     rating: '5.0',
     reviews: '39',
-    available: 'Tomorrow'
+    available: 'Tomorrow',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'tru-b',
@@ -38,7 +42,8 @@ export const barbers: Barber[] = [
     title: 'Blend Specialist',
     rating: 'No ratings',
     reviews: '0',
-    available: 'Today'
+    available: 'Today',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'shay-25',
@@ -46,7 +51,8 @@ export const barbers: Barber[] = [
     title: 'Loc Specialist',
     rating: '5.0',
     reviews: '16',
-    available: 'Tomorrow'
+    available: 'Tomorrow',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'rob-pro_edge_cutz',
@@ -54,7 +60,8 @@ export const barbers: Barber[] = [
     title: 'Master Barber',
     rating: '5.0',
     reviews: '0',
-    available: 'Today'
+    available: 'Today',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'lee-thebarber',
@@ -62,7 +69,8 @@ export const barbers: Barber[] = [
     title: 'VIP Specialist',
     rating: '5.0',
     reviews: '13',
-    available: 'Tomorrow'
+    available: 'Tomorrow',
+    image: '/images/barbers/barber-1.svg'
   },
   {
     id: 'larro-cuts',
@@ -70,6 +78,7 @@ export const barbers: Barber[] = [
     title: 'Expert Barber',
     rating: '5.0',
     reviews: '14',
-    available: 'Tomorrow'
+    available: 'Tomorrow',
+    image: '/images/barbers/barber-1.svg'
   }
 ];

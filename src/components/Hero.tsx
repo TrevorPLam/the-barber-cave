@@ -1,5 +1,6 @@
 import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
 import { P3Gradient } from './P3Color';
+import Image from 'next/image';
 
 export default function Hero() {
   return (
@@ -10,10 +11,14 @@ export default function Hero() {
         from="color(display-p3 0 0 0 / 0.6)"
         to="color(display-p3 0 0 0 / 0.4)"
       >
-        <img 
-          src="https://images.unsplash.com/photo-1583947581925-7cbff5e7323d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+        <Image 
+          src="/images/hero/hero-bg.svg"
           alt="The Barber Cave Interior"
-          className="w-full h-full object-cover"
+          fill
+          priority
+          quality={90}
+          sizes="100vw"
+          className="object-cover"
         />
       </P3Gradient>
       

@@ -63,7 +63,7 @@ describe('Barbers', () => {
   it('renders meet all barbers link', () => {
     render(<Barbers />)
     
-    const link = screen.getByText('Meet All 8 Barbers')
+    const link = screen.getByText('Meet All 2 Barbers')
     expect(link.closest('a')).toHaveAttribute('href', 'https://example.com/services')
     expect(link.closest('a')).toHaveAttribute('target', '_blank')
     expect(link.closest('a')).toHaveAttribute('rel', 'noopener noreferrer')

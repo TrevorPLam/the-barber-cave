@@ -1,4 +1,4 @@
-import { BUSINESS_INFO } from '@/data/constants';
+import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
 
 interface StructuredDataProps {
   type: 'Organization' | 'LocalBusiness' | 'BreadcrumbList' | 'Service';
@@ -17,19 +17,19 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           "url": "https://trills-barber-cave.vercel.app",
           "logo": "https://trills-barber-cave.vercel.app/logo.png",
           "image": "https://trills-barber-cave.vercel.app/hero-image.jpg",
-          "telephone": "(214) 555-0123",
+          "telephone": BUSINESS_INFO.phone,
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "1234 Main Street",
+            "streetAddress": BUSINESS_INFO.address.split(',')[0],
             "addressLocality": "Dallas",
             "addressRegion": "TX",
-            "postalCode": "75201",
+            "postalCode": BUSINESS_INFO.address.split(', ')[2],
             "addressCountry": "US"
           },
           "geo": {
             "@type": "GeoCoordinates",
-            "latitude": "32.7767",
-            "longitude": "-96.7970"
+            "latitude": BUSINESS_INFO.coordinates.latitude,
+            "longitude": BUSINESS_INFO.coordinates.longitude
           },
           "openingHours": [
             "Mo-Fr 09:00-19:00",
@@ -38,9 +38,9 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           ],
           "priceRange": "$$",
           "sameAs": [
-            "https://www.instagram.com/thebarbercave",
-            "https://www.facebook.com/thebarbercave",
-            "https://twitter.com/thebarbercave"
+            EXTERNAL_LINKS.instagram,
+            EXTERNAL_LINKS.facebook,
+            EXTERNAL_LINKS.youtube
           ],
           "aggregateRating": {
             "@type": "AggregateRating",
@@ -58,19 +58,19 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           "name": BUSINESS_INFO.name,
           "description": BUSINESS_INFO.description,
           "url": "https://trills-barber-cave.vercel.app",
-          "telephone": "(214) 555-0123",
+          "telephone": BUSINESS_INFO.phone,
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "1234 Main Street",
+            "streetAddress": BUSINESS_INFO.address.split(',')[0],
             "addressLocality": "Dallas",
             "addressRegion": "TX",
-            "postalCode": "75201",
+            "postalCode": BUSINESS_INFO.address.split(', ')[2],
             "addressCountry": "US"
           },
           "geo": {
             "@type": "GeoCoordinates",
-            "latitude": "32.7767",
-            "longitude": "-96.7970"
+            "latitude": BUSINESS_INFO.coordinates.latitude,
+            "longitude": BUSINESS_INFO.coordinates.longitude
           },
           "openingHours": [
             "Mo-Fr 09:00-19:00",

@@ -38,7 +38,16 @@ vi.mock('lucide-react', () => ({
   Scissors: () => <div data-testid="scissors">Scissors</div>,
   Star: () => <div data-testid="star">Star</div>,
   Users: () => <div data-testid="users">Users</div>,
-  Award: () => <div data-testid="award">Award</div>
+  Award: () => <div data-testid="award">Award</div>,
+  Zap: () => <div data-testid="zap">Zap</div>,
+  Sparkles: () => <div data-testid="sparkles">Sparkles</div>,
+  Gem: () => <div data-testid="gem">Gem</div>,
+  Heart: () => <div data-testid="heart">Heart</div>,
+  Clock: () => <div data-testid="clock">Clock</div>,
+  CheckCircle: () => <div data-testid="check-circle">CheckCircle</div>,
+  Target: () => <div data-testid="target">Target</div>,
+  Move: () => <div data-testid="move">Move</div>,
+  Smile: () => <div data-testid="smile">Smile</div>
 }))
 
 describe('Services', () => {

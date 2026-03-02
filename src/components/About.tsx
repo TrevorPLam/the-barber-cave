@@ -1,5 +1,6 @@
 import { BUSINESS_INFO } from '@/data/constants';
 import { getBusinessInfo } from '@/utils/cached-business';
+import Image from 'next/image';
 
 export default function About() {
   const businessInfo = BUSINESS_INFO;
@@ -42,11 +43,13 @@ export default function About() {
           
           <div className="relative">
             <div className="aspect-square rounded-2xl overflow-hidden bg-gray-200">
-              {/* Replace with actual shop interior photo */}
-              <img 
-                src="https://images.unsplash.com/photo-1583947581925-7cbff5e7323d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              <Image 
+                src="/images/about/shop-interior.svg"
                 alt="The Barber Cave Interior"
-                className="w-full h-full object-cover"
+                fill
+                quality={75}
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
             </div>
           </div>
