@@ -48,10 +48,13 @@ describe('Barbers Data', () => {
 
   it('should have valid rating formats', () => {
     barbers.forEach(barber => {
-      expect(barber.rating).toMatch(/^\d+(\.\d+)?$/)
-      const rating = parseFloat(barber.rating)
-      expect(rating).toBeGreaterThanOrEqual(0)
-      expect(rating).toBeLessThanOrEqual(5)
+      // Ratings should be numeric OR 'No ratings' for new barbers
+      if (barber.rating !== 'No ratings') {
+        expect(barber.rating).toMatch(/^\d+(\.\d+)?$/)
+        const rating = parseFloat(barber.rating)
+        expect(rating).toBeGreaterThanOrEqual(0)
+        expect(rating).toBeLessThanOrEqual(5)
+      }
     })
   })
 
@@ -65,12 +68,12 @@ describe('Barbers Data', () => {
 
   it('should have valid availability statuses', () => {
     barbers.forEach(barber => {
-      expect(['Tomorrow', 'Today', 'Available', 'Booked'].includes(barber.available)).toBe(true)
+      expect(['Tomorrow', 'Today', 'Available', 'Booked', 'Available Friday'].includes(barber.available)).toBe(true)
     })
   })
 
   it('should have valid barber titles', () => {
-    const validTitles = ['Master Barber', 'Senior Barber', 'Expert Barber', 'Fade Specialist']
+    const validTitles = ['Master Barber', 'Senior Barber', 'Expert Barber', 'Fade Specialist', 'Blend Specialist', 'Loc Specialist', 'VIP Specialist']
     
     barbers.forEach(barber => {
       expect(validTitles).toContain(barber.title)
@@ -92,7 +95,7 @@ describe('Barbers Data', () => {
   it('should have reasonable review counts for a barber shop', () => {
     barbers.forEach(barber => {
       const reviews = parseInt(barber.reviews)
-      expect(reviews).toBeGreaterThan(10) // At least some reviews
+      expect(reviews).toBeGreaterThanOrEqual(0) // Allow 0 for new barbers
       expect(reviews).toBeLessThan(1000) // Reasonable upper bound
     })
   })

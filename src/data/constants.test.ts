@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { SITE_URL, BUSINESS_INFO, EXTERNAL_LINKS, NAVIGATION_ITEMS } from '../constants'
+import { SITE_URL, BUSINESS_INFO, EXTERNAL_LINKS, NAVIGATION_ITEMS } from './constants'
 
 describe('Constants', () => {
   describe('SITE_URL', () => {
@@ -30,13 +30,14 @@ describe('Constants', () => {
     it('should have non-empty string values for all fields', () => {
       Object.entries(BUSINESS_INFO).forEach(([key, value]) => {
         if (key === 'coordinates') {
-          expect(value).toHaveProperty('latitude')
-          expect(value).toHaveProperty('longitude')
-          expect(typeof value.latitude).toBe('string')
-          expect(typeof value.longitude).toBe('string')
+          const coords = value as { latitude: string; longitude: string }
+          expect(coords).toHaveProperty('latitude')
+          expect(coords).toHaveProperty('longitude')
+          expect(typeof coords.latitude).toBe('string')
+          expect(typeof coords.longitude).toBe('string')
         } else {
           expect(typeof value).toBe('string')
-          expect(value.length).toBeGreaterThan(0)
+          expect((value as string).length).toBeGreaterThan(0)
         }
       })
     })

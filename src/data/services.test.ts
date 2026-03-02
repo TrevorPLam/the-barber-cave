@@ -48,16 +48,21 @@ describe('Services Data', () => {
 
   it('should have valid price formats', () => {
     services.forEach(service => {
-      // Prices should be either "$X" or "$X-$Y" or "$X+" format
-      expect(service.price).toMatch(/^\$[0-9]+(\-[0-9]+|\+)?$/)
+      // Prices should be either "$X", "$X-$Y", "$X+" or "$X OFF" format
+      // Examples: "$50", "$50-$70", "$85+", "$10 OFF", "$40-$55"
+      expect(service.price).toMatch(/^\$[0-9]+(-\$?[0-9]+|\+|\sOFF)?$/)
     })
   })
 
   it('should have valid duration formats', () => {
     services.forEach(service => {
-      // Durations should contain numbers and time units
-      expect(service.duration).toMatch(/[0-9]+/)
-      expect(service.duration.toLowerCase()).toMatch(/(min|hour|hr)/)
+      // Durations should contain numbers and time units, OR be "First visit" for new client special
+      if (service.duration === 'First visit') {
+        expect(service.id).toBe('new-client-special')
+      } else {
+        expect(service.duration).toMatch(/[0-9]+/)
+        expect(service.duration.toLowerCase()).toMatch(/(min|hour|hr)/)
+      }
     })
   })
 

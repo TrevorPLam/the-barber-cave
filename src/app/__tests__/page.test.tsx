@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { describe, it, expect, vi } from 'vitest'
 import Home from '../page'
@@ -71,9 +71,22 @@ describe('Home Page', () => {
     expect(screen.getByText('Menu Open: false')).toBeInTheDocument()
   })
 
-  it('has correct page structure', () => {
-    const { container } = render(<Home />)
+  it('has correct page structure', async () => {
+    render(<Home />)
     
-    expect(container.firstChild).toHaveClass('min-h-screen', 'bg-white')
+    // Verify immediately rendered components
+    expect(screen.getByTestId('navigation')).toBeInTheDocument()
+    expect(screen.getByTestId('hero')).toBeInTheDocument()
+    
+    // Dynamic components may render asynchronously
+    await waitFor(() => {
+      expect(screen.getByTestId('gallery')).toBeInTheDocument()
+      expect(screen.getByTestId('services')).toBeInTheDocument()
+      expect(screen.getByTestId('barbers')).toBeInTheDocument()
+      expect(screen.getByTestId('about')).toBeInTheDocument()
+      expect(screen.getByTestId('contact')).toBeInTheDocument()
+      expect(screen.getByTestId('social')).toBeInTheDocument()
+      expect(screen.getByTestId('footer')).toBeInTheDocument()
+    })
   })
 })

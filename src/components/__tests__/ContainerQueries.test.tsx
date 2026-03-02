@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import ContainerQueries, { useContainerQuerySupport } from '../ContainerQueries';
 
@@ -111,64 +111,69 @@ describe('useContainerQuerySupport Hook', () => {
     vi.clearAllMocks();
   });
 
-  it('returns true when CSS.supports indicates container query support', () => {
+  it('returns true when CSS.supports indicates container query support', async () => {
     mockCSSSupports.mockReturnValue(true);
 
-    const result = useContainerQuerySupport();
-    expect(result).toBe(true);
+    const { result } = renderHook(() => useContainerQuerySupport());
+    await waitFor(() => {
+      expect(result.current).toBe(true);
+    });
     expect(mockCSSSupports).toHaveBeenCalledWith('container-type', 'inline-size');
   });
 
-  it('returns false when CSS.supports indicates no container query support', () => {
+  it('returns false when CSS.supports indicates no container query support', async () => {
     mockCSSSupports.mockReturnValue(false);
 
-    const result = useContainerQuerySupport();
-    expect(result).toBe(false);
+    const { result } = renderHook(() => useContainerQuerySupport());
+    await waitFor(() => {
+      expect(result.current).toBe(false);
+    });
   });
 
   it('returns false during server-side rendering', () => {
-    // Mock window being undefined
-    const originalWindow = global.window;
-    delete (global as any).window;
+    // Mock CSS as undefined to simulate SSR
+    const originalCSS = global.CSS;
+    // @ts-ignore
+    global.CSS = undefined;
 
-    const result = useContainerQuerySupport();
-    expect(result).toBe(false);
+    const { result } = renderHook(() => useContainerQuerySupport());
+    expect(result.current).toBe(false);
 
-    // Restore window
-    global.window = originalWindow;
+    // Restore CSS
+    global.CSS = originalCSS;
   });
 });
 
 describe('Container Queries Integration', () => {
   it('applies correct container styles for barber grid', () => {
-    render(
+    const { container } = render(
       <ContainerQueries containerName="barber-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="barber-card">Barber 1</div>
         <div className="barber-card">Barber 2</div>
       </ContainerQueries>
     );
 
-    const container = screen.getByText('Barber 1').parentElement;
-    expect(container).toHaveStyle({
+    const gridContainer = container.querySelector('.grid');
+    expect(gridContainer).toHaveStyle({
       containerType: 'inline-size',
       containerName: 'barber-grid',
     });
-    expect(container).toHaveClass('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-4', 'gap-8');
+    expect(gridContainer).toHaveClass('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-4', 'gap-8');
   });
 
   it('applies correct container styles for services grid', () => {
-    render(
+    const { container } = render(
       <ContainerQueries containerName="services-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="service-card">Service 1</div>
         <div className="service-card">Service 2</div>
       </ContainerQueries>
     );
 
-    const container = screen.getByText('Service 1').parentElement;
-    expect(container).toHaveStyle({
+    const gridContainer = container.querySelector('.grid');
+    expect(gridContainer).toHaveStyle({
       containerType: 'inline-size',
       containerName: 'services-grid',
     });
-    expect(container).toHaveClass('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-8');
+    expect(gridContainer).toHaveClass('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-8');
   });
 });

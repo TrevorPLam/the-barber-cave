@@ -47,7 +47,7 @@ export const useContainerQuerySupport = () => {
   const [isSupported, setIsSupported] = useState(false);
 
   useEffect(() => {
-    setIsSupported(CSS.supports('container-type', 'inline-size'));
+    setIsSupported(typeof CSS !== 'undefined' && CSS.supports('container-type', 'inline-size'));
   }, []);
 
   return isSupported;

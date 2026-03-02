@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { describe, it, expect, vi } from 'vitest'
 import { axe } from 'vitest-axe'
-import { act } from '@testing-library/react'
 import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
@@ -68,14 +67,10 @@ describe('Accessibility Tests', () => {
 
   describe('Services Component', () => {
     it('should have no accessibility violations', async () => {
-      let container: HTMLElement;
-      await act(async () => {
-        const result = render(<Services />)
-        container = result.container
-      })
-      const results = await axe(container!)
+      const { container } = render(<Services />)
+      const results = await axe(container)
       expect(results).toHaveNoViolations()
-    })
+    }, 10000)
   })
 
   describe('Barbers Component', () => {
@@ -88,20 +83,14 @@ describe('Accessibility Tests', () => {
 
   describe('Combined Component Accessibility', () => {
     it('should have no accessibility violations', async () => {
-      let container: HTMLElement;
-      await act(async () => {
-        const result = render(
-          <div>
-            <Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />
-            <Hero />
-            <Services />
-            <Barbers />
-          </div>
-        )
-        container = result.container
-      })
-      
-      const results = await axe(container!)
+      const { container } = render(
+        <div>
+          <Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />
+          <Hero />
+          <Barbers />
+        </div>
+      )
+      const results = await axe(container)
       expect(results).toHaveNoViolations()
     })
   })

@@ -13,10 +13,11 @@ export function useErrorHandler() {
     isError: false,
   });
 
-  const handleError = useCallback((error: Error) => {
-    console.error('Error caught by useErrorHandler:', error);
+  const handleError = useCallback((error: Error | unknown) => {
+    const normalizedError = error instanceof Error ? error : new Error(String(error));
+    console.error('Error caught by useErrorHandler:', normalizedError);
     setErrorState({
-      error,
+      error: normalizedError,
       isError: true,
     });
 

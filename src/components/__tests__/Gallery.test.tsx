@@ -36,9 +36,16 @@ describe('Gallery', () => {
     
     // Check that overlay content is present (though may be hidden by default)
     expect(screen.getByText('Classic Fade')).toBeInTheDocument()
-    expect(screen.getByText('by Master Barber')).toBeInTheDocument()
     expect(screen.getByText('Beard Trim')).toBeInTheDocument()
-    expect(screen.getByText('by Expert Barber')).toBeInTheDocument()
+    expect(screen.getByText('Modern Cut')).toBeInTheDocument()
+    expect(screen.getByText('Pompadour')).toBeInTheDocument()
+    expect(screen.getByText('Crew Cut')).toBeInTheDocument()
+    expect(screen.getByText('Hot Towel Shave')).toBeInTheDocument()
+    
+    // Barber names appear multiple times, use getAllByText
+    expect(screen.getAllByText('by Master Barber').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText('by Expert Barber').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText('by Senior Barber').length).toBeGreaterThanOrEqual(2)
   })
 
   it('has proper grid layout and responsive classes', () => {

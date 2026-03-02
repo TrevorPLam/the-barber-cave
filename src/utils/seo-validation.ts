@@ -21,13 +21,21 @@ export function validateStructuredData(): SEOValidationResult {
   if (typeof document !== 'undefined') {
     try {
       // Check Organization schema
-      if (document.querySelector('script[type="application/ld+json"]')) {
-        const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+      const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+      if (scripts.length > 0) {
         scripts.forEach(script => {
           try {
             const data = JSON.parse(script.textContent || '{}');
             if (data['@type']) {
               foundSchemas.push(data['@type']);
+            }
+            // Also check for @graph array which may contain multiple schemas
+            if (data['@graph'] && Array.isArray(data['@graph'])) {
+              data['@graph'].forEach((item: { '@type': string }) => {
+                if (item['@type']) {
+                  foundSchemas.push(item['@type']);
+                }
+              });
             }
           } catch (e) {
             issues.push('Invalid JSON-LD syntax found');

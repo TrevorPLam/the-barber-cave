@@ -28,7 +28,7 @@
  *   return (
  *     <main>
  *       <Hero />
- *       {/* Other page content */}
+ *       <!-- Other page content -->
  *     </main>
  *   );
  * }

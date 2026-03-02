@@ -20,8 +20,13 @@ describe('About', () => {
     render(<About />)
     
     expect(screen.getByRole('heading', { name: 'The Barber Cave Experience' })).toBeInTheDocument()
-    expect(screen.getByText('Located in the heart of Dallas, The Barber Cave isn\'t just a barbershop—')).toBeInTheDocument()
-    expect(screen.getByText('Our barbers specialize in everything from classic cuts to modern fades,')).toBeInTheDocument()
+    // Use flexible matcher for text that may be broken across elements
+    expect(screen.getByText((content, element) => {
+      return content.includes('Located in the heart of Dallas') && element?.tagName.toLowerCase() === 'p'
+    })).toBeInTheDocument()
+    expect(screen.getByText((content, element) => {
+      return content.includes('Our barbers specialize') && element?.tagName.toLowerCase() === 'p'
+    })).toBeInTheDocument()
   })
 
   it('displays business statistics correctly', () => {
