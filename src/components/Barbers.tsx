@@ -2,6 +2,7 @@ import { ChevronRight, Star } from 'lucide-react';
 import { barbers } from '@/data/barbers';
 import { EXTERNAL_LINKS } from '@/data/constants';
 import { getBarbersData } from '@/utils/cached-barbers';
+import ContainerQueries from './ContainerQueries';
 
 export default function Barbers() {
   const barbersData = barbers;
@@ -16,9 +17,12 @@ export default function Barbers() {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <ContainerQueries 
+          containerName="barber-grid" 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 container-queries-fallback"
+        >
           {barbersData.map((barber) => (
-            <div key={barber.id} className="text-center group">
+            <div key={barber.id} className="barber-card text-center group container-card">
               <div className="relative mb-6 overflow-hidden rounded-2xl bg-gray-200 aspect-square">
                 {/* Replace with actual barber photos */}
                 <img 
@@ -43,7 +47,7 @@ export default function Barbers() {
               </div>
             </div>
           ))}
-        </div>
+        </ContainerQueries>
         
         <div className="text-center mt-12">
           <a 

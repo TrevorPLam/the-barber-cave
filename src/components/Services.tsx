@@ -4,6 +4,9 @@ import { services } from '@/data/services';
 import { EXTERNAL_LINKS } from '@/data/constants';
 import { Crown, Scissors, Star, Users, Award, Zap, Sparkles, Gem, Heart, Target, Move, Smile, Flower, Diamond, Sun, Moon, RefreshCw, Wind, Droplet, Link, Plus, RotateCcw } from 'lucide-react';
 import { getServicesData } from '@/utils/cached-services';
+import Breadcrumbs from './Breadcrumbs';
+import StructuredData from './StructuredData';
+import ContainerQueries from './ContainerQueries';
 
 const iconMap = {
   Crown,
@@ -36,7 +39,7 @@ const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
   const isSpecial = service.id === 'new-client-special';
   
   return (
-    <div className={`relative p-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
+    <div className={`service-card container-card relative p-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${
       isSpecial 
         ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-300' 
         : 'bg-white border-gray-200 hover:border-gray-300'
@@ -48,7 +51,7 @@ const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
       )}
       
       <div className="flex items-center mb-4">
-        <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+        <div className={`icon-container w-12 h-12 rounded-full flex items-center justify-center ${
           isSpecial ? 'bg-amber-500' : 'bg-black'
         }`}>
           <IconComponent className={`w-6 h-6 ${isSpecial ? 'text-black' : 'text-white'}`} />
@@ -86,34 +89,52 @@ ServiceCard.displayName = 'ServiceCard';
 export default memo(function Services() {
   const servicesData = services; // Using static data directly
   
+  const breadcrumbItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Services', href: '#services' }
+  ];
+
+  const serviceStructuredData = {
+    name: "Barber Services Menu",
+    description: "Complete menu of professional barber services offered at The Barber Cave in Dallas",
+    services: servicesData
+  };
+  
   return (
-    <section id="services" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">Services</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Premium grooming services tailored to your style
-          </p>
-        </div>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {servicesData.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
-        </div>
-        
-        <div className="text-center mt-12">
-          <a 
-            href={EXTERNAL_LINKS.services}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-black hover:text-amber-500 font-semibold transition-colors"
+    <>
+      <StructuredData type="Service" data={serviceStructuredData} />
+      <section id="services" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">Services</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Premium grooming services tailored to your style
+            </p>
+          </div>
+          
+          <ContainerQueries 
+            containerName="services-grid" 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container-queries-fallback"
           >
-            View All {servicesData.length} Services
-            <ChevronRight className="h-5 w-5 ml-2" />
-          </a>
+            {servicesData.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </ContainerQueries>
+          
+          <div className="text-center mt-12">
+            <a 
+              href={EXTERNAL_LINKS.services}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-black hover:text-amber-500 font-semibold transition-colors"
+            >
+              View All {servicesData.length} Services
+              <ChevronRight className="h-5 w-5 ml-2" />
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 });

@@ -4,7 +4,10 @@ import { useState, lazy, Suspense } from "react";
 import dynamic from "next/dynamic";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import StructuredData from "@/components/StructuredData";
 import SafeComponent from "@/components/SafeComponent";
+import { services } from '@/data/services';
 
 // Lazy load components that are not immediately visible
 const Gallery = dynamic(() => import("@/components/Gallery"), {
@@ -38,9 +41,23 @@ const Footer = dynamic(() => import("@/components/Footer"), {
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const breadcrumbItems = [
+    { name: 'Home', href: '/' }
+  ];
+
+  const serviceStructuredData = {
+    name: "Professional Barber Services",
+    description: "Complete range of premium barber services including cuts, shaves, grooming, and loc services",
+    services: services.slice(0, 6) // Include first 6 services for structured data
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <StructuredData type="Service" data={serviceStructuredData} />
       <Navigation isMenuOpen={isMenuOpen} onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <Breadcrumbs items={breadcrumbItems} />
+      </div>
       <Hero />
       <SafeComponent componentName="Gallery">
         <Gallery />
