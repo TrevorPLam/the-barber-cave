@@ -1,4 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Check for log files before running lint-staged
+. "$(dirname -- "$0")/check-log-files.sh"
+
 npx lint-staged
