@@ -1,3 +1,70 @@
+/**
+ * @fileoverview Contact section component with location, hours, and booking information
+ * @author Development Team
+ * @version 1.0.0
+ * @license MIT
+ *
+ * Provides complete contact information including address, phone, hours, and booking links.
+ * Features dark theme design with call-to-action buttons and promotional messaging.
+ */
+
+/**
+ * @component
+ * @description Contact section component displaying business location and booking information
+ *
+ * Showcases three key contact areas (location, phone, hours) with prominent booking
+ * call-to-action buttons. Features dark theme design with amber accent colors
+ * and responsive three-column layout.
+ *
+ * @returns {JSX.Element} Contact section with business information and booking CTAs
+ *
+ * @example
+ * ```tsx
+ * import Contact from '@/components/Contact';
+ *
+ * function HomePage() {
+ *   return (
+ *     <main>
+ *       <Hero />
+ *       <Services />
+ *       <About />
+ *       <Contact />
+ *     </main>
+ *   );
+ * }
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // With footer integration
+ * <footer>
+ *   <Contact />
+ *   <SocialLinks />
+ * </footer>
+ * ```
+ *
+ * @accessibility
+ * - High contrast text on dark background
+ * - Semantic heading hierarchy
+ * - Keyboard accessible booking links
+ * - Screen reader friendly contact information
+ * - Proper link relationships (noopener, noreferrer)
+ *
+ * @performance
+ * - Static content with no dynamic data fetching
+ * - Efficient CSS classes with minimal styling overhead
+ * - Optimized icon loading from Lucide React
+ *
+ * @dependencies
+ * - @/data/constants - Business information and external links
+ * - lucide-react - Icon components for contact sections
+ *
+ * @business-logic
+ * - Contact information sourced from centralized constants
+ * - External booking links integrate with third-party booking system
+ * - Promotional messaging highlights new client discount
+ * - Responsive design adapts from single column to three columns
+ */
 import { MapPin, Phone, Clock } from 'lucide-react';
 import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
 

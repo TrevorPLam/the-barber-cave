@@ -1,3 +1,43 @@
+/**
+ * @fileoverview Barber services data and type definitions
+ * @author Development Team
+ * @version 1.0.0
+ * @license MIT
+ *
+ * Contains comprehensive barber service offerings with pricing, descriptions,
+ * durations, and icon mappings. Used throughout the application for service
+ * displays, booking integration, and business logic.
+ */
+
+/**
+ * @typedef {Object} Service
+ * @property {string} id - Unique identifier for the service (used for booking and analytics)
+ * @property {string} title - Display name of the service
+ * @property {string} description - Detailed description of what the service includes
+ * @property {string} price - Formatted price string (e.g., "$50", "$40-$60", "$10 OFF")
+ * @property {string} duration - Estimated service duration (e.g., "1 hour", "45 min")
+ * @property {string} icon - Icon name from Lucide React for visual representation
+ */
+
+/**
+ * @interface Service
+ * @description TypeScript interface for barber service data structure
+ *
+ * Defines the contract for service objects used throughout the application.
+ * Ensures type safety and consistency for service data handling.
+ *
+ * @example
+ * ```typescript
+ * const newService: Service = {
+ *   id: 'example-service',
+ *   title: 'Example Service',
+ *   description: 'Service description',
+ *   price: '$50',
+ *   duration: '1 hour',
+ *   icon: 'Scissors'
+ * };
+ * ```
+ */
 export interface Service {
   id: string;
   title: string;
@@ -7,6 +47,73 @@ export interface Service {
   icon: string;
 }
 
+/**
+ * @constant {Service[]} services
+ * @description Complete catalog of barber services offered at The Barber Cave
+ *
+ * Contains all 28 available services with comprehensive details for display,
+ * booking integration, and business operations. Services are ordered by
+ * popularity and complexity, with promotional services highlighted.
+ *
+ * @example
+ * ```typescript
+ * import { services } from '@/data/services';
+ *
+ * // Get all services
+ * console.log(`Total services: ${services.length}`);
+ *
+ * // Find premium services
+ * const premiumServices = services.filter(service =>
+ *   service.price.includes('$100') || service.price.includes('$120')
+ * );
+ *
+ * // Get service by ID
+ * const haircutService = services.find(service => service.id === 'mens-haircut');
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // Render services in component
+ * import { services } from '@/data/services';
+ *
+ * function ServicesList() {
+ *   return (
+ *     <div>
+ *       {services.map(service => (
+ *         <div key={service.id}>
+ *           <h3>{service.title}</h3>
+ *           <p>{service.description}</p>
+ *           <span>{service.price}</span>
+ *         </div>
+ *       ))}
+ *     </div>
+ *   );
+ * }
+ * ```
+ *
+ * @business-logic
+ * - Services are ordered by popularity and service complexity
+ * - Promotional services (new-client-special) get special UI treatment
+ * - Pricing includes ranges for variable services (e.g., bald & bearded)
+ * - Duration estimates are conservative to manage customer expectations
+ * - Icon assignments correspond to Lucide React icon names
+ * - Service IDs are URL-safe and used for booking system integration
+ *
+ * @pricing-strategy
+ * - Premium services: $80-$120 (Ultimate Grooming, Presidential, Trill Sophisticated)
+ * - Standard services: $40-$70 (Haircuts, Bald & Bearded packages)
+ * - Basic services: $25-$40 (Edge ups, Beard lineups)
+ * - Promotional: $10 OFF (New client discount)
+ * - Specialty: $75-$115 (Loc services, Women's cuts, VIP)
+ *
+ * @service-categories
+ * - Haircuts: Men's cuts with/without beard services
+ * - Bald & Bearded: Specialized head shaving and beard grooming
+ * - Premium Packages: Multi-service luxury experiences
+ * - Loc Services: Dreadlock maintenance and styling
+ * - Specialty: Women's cuts, kids cuts, after-hours
+ * - Promotional: New client discounts and specials
+ */
 export const services: Service[] = [
   {
     id: 'ultimate-grooming',

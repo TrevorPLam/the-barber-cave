@@ -1,3 +1,60 @@
+/**
+ * @fileoverview Hero section component for the barber shop homepage
+ * @author Development Team
+ * @version 1.0.0
+ * @license MIT
+ *
+ * Displays the main hero section with business branding, call-to-action buttons,
+ * and key statistics. Features premium visual design with P3 color gradients
+ * and optimized background imagery.
+ */
+
+/**
+ * @component
+ * @description Main hero section component for the barber shop homepage
+ *
+ * Features premium visual design with:
+ * - Full-screen background image with P3 color gradients
+ * - Compelling headline and business description
+ * - Primary and secondary call-to-action buttons
+ * - Key business statistics display
+ * - Responsive design with mobile-first approach
+ *
+ * @example
+ * ```tsx
+ * import Hero from '@/components/Hero';
+ *
+ * function HomePage() {
+ *   return (
+ *     <main>
+ *       <Hero />
+ *       {/* Other page content */}
+ *     </main>
+ *   );
+ * }
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // Used in Next.js page component
+ * export default function Page() {
+ *   return <Hero />;
+ * }
+ * ```
+ *
+ * @returns {JSX.Element} The hero section with branding, CTAs, and statistics
+ *
+ * @accessibility
+ * - High contrast text on gradient background
+ * - Semantic heading hierarchy
+ * - Keyboard navigable buttons
+ * - Screen reader friendly content
+ *
+ * @performance
+ * - Optimized background image loading with priority
+ * - WebP/AVIF format support via Next.js Image
+ * - Efficient CSS gradients with P3 color space
+ */
 'use client';
 
 import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
