@@ -1,0 +1,50 @@
+name: Documentation Quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  docs-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run ESLint with JSDoc checks
+        run: npm run lint
+      - name: Check JSDoc coverage
+        run: |
+          # Count total functions/methods that should have JSDoc
+          TOTAL_FUNCTIONS=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -E "(function|const.*=|export.*function|export.*const.*=.*=>)" | wc -l)
+          # Count functions with JSDoc comments (rough approximation)
+          DOCUMENTED_FUNCTIONS=$(find src -name "*.ts" -o -name "*.tsx" | xargs grep -B1 -E "(function|const.*=|export.*function|export.*const.*=.*=>)" | grep -E "/\*\*" | wc -l)
+
+          echo "Total functions found: $TOTAL_FUNCTIONS"
+          echo "Functions with JSDoc: $DOCUMENTED_FUNCTIONS"
+
+          if [ "$TOTAL_FUNCTIONS" -gt 0 ]; then
+            COVERAGE=$((DOCUMENTED_FUNCTIONS * 100 / TOTAL_FUNCTIONS))
+            echo "JSDoc coverage: ${COVERAGE}%"
+
+            if [ "$COVERAGE" -lt 80 ]; then
+              echo "❌ JSDoc coverage is below 80% threshold"
+              exit 1
+            else
+              echo "✅ JSDoc coverage meets minimum requirements"
+            fi
+          else
+            echo "No functions found to check"
+          fi
+      - name: Validate TypeDoc configuration
+        run: |
+          if [ -f "typedoc.json" ]; then
+            echo "✅ TypeDoc configuration found"
+          else
+            echo "❌ TypeDoc configuration missing"
+            exit 1
+          fi

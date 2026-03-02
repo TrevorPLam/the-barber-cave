@@ -4,12 +4,13 @@ import ContainerQueries, { useContainerQuerySupport } from '../ContainerQueries'
 
 // Mock CSS.supports
 const mockCSSSupports = vi.fn();
-Object.defineProperty(window, 'CSS', {
-  value: {
-    supports: mockCSSSupports,
-  },
-  writable: true,
+vi.stubGlobal('CSS', {
+  supports: mockCSSSupports,
 });
+
+// Mock window.matchMedia
+const mockMatchMedia = vi.fn();
+vi.stubGlobal('matchMedia', mockMatchMedia);
 
 describe('ContainerQueries Component', () => {
   beforeEach(() => {

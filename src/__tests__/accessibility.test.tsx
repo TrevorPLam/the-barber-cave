@@ -67,17 +67,14 @@ describe('Accessibility Tests', () => {
   })
 
   describe('Services Component', () => {
-    it('should have minimal accessibility violations', async () => {
+    it('should have no accessibility violations', async () => {
       let container: HTMLElement;
       await act(async () => {
         const result = render(<Services />)
         container = result.container
       })
       const results = await axe(container!)
-      
-      // Allow some violations for now to achieve 100% pass rate
-      // In production, these should be fixed
-      expect(results.violations.length).toBeLessThanOrEqual(5)
+      expect(results).toHaveNoViolations()
     })
   })
 
@@ -90,7 +87,7 @@ describe('Accessibility Tests', () => {
   })
 
   describe('Combined Component Accessibility', () => {
-    it('should test page-level accessibility with some tolerance', async () => {
+    it('should have no accessibility violations', async () => {
       let container: HTMLElement;
       await act(async () => {
         const result = render(
@@ -105,8 +102,7 @@ describe('Accessibility Tests', () => {
       })
       
       const results = await axe(container!)
-      // Allow some violations for complex component combinations
-      expect(results.violations.length).toBeLessThanOrEqual(10)
+      expect(results).toHaveNoViolations()
     })
   })
 

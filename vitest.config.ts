@@ -12,6 +12,18 @@ export default defineConfig({
       '**/*.e2e.*',
       '**/*.spec.ts'
     ],
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/**/*.stories.tsx', 'src/**/*.d.ts'],
+      thresholds: {
+        statements: 100,
+        branches: 100,
+        functions: 100,
+        lines: 100,
+      },
+      reporter: ['text', 'json', 'html', 'lcov'],
+    },
   },
   resolve: {
     alias: {

@@ -3,32 +3,11 @@ import '@testing-library/jest-dom'
 import { describe, it, expect, vi } from 'vitest'
 import Services from '../Services'
 
-// Mock the constants and services data
+// Mock the constants
 vi.mock('@/data/constants', () => ({
   EXTERNAL_LINKS: {
     services: 'https://example.com/services'
   }
-}))
-
-vi.mock('@/data/services', () => ({
-  services: [
-    {
-      id: 'ultimate-grooming',
-      title: 'Ultimate Grooming',
-      description: '2-hour luxury experience',
-      price: '$100',
-      duration: '2 hours',
-      icon: 'Crown'
-    },
-    {
-      id: 'new-client-special',
-      title: 'New Client Special',
-      description: 'First-time clients receive $10 off',
-      price: '$10 OFF',
-      duration: 'First visit',
-      icon: 'ChevronRight'
-    }
-  ]
 }))
 
 // Mock lucide-react icons
@@ -84,35 +63,38 @@ describe('Services', () => {
   it('renders service cards with correct information', () => {
     render(<Services />)
     
-    expect(screen.getByText('Ultimate Grooming')).toBeInTheDocument()
-    expect(screen.getByText('2-hour luxury experience')).toBeInTheDocument()
-    expect(screen.getByText('$100')).toBeInTheDocument()
-    expect(screen.getByText('2 hours')).toBeInTheDocument()
+    expect(screen.getByText('Ultimate Grooming (with beard)')).toBeInTheDocument()
+    expect(screen.getByText(/Deep cleanse exfoliating facial/)).toBeInTheDocument()
     
-    expect(screen.getByText('New Client Special')).toBeInTheDocument()
-    expect(screen.getByText('First-time clients receive $10 off')).toBeInTheDocument()
-    expect(screen.getByText('$10 OFF')).toBeInTheDocument()
-    expect(screen.getByText('First visit')).toBeInTheDocument()
+    expect(screen.getByText('New Client Special $10 Off')).toBeInTheDocument()
+    expect(screen.getByText(/\$10 off any service/)).toBeInTheDocument()
+    
+    // Check that multiple services are rendered
+    const serviceCards = document.querySelectorAll('.service-card')
+    expect(serviceCards.length).toBe(28)
   })
 
   it('highlights special offer with amber color', () => {
     render(<Services />)
     
     // The special offer should have amber styling on the "Book Now" button
-    const bookNowButtons = screen.getAllByText('Book Now')
-    const specialBookNowButton = bookNowButtons.find(button => 
-      button.closest('a')?.classList.contains('bg-amber-500')
+    const amberElements = document.querySelectorAll('[class*="bg-amber-500"]')
+    expect(amberElements.length).toBeGreaterThan(0)
+    
+    // Find the "Book Now" link within amber elements
+    const specialBookNowLink = Array.from(amberElements).find(el => 
+      el.textContent?.includes('Book Now')
     )
-    expect(specialBookNowButton).toBeInTheDocument()
-    expect(specialBookNowButton?.closest('a')).toHaveClass('bg-amber-500', 'text-black')
+    expect(specialBookNowLink).toBeTruthy()
+    expect(specialBookNowLink).toHaveClass('bg-amber-500', 'text-black')
   })
 
   it('renders view all services link', () => {
     render(<Services />)
     
-    const link = screen.getByText('View All 2 Services')
-    expect(link.closest('a')).toHaveAttribute('href', 'https://example.com/services')
-    expect(link.closest('a')).toHaveAttribute('target', '_blank')
-    expect(link.closest('a')).toHaveAttribute('rel', 'noopener noreferrer')
+    const link = screen.getByRole('link', { name: /view all \d+ services/i })
+    expect(link).toHaveAttribute('href', 'https://example.com/services')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 })
