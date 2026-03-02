@@ -1,3 +1,5 @@
+'use client';
+
 import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
 import { P3Gradient } from './P3Color';
 import Image from 'next/image';

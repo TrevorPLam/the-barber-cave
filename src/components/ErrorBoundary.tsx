@@ -6,6 +6,7 @@ import { AlertTriangle, RefreshCw } from 'lucide-react';
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
 interface State {
@@ -29,6 +30,9 @@ class ErrorBoundary extends Component<Props, State> {
       error,
       errorInfo,
     });
+
+    // Call the external error handler if provided
+    this.props.onError?.(error, errorInfo);
 
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {

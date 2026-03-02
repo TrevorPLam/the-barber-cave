@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import StructuredData from './StructuredData';
+import { SITE_URL } from '@/data/constants';
 
 interface BreadcrumbItem {
   name: string;
@@ -17,7 +18,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
       "@type": "ListItem",
       "position": index + 1,
       "name": item.name,
-      "item": `https://trills-barber-cave.vercel.app${item.href}`
+      "item": `${SITE_URL}${item.href}`
     }))
   };
 

@@ -1,4 +1,4 @@
-import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
+import { BUSINESS_INFO, EXTERNAL_LINKS, SITE_URL } from '@/data/constants';
 
 interface StructuredDataProps {
   type: 'Organization' | 'LocalBusiness' | 'BreadcrumbList' | 'Service';
@@ -14,9 +14,9 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           "@type": "Organization",
           "name": BUSINESS_INFO.name,
           "description": BUSINESS_INFO.description,
-          "url": "https://trills-barber-cave.vercel.app",
-          "logo": "https://trills-barber-cave.vercel.app/logo.png",
-          "image": "https://trills-barber-cave.vercel.app/hero-image.jpg",
+          "url": SITE_URL,
+          "logo": `${SITE_URL}/logo.png`,
+          "image": `${SITE_URL}/hero-image.jpg`,
           "telephone": BUSINESS_INFO.phone,
           "address": {
             "@type": "PostalAddress",
@@ -57,7 +57,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           "@type": "LocalBusiness",
           "name": BUSINESS_INFO.name,
           "description": BUSINESS_INFO.description,
-          "url": "https://trills-barber-cave.vercel.app",
+          "url": SITE_URL,
           "telephone": BUSINESS_INFO.phone,
           "address": {
             "@type": "PostalAddress",
@@ -97,7 +97,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://trills-barber-cave.vercel.app"
+              "item": SITE_URL
             }
           ]
         };

@@ -1,5 +1,4 @@
 import { BUSINESS_INFO } from '@/data/constants';
-import { getBusinessInfo } from '@/utils/cached-business';
 import Image from 'next/image';
 
 export default function About() {

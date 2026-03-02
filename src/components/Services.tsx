@@ -3,9 +3,6 @@ import { memo } from 'react';
 import { services } from '@/data/services';
 import { EXTERNAL_LINKS } from '@/data/constants';
 import { Crown, Scissors, Star, Users, Award, Zap, Sparkles, Gem, Heart, Target, Move, Smile, Flower, Diamond, Sun, Moon, RefreshCw, Wind, Droplet, Link, Plus, RotateCcw } from 'lucide-react';
-import { getServicesData } from '@/utils/cached-services';
-import Breadcrumbs from './Breadcrumbs';
-import StructuredData from './StructuredData';
 import ContainerQueries from './ContainerQueries';
 
 const iconMap = {
@@ -89,23 +86,9 @@ ServiceCard.displayName = 'ServiceCard';
 export default memo(function Services() {
   const servicesData = services; // Using static data directly
   
-  const breadcrumbItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Services', href: '#services' }
-  ];
-
-  const serviceStructuredData = {
-    name: "Barber Services Menu",
-    description: "Complete menu of professional barber services offered at The Barber Cave in Dallas",
-    services: servicesData
-  };
-  
   return (
-    <>
-      <StructuredData type="Service" data={serviceStructuredData} />
-      <section id="services" className="py-20 bg-white">
+    <section id="services" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <Breadcrumbs items={breadcrumbItems} />
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">Services</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -135,6 +118,5 @@ export default memo(function Services() {
           </div>
         </div>
       </section>
-    </>
   );
 });

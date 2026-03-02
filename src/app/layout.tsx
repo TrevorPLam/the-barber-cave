@@ -4,6 +4,7 @@ import "./globals.css";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import reportAccessibility from "@/utils/accessibility";
 import StructuredData from "@/components/StructuredData";
+import { SITE_URL } from "@/data/constants";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://trills-barber-cave.vercel.app'),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: '%s | The Barber Cave - Premier Barber Shop in Dallas',
     default: 'The Barber Cave - Premier Barber Shop in Dallas'
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
     description: "Experience the best barber services in Dallas at The Barber Cave. 8 expert barbers, 29 specialized services including loc services, premium grooming, and flexible scheduling.",
     type: "website",
     locale: "en_US",
-    url: "https://trills-barber-cave.vercel.app",
+    url: SITE_URL,
     siteName: "The Barber Cave",
     images: [
       {
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://trills-barber-cave.vercel.app'
+    canonical: SITE_URL
   }
 };
 

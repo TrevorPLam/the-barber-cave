@@ -1,15 +1,14 @@
 import { ChevronRight, Star } from 'lucide-react';
 import { barbers } from '@/data/barbers';
 import { EXTERNAL_LINKS } from '@/data/constants';
-import { getBarbersData } from '@/utils/cached-barbers';
 import ContainerQueries from './ContainerQueries';
 import Image from 'next/image';
 
 export default function Barbers() {
-  const barbersData = barbers.map((barber, index) => ({
-    ...barber,
-    image: `/images/barbers/barber-${(index % 1) + 1}.svg` // Use barber-1.svg for all barbers temporarily
-  }));
+  // TODO: Replace with unique barber photos when available
+  // Currently all barbers use the same placeholder image
+  // Future: Add individual photos for each barber to showcase their work
+  const barbersData = barbers;
   
   return (
     <section id="barbers" className="py-20 bg-gray-50">

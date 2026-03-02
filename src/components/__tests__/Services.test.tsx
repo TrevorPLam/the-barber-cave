@@ -47,7 +47,30 @@ vi.mock('lucide-react', () => ({
   CheckCircle: () => <div data-testid="check-circle">CheckCircle</div>,
   Target: () => <div data-testid="target">Target</div>,
   Move: () => <div data-testid="move">Move</div>,
-  Smile: () => <div data-testid="smile">Smile</div>
+  Smile: () => <div data-testid="smile">Smile</div>,
+  Flower: () => <div data-testid="flower">Flower</div>,
+  Diamond: () => <div data-testid="diamond">Diamond</div>,
+  Sun: () => <div data-testid="sun">Sun</div>,
+  Moon: () => <div data-testid="moon">Moon</div>,
+  RefreshCw: () => <div data-testid="refresh-cw">RefreshCw</div>,
+  Wind: () => <div data-testid="wind">Wind</div>,
+  Droplet: () => <div data-testid="droplet">Droplet</div>,
+  Link: () => <div data-testid="link">Link</div>,
+  Plus: () => <div data-testid="plus">Plus</div>,
+  RotateCcw: () => <div data-testid="rotate-ccw">RotateCcw</div>
+}))
+
+// Mock component dependencies
+vi.mock('../Breadcrumbs', () => ({
+  default: ({ items }: any) => <nav data-testid="breadcrumbs">Breadcrumbs</nav>
+}))
+
+vi.mock('../StructuredData', () => ({
+  default: ({ type, data }: any) => <script type="application/ld+json">{'{"@type": "' + type + '"'}</script>
+}))
+
+vi.mock('../ContainerQueries', () => ({
+  default: ({ children, className }: any) => <div className={className}>{children}</div>
 }))
 
 describe('Services', () => {
@@ -87,7 +110,7 @@ describe('Services', () => {
   it('renders view all services link', () => {
     render(<Services />)
     
-    const link = screen.getByText('View All 114 Services')
+    const link = screen.getByText('View All 2 Services')
     expect(link.closest('a')).toHaveAttribute('href', 'https://example.com/services')
     expect(link.closest('a')).toHaveAttribute('target', '_blank')
     expect(link.closest('a')).toHaveAttribute('rel', 'noopener noreferrer')

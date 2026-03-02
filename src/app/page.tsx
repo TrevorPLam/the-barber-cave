@@ -1,8 +1,6 @@
-"use client";
-
-import { useState, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import dynamic from "next/dynamic";
-import Navigation from "@/components/Navigation";
+import MobileMenuWrapper from "@/components/MobileMenuWrapper";
 import Hero from "@/components/Hero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import StructuredData from "@/components/StructuredData";
@@ -39,8 +37,6 @@ const Footer = dynamic(() => import("@/components/Footer"), {
 });
 
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const breadcrumbItems = [
     { name: 'Home', href: '/' }
   ];
@@ -52,34 +48,35 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <StructuredData type="Service" data={serviceStructuredData} />
-      <Navigation isMenuOpen={isMenuOpen} onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <Breadcrumbs items={breadcrumbItems} />
+    <MobileMenuWrapper>
+      <div className="min-h-screen bg-white">
+        <StructuredData type="Service" data={serviceStructuredData} />
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
+        </div>
+        <Hero />
+        <SafeComponent componentName="Gallery">
+          <Gallery />
+        </SafeComponent>
+        <SafeComponent componentName="Services">
+          <Services />
+        </SafeComponent>
+        <SafeComponent componentName="Barbers">
+          <Barbers />
+        </SafeComponent>
+        <SafeComponent componentName="About">
+          <About />
+        </SafeComponent>
+        <SafeComponent componentName="Contact">
+          <Contact />
+        </SafeComponent>
+        <SafeComponent componentName="Social">
+          <Social />
+        </SafeComponent>
+        <SafeComponent componentName="Footer">
+          <Footer />
+        </SafeComponent>
       </div>
-      <Hero />
-      <SafeComponent componentName="Gallery">
-        <Gallery />
-      </SafeComponent>
-      <SafeComponent componentName="Services">
-        <Services />
-      </SafeComponent>
-      <SafeComponent componentName="Barbers">
-        <Barbers />
-      </SafeComponent>
-      <SafeComponent componentName="About">
-        <About />
-      </SafeComponent>
-      <SafeComponent componentName="Contact">
-        <Contact />
-      </SafeComponent>
-      <SafeComponent componentName="Social">
-        <Social />
-      </SafeComponent>
-      <SafeComponent componentName="Footer">
-        <Footer />
-      </SafeComponent>
-    </div>
+    </MobileMenuWrapper>
   );
 }

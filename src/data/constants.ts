@@ -1,3 +1,5 @@
+export const SITE_URL = 'https://the-barber-cave.vercel.app';
+
 export const BUSINESS_INFO = {
   name: 'The Barber Cave',
   tagline: 'Where Style Meets Excellence',

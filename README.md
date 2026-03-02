@@ -62,7 +62,8 @@ the-barber-cave/
 │   │   ├── constants.ts   # Business info and links
 │   │   ├── services.ts    # Services data
 │   │   └── barbers.ts     # Barber profiles
-│   └── hooks/             # Custom React hooks
+│   ├── hooks/             # Custom React hooks
+│   └── utils/             # Utility functions
 ├── tests/                 # E2E tests
 ├── .storybook/           # Storybook configuration
 └── TESTING_GUIDE.md      # Comprehensive testing documentation

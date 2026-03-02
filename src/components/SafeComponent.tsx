@@ -32,6 +32,7 @@ export default function SafeComponent({
   return (
     <ErrorBoundary 
       fallback={customFallback}
+      onError={onError}
     >
       {children}
     </ErrorBoundary>
