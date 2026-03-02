@@ -1,0 +1,64 @@
+{
+  "budgets": {
+    "scripts": {
+      "size": "300KB",
+      "count": 10,
+      "warningThreshold": "270KB",
+      "errorThreshold": "300KB"
+    },
+    "stylesheets": {
+      "size": "50KB",
+      "count": 5,
+      "warningThreshold": "45KB",
+      "errorThreshold": "50KB"
+    },
+    "images": {
+      "size": "400KB",
+      "count": 20,
+      "warningThreshold": "360KB",
+      "errorThreshold": "400KB"
+    },
+    "fonts": {
+      "size": "100KB",
+      "count": 5,
+      "warningThreshold": "90KB",
+      "errorThreshold": "100KB"
+    },
+    "total": {
+      "size": "550KB",
+      "warningThreshold": "500KB",
+      "errorThreshold": "550KB"
+    },
+    "coreWebVitals": {
+      "firstContentfulPaint": {
+        "target": "1.5s",
+        "warning": "1.8s",
+        "error": "2.0s"
+      },
+      "largestContentfulPaint": {
+        "target": "2.5s",
+        "warning": "3.0s",
+        "error": "4.0s"
+      },
+      "cumulativeLayoutShift": {
+        "target": "0.1",
+        "warning": "0.15",
+        "error": "0.25"
+      },
+      "totalBlockingTime": {
+        "target": "200ms",
+        "warning": "300ms",
+        "error": "600ms"
+      }
+    },
+    "performance": {
+      "lighthouseScore": {
+        "target": 92,
+        "warning": 90,
+        "error": 85
+      }
+    }
+  },
+  "lastUpdated": "2026-03-02",
+  "notes": "Performance budgets based on current metrics + 10% buffer for growth"
+}
