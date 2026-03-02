@@ -1,4 +1,6 @@
-import { forwardRef } from 'react';
+'use client';
+
+import { forwardRef, useState, useEffect } from 'react';
 
 export interface ContainerQueriesProps 
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -42,9 +44,13 @@ ContainerQueries.displayName = 'ContainerQueries';
  * Hook for detecting container query support
  */
 export const useContainerQuerySupport = () => {
-  if (typeof window === 'undefined') return false;
-  
-  return CSS.supports('container-type', 'inline-size');
+  const [isSupported, setIsSupported] = useState(false);
+
+  useEffect(() => {
+    setIsSupported(CSS.supports('container-type', 'inline-size'));
+  }, []);
+
+  return isSupported;
 };
 
 export default ContainerQueries;

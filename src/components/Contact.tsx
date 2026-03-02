@@ -18,22 +18,23 @@ export default function Contact() {
               <MapPin className="h-8 w-8 text-black" />
             </div>
             <h3 className="text-xl font-bold text-white mb-2">Location</h3>
-            <p className="text-gray-300 whitespace-pre-line">{BUSINESS_INFO.fullLocation}</p>
+            <p className="text-gray-300 whitespace-pre-line mb-2">{BUSINESS_INFO.address}</p>
+            <p className="text-gray-300">{BUSINESS_INFO.fullLocation}</p>
           </div>
           
           <div className="text-center">
             <div className="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <Phone className="h-8 w-8 text-black" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">Book Online</h3>
-            <p className="text-gray-300 mb-4">Available 24/7</p>
+            <h3 className="text-xl font-bold text-white mb-2">Contact</h3>
+            <p className="text-gray-300 mb-2">{BUSINESS_INFO.phone}</p>
             <a 
               href={EXTERNAL_LINKS.booking}
               target="_blank"
               rel="noopener noreferrer"
               className="text-amber-400 hover:text-amber-300 font-semibold"
             >
-              Schedule Now →
+              Book Online →
             </a>
           </div>
           

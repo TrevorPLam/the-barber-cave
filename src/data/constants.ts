@@ -11,7 +11,7 @@ export const BUSINESS_INFO = {
   rating: '4.9',
   totalReviews: '178',
   totalBarbers: '8',
-  totalServices: '29',
+  totalServices: '28',
   newClientDiscount: '$10',
   coordinates: {
     latitude: '32.7767',

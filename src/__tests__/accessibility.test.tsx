@@ -23,7 +23,7 @@ vi.mock('@/data/constants', () => ({
     rating: '4.9',
     totalReviews: '194',
     totalBarbers: '8',
-    totalServices: '114'
+    totalServices: '28'
   },
   SERVICES: [
     {

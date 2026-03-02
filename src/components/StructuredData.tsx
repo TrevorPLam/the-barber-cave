@@ -1,9 +1,28 @@
 import { BUSINESS_INFO, EXTERNAL_LINKS, SITE_URL } from '@/data/constants';
 
-interface StructuredDataProps {
-  type: 'Organization' | 'LocalBusiness' | 'BreadcrumbList' | 'Service';
-  data?: any;
+interface BreadcrumbData {
+  breadcrumbs: Array<{
+    "@type": "ListItem";
+    position: number;
+    name: string;
+    item: string;
+  }>;
 }
+
+interface ServiceData {
+  name?: string;
+  description?: string;
+  services?: Array<{
+    title: string;
+    description: string;
+    price: string;
+  }>;
+}
+
+type StructuredDataProps =
+  | { type: 'Organization' | 'LocalBusiness'; data?: never }
+  | { type: 'BreadcrumbList'; data: BreadcrumbData }
+  | { type: 'Service'; data: ServiceData };
 
 export default function StructuredData({ type, data }: StructuredDataProps) {
   const getStructuredData = () => {

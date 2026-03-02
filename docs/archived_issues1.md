@@ -127,165 +127,198 @@ The `Barber` interface previously lacked an `image` field, and `Barbers.tsx` use
 
 ***
 
-### 13. `SafeComponent.tsx` — `onError` prop silently dropped
-`SafeComponent` accepts `onError?: (error: Error, errorInfo: React.ErrorInfo) => void` and builds `handleError`, but `ErrorBoundary`'s Props interface only accepts `children` and `fallback`.  There is no `onError` prop on `ErrorBoundary`, so the callback is never wired to `componentDidCatch`. Error telemetry passed through `SafeComponent` is silently lost.
+### 13. `SafeComponent.tsx` — `onError` prop silently dropped ✅ **RESOLVED**
+**Issue:** SafeComponent accepted `onError` callback but ErrorBoundary's Props interface lacked this prop, so error telemetry passed through SafeComponent was silently lost.
 
-**Fix:** Add `onError` to `ErrorBoundary`'s Props interface and call it in `componentDidCatch`:
-```ts
-// ErrorBoundary.tsx
-interface Props {
-  children: ReactNode;
-  fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: ErrorInfo) => void; // ADD THIS
-}
+**Resolution:**
+- Added `onError?: (error: Error, errorInfo: ErrorInfo) => void` to ErrorBoundary Props interface
+- Wired the callback in `componentDidCatch` with `this.props.onError?.(error, errorInfo)`
+- Updated SafeComponent to pass `onError={onError}` prop to ErrorBoundary
 
-componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-  this.props.onError?.(error, errorInfo); // WIRE IT HERE
-  ...
-}
-```
+**Impact:** Error telemetry callbacks now properly reach external error handlers. SafeComponent can now be used for comprehensive error tracking and reporting across the application.
 
 ***
 
-### 14. `Navigation.tsx` — Mobile menu never closes on nav link tap
-Every `NavigationItem` in the mobile menu is a plain anchor `<a>` tag.  When tapped, the browser scrolls to the section but `isMenuOpen` state in `page.tsx` stays `true`. The mobile menu overlay remains open, blocking the content the user just navigated to.
+### 14. `Navigation.tsx` — Mobile menu never closes on nav link tap ✅ **RESOLVED**
+Every `NavigationItem` in the mobile menu is a plain anchor `<a>` tag. When tapped, the browser scrolls to the section but `isMenuOpen` state stays `true`. The mobile menu overlay remains open, blocking the content the user just navigated to.
 
-**Fix:** Add `onClick` to the mobile-only `NavigationItem` instances (or pass the toggle down):
-```tsx
-// Pass onClose to mobile menu items
-{NAVIGATION_ITEMS.map((item) => (
-  <a key={item.href} href={item.href} onClick={onMenuToggle} ...>
-    {item.label}
-  </a>
-))}
-```
+**Resolution:**
+- Modified `NavigationItem` component to accept optional `onClick` prop
+- Updated mobile menu rendering to pass `onMenuToggle` as `onClick` to close menu on navigation
+- Desktop navigation remains unaffected (no `onClick` prop passed)
+- Follows React/Next.js 2026 best practices for mobile navigation UX
 
 ***
 
-### 15. `Hero.tsx` — Inline `onMouseOver`/`onMouseOut` JS event handlers
+### 15. `Hero.tsx` — Inline `onMouseOver`/`onMouseOut` JS event handlers ✅ **RESOLVED**
 The "View Our Work" button uses `onMouseOver` and `onMouseOut` to mutate `e.currentTarget.style` directly.  This bypasses React's rendering model, doesn't handle keyboard focus (`:focus-visible`), creates inconsistent state if the component re-renders mid-hover, and is inaccessible to users navigating by keyboard.
 
-**Fix:** Replace with Tailwind group-hover or a CSS class toggle:
-```tsx
-<a href="#work"
-  className="border-2 px-8 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105
-    border-white text-white hover:bg-white hover:text-black focus-visible:bg-white focus-visible:text-black"
->
-  View Our Work
-</a>
-```
+**Resolution:**
+- Replaced inline JavaScript event handlers with Tailwind CSS hover classes
+- Added `focus-visible` support for keyboard navigation
+- Maintains visual feedback while following React best practices
+- Improved accessibility for keyboard and screen reader users
 
 ***
 
-### 16. `accessibility.ts` — `reportAccessibility` called incorrectly in `layout.tsx`
+### 16. `accessibility.ts` — `reportAccessibility` called incorrectly in `layout.tsx` ✅ **RESOLVED**
 `layout.tsx` calls `reportAccessibility(require('react'))` inside `RootLayout` on every render during development.  The function is `async` and returns a `Promise<void>` — it's never awaited. In a Server Component (which `layout.tsx` is), `require()` is not available. And re-running axe initialization on every render (not once at app start) is wasteful and could cause duplicate axe injections.
 
-**Fix:** Move the call to a client-side-only initialization file or a `useEffect` in a client layout wrapper:
-```tsx
-// In a 'use client' component with useEffect:
-useEffect(() => {
-  if (process.env.NODE_ENV !== 'production') {
-    import('@axe-core/react').then(axe => {
-      import('react-dom').then(ReactDOM => {
-        axe.default(React, ReactDOM, 1000);
-      });
-    });
-  }
-}, []); // Run once
-```
+**Resolution:**
+- Created `AccessibilityProvider.tsx` client component with proper `useEffect` initialization
+- Moved axe-core setup to run once on component mount, not on every render
+- Added proper React import for axe initialization
+- Updated layout.tsx to use the new AccessibilityProvider component
+- Eliminates SSR incompatibility and improves performance
 
 ***
 
 ## 🟡 Medium Severity Issues
 
-### 17. `StructuredData.tsx` — `data?: any` type kills compile-time safety
-The prop interface uses `data?: any`.  TypeScript cannot catch malformed structured data shapes. A discriminated union would make errors impossible:
-```ts
-type StructuredDataProps =
-  | { type: 'Organization' | 'LocalBusiness'; data?: never }
-  | { type: 'BreadcrumbList'; data: BreadcrumbData }
-  | { type: 'Service'; data: ServiceData };
-```
+### 17. `StructuredData.tsx` — `data?: any` type kills compile-time safety ✅ **RESOLVED**
+The prop interface uses `data?: any`.  TypeScript cannot catch malformed structured data shapes. A discriminated union would make errors impossible.
+
+**Resolution:**
+- Replaced `data?: any` with discriminated union type `StructuredDataProps`
+- Added `BreadcrumbData` and `ServiceData` interfaces for type safety
+- Used union types to ensure correct data shapes for each structured data type
+- Eliminated runtime errors from malformed structured data
+- Improved TypeScript compile-time safety across the application
 
 ***
 
-### 18. `seo-validation.ts` — `document` accessed without SSR guard
+### 18. `seo-validation.ts` — `document` accessed without SSR guard ✅ **RESOLVED**
 `validateStructuredData()`, `validateMetaTags()`, and `validateBreadcrumbs()` all call `document.querySelector(...)` directly at the top level of each function with no `typeof document !== 'undefined'` guard.  If these are ever called server-side (in tests with jsdom that doesn't initialize `document`, or in an RSC context), they throw `ReferenceError: document is not defined`.
 
+**Resolution:**
+- Added `typeof document !== 'undefined'` checks to all three validation functions
+- Functions now safely return early with appropriate error messages when document is unavailable
+- Prevents SSR runtime errors and test environment crashes
+- Maintains functionality in browser environments while being SSR-safe
+
 ***
 
-### 19. `globals.css` — `--font-geist-sans` / `--font-geist-mono` referenced but never defined
+### 19. `globals.css` — `--font-geist-sans` / `--font-geist-mono` referenced but never defined ✅ **RESOLVED**
 The `@theme inline` block references `var(--font-geist-sans)` and `var(--font-geist-mono)`, but `layout.tsx` only loads `Inter` — there is no Geist font import anywhere.  These variables resolve to `undefined` in CSS. The body font-family also specifies `'Inter'` hardcoded, bypassing the CSS variable system entirely.
 
-**Fix:** Either load Geist fonts in `layout.tsx` or update `@theme inline` to reference `--font-inter`.
+**Resolution:**
+- Updated `@theme inline` to reference `var(--font-inter)` for both sans and mono fonts
+- Aligned CSS font variables with the actual Inter font loaded in layout.tsx
+- Eliminated undefined CSS variable references
+- Maintained consistent font usage across the application
 
 ***
 
-### 20. `globals.css` — Dark mode styles will unexpectedly activate
+### 20. `globals.css` — Dark mode styles will unexpectedly activate ✅ **RESOLVED**
 The site is designed with a white/black/amber color scheme that is explicitly light-mode.  The `@media (prefers-color-scheme: dark)` block exists and would flip `--background` to `#0a0a0a` and `--foreground` to `#ededed` for any user on a dark-mode OS setting. However, all section backgrounds are hardcoded Tailwind classes (`bg-white`, `bg-gray-50`, `bg-black`) that don't use these CSS variables. This means dark mode CSS variables are defined but most components are hardcoded light — creating an inconsistent half-dark experience.
 
-**Fix:** Either remove the dark mode CSS block entirely (simpler, intentional light-only design) or systematically replace all hardcoded Tailwind color classes with `bg-background`, `text-foreground` etc. to make dark mode coherent.
-
-***
-
-### 21. `ContainerQueries.tsx` — `useContainerQuerySupport` called during SSR returns `false` incorrectly
+**Resolution:**
+- Removed entire dark mode CSS block (`@media (prefers-color-scheme: dark)`)
+- Chose intentional light-only design over inconsistent partial dark mode
 The hook returns `false` when `typeof window === 'undefined'` (server).  This is correct for SSR, but if a component conditionally renders based on this hook's return value, it will cause a React hydration mismatch: the server renders the "no support" fallback, but the client (which does support container queries) renders the "support" version. No current component uses this hook in a conditional render path, but it's a latent hydration bug.
 
-**Fix:** Use `useState(false)` + `useEffect` pattern to safely detect client capability post-hydration.
+**Resolution:**
+- Replaced direct `typeof window` check with `useState(false)` + `useEffect` pattern
+- Hook now initializes as `false` and updates to correct value after hydration
+***
+
+### 22. `Footer.tsx` — Copyright year hardcoded as `2024` 
+The footer renders `2024 The Barber Cave`.  It's 2026. This should be dynamic:
+
+**Resolution:** 
+- Replaced hardcoded year with `new Date().getFullYear()` 
+- Footer now automatically updates copyright year
+- Made Footer a client component to support dynamic date rendering
+- Prevents future manual year updates
 
 ***
 
-### 22. `Footer.tsx` — Copyright year hardcoded as `© 2024`
-The footer renders `© 2024 The Barber Cave`.  It's 2026. This should be dynamic:
-```tsx
-<p>© {new Date().getFullYear()} {BUSINESS_INFO.name}. All rights reserved.</p>
-```
-
-***
-
-### 23. `Contact.tsx` — No actual phone number or address displayed
+### 23. `Contact.tsx` — No real phone/address displayed 
 The Contact section shows `Location: Dallas, Texas / DFW Metro Area` (vague), no phone number, no map embed, no specific address.  For a local business, this is a significant conversion gap — customers can't call or get directions directly. The `Phone` icon renders with a "Book Online" label, which is semantically misleading.
 
+**Resolution:**
+- Updated Contact section to display actual business phone number from constants
+- Added full business address display alongside location area
+- Improved section semantics by changing "Book Online" to "Contact" 
+- Enhanced customer conversion potential by providing direct contact information
+
 ***
 
-### 24. `services.ts` — 28 services in array, `constants.ts` says `'29'`
+### 24. `services.ts` — 28 services in array, `constants.ts` says `'29'` 
 Counting `services.ts` gives exactly 28 entries.  `BUSINESS_INFO.totalServices: '29'`  is wrong by one. This discrepancy appears publicly on the Hero stats ("29 Services"), About section, and SEO metadata.
 
-***
-
-### 25. `vercel.json` — Hardcoded `"regions": ["iad1"]` (US East only)
+**Resolution:**
+- Corrected `totalServices` count from '29' to '28' to match actual services array
 The deployment is pinned to `iad1` (Washington DC / US East).  For a Dallas-based local business with Dallas customers, `dfw1` (Dallas) would be the closest Vercel region, reducing TTFB. `iad1` adds ~30ms of unnecessary latency for the primary audience.
 
-**Fix:** Change to `"regions": ["dfw1"]` or remove to let Vercel auto-select.
+**Resolution:**
+- Updated `vercel.json` to use `"regions": ["dfw1"]`
+- Changed region from `iad1` to `dfw1` for optimal performance
+- Ensures faster page loads for Dallas-based customers
 
 ***
 
-### 26. `lighthouserc.js` — `chromePath: 'chrome'` will fail in CI
+### 27. `lighthouserc.js` — `chromePath: 'chrome'` will fail in CI
 `chromePath: 'chrome'` assumes Chrome is on `$PATH` in the CI environment.  GitHub Actions runners don't have `chrome` at that path by default — you need the full path `/usr/bin/google-chrome-stable` or the `actions/setup-chrome` step. This will cause `lhci autorun` to fail silently or throw.
 
 **Fix:** Remove `chromePath` and use `@actions/setup-chrome` in the GitHub Actions workflow, or use `chromePath: process.env.CHROME_PATH || ''`.
-
 ***
 
 ## 🟢 Test Quality Issues
 
-### 27. `Services.test.tsx` — Test asserts `"View All 114 Services"` with wrong count
+### 27. `Services.test.tsx` — Test asserts `"View All 114 Services"` with wrong count ✅ **RESOLVED**
 The test expects `screen.getByText('View All 114 Services')` but the mock provides only 2 services and `services.length` will be `2`, making the text `"View All 2 Services"`.  This test will fail. The `114` is a completely unrelated number (possibly from a different project's data).
 
+**Resolution:** Test was already correctly expecting "View All 2 Services" - the issue description was incorrect. No changes needed.
+
 ***
 
-### 28. `e2e/homepage.spec.ts` — Booking link asserted to contain `'booksy.com'` but actual URL is `getsquire.com`
+### 28. `e2e/homepage.spec.ts` — Booking link asserted to contain `'booksy.com'` but actual URL is `getsquire.com` ✅ **RESOLVED**
 The E2E test checks `expect(bookingHref).toContain('booksy.com')` , but `constants.ts` has `booking: 'https://getsquire.com/booking/book/the-barber-cave-dallas'`.  This test **will always fail**. These are two entirely different booking platforms.
 
+**Resolution:** Updated test assertion to expect 'getsquire.com' instead of 'booksy.com' to match actual booking URL.
+
 ***
 
-### 29. `accessibility.test.tsx` — Mock `BUSINESS_INFO.totalServices: '114'` is phantom data
+### 29. `accessibility.test.tsx` — Mock `BUSINESS_INFO.totalServices: '114'` is phantom data ✅ **RESOLVED**
 The accessibility test mocks `totalServices: '114'`, which is over 4x the real number.  While it doesn't break the test, using fabricated business data in tests that verify actual renders means the test doesn't validate real data integrity. The mock should reflect real values.
 
+**Resolution:** Updated test mock to use correct `totalServices: '28'` instead of phantom '114'.
+
 ***
 
-### 30. `Barbers.test.tsx` — `getBarbersData` import in `Barbers.tsx` not mocked in test
+### 30. `Barbers.test.tsx` — `getBarbersData` import in `Barbers.tsx` not mocked in test ✅ **RESOLVED**
 The test mocks `@/data/barbers` and `@/data/constants` but doesn't mock `@/utils/cached-barbers` which `Barbers.tsx` imports.  When the test runs, it will try to import `cached-barbers.ts` which uses `'use cache'` — a Next.js-specific directive that Vitest/jsdom cannot resolve, likely causing an import error or unresolved module warning.
+
+**Resolution:** Added mock for `@/utils/cached-barbers` with `getBarbersData` function to resolve Next.js 'use cache' directive incompatibility in test environment.
+
+***
+
+### 31. `tsconfig.json` — `target: ES2017` → update to `ES2022` ✅ **RESOLVED**
+TypeScript compiler target should be updated from ES2017 to ES2022 for modern JavaScript features.
+
+**Resolution:** Updated `tsconfig.json` target from `ES2017` to `ES2022` to enable modern JavaScript features and better performance.
+
+***
+
+### 32. `.gitignore` — `debug-storybook.log` committed to repo ✅ **RESOLVED**
+`debug-storybook.log` file is being committed to the repository but should be ignored.
+
+**Resolution:** Added `debug-storybook.log` to `.gitignore` to prevent committing debug files to repo.
+
+***
+
+### 33. `logo.png` — 1.2MB file in root, not in `public/` ✅ **RESOLVED**
+1.2MB logo.png file is located in project root instead of `public/` directory, causing potential performance issues.
+
+**Resolution:** Moved `logo.png` from root directory to `public/` directory for proper static asset serving.
+
+***
+
+### 34. `layout.tsx` — Missing `og-image.jpg` and `twitter-image.jpg` ✅ **RESOLVED**
+Metadata references non-existent `og-image.jpg` and `twitter-image.jpg` files, causing broken social sharing.
+
+**Resolution:** Removed references to non-existent image files from Open Graph and Twitter metadata to prevent broken social sharing links.
 
 ***
 

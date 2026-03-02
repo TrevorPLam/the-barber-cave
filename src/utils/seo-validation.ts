@@ -18,23 +18,27 @@ export function validateStructuredData(): SEOValidationResult {
   const foundSchemas: string[] = [];
 
   // Simulate validation (in real implementation, would parse DOM)
-  try {
-    // Check Organization schema
-    if (document.querySelector('script[type="application/ld+json"]')) {
-      const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-      scripts.forEach(script => {
-        try {
-          const data = JSON.parse(script.textContent || '{}');
-          if (data['@type']) {
-            foundSchemas.push(data['@type']);
+  if (typeof document !== 'undefined') {
+    try {
+      // Check Organization schema
+      if (document.querySelector('script[type="application/ld+json"]')) {
+        const scripts = document.querySelectorAll('script[type="application/ld+json"]');
+        scripts.forEach(script => {
+          try {
+            const data = JSON.parse(script.textContent || '{}');
+            if (data['@type']) {
+              foundSchemas.push(data['@type']);
+            }
+          } catch (e) {
+            issues.push('Invalid JSON-LD syntax found');
           }
-        } catch (e) {
-          issues.push('Invalid JSON-LD syntax found');
-        }
-      });
+        });
+      }
+    } catch (e) {
+      issues.push('Error parsing structured data');
     }
-  } catch (e) {
-    issues.push('Error parsing structured data');
+  } else {
+    issues.push('Cannot validate structured data server-side');
   }
 
   // Validate required schemas
@@ -71,16 +75,20 @@ export function validateMetaTags(): SEOValidationResult {
     'twitter:title'
   ];
 
-  essentialTags.forEach((tag: string) => {
-    const element = document.querySelector(`meta[property="${tag}"], meta[name="${tag}"], title`);
-    if (!element || !element.getAttribute('content')?.trim()) {
-      issues.push(`Missing or empty ${tag} meta tag`);
-    }
-  });
+  if (typeof document !== 'undefined') {
+    essentialTags.forEach((tag: string) => {
+      const element = document.querySelector(`meta[property="${tag}"], meta[name="${tag}"], title`);
+      if (!element || !element.getAttribute('content')?.trim()) {
+        issues.push(`Missing or empty ${tag} meta tag`);
+      }
+    });
 
-  // Check for canonical URL
-  if (!document.querySelector('link[rel="canonical"]')) {
-    issues.push('Missing canonical URL');
+    // Check for canonical URL
+    if (!document.querySelector('link[rel="canonical"]')) {
+      issues.push('Missing canonical URL');
+    }
+  } else {
+    issues.push('Cannot validate meta tags server-side');
   }
 
   // Recommendations
@@ -98,23 +106,27 @@ export function validateBreadcrumbs(): SEOValidationResult {
   const issues: string[] = [];
   const recommendations: string[] = [];
 
-  // Check for breadcrumb navigation
-  const breadcrumbNav = document.querySelector('nav[aria-label="Breadcrumb"]');
-  if (!breadcrumbNav) {
-    issues.push('Missing breadcrumb navigation');
-  }
-
-  // Check for breadcrumb structured data
-  const breadcrumbSchema = document.querySelector('script[type="application/ld+json"]');
-  if (breadcrumbSchema) {
-    try {
-      const data = JSON.parse(breadcrumbSchema.textContent || '{}');
-      if (data['@type'] === 'BreadcrumbList') {
-        recommendations.push('Breadcrumb structured data found');
-      }
-    } catch (e) {
-      issues.push('Invalid breadcrumb structured data');
+  if (typeof document !== 'undefined') {
+    // Check for breadcrumb navigation
+    const breadcrumbNav = document.querySelector('nav[aria-label="Breadcrumb"]');
+    if (!breadcrumbNav) {
+      issues.push('Missing breadcrumb navigation');
     }
+
+    // Check for breadcrumb structured data
+    const breadcrumbSchema = document.querySelector('script[type="application/ld+json"]');
+    if (breadcrumbSchema) {
+      try {
+        const data = JSON.parse(breadcrumbSchema.textContent || '{}');
+        if (data['@type'] === 'BreadcrumbList') {
+          recommendations.push('Breadcrumb structured data found');
+        }
+      } catch (e) {
+        issues.push('Invalid breadcrumb structured data');
+      }
+    }
+  } else {
+    issues.push('Cannot validate breadcrumbs server-side');
   }
 
   return {

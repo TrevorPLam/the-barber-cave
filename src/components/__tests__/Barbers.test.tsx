@@ -31,6 +31,11 @@ vi.mock('@/data/barbers', () => ({
   ]
 }))
 
+// Mock cached-barbers to prevent 'use cache' directive issues in test environment
+vi.mock('@/utils/cached-barbers', () => ({
+  getBarbersData: vi.fn(() => Promise.resolve([]))
+}))
+
 // Mock lucide-react icons
 vi.mock('lucide-react', () => ({
   ChevronRight: () => <div data-testid="chevron-right">ChevronRight</div>,

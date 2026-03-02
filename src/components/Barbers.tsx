@@ -3,6 +3,8 @@ import { barbers } from '@/data/barbers';
 import { EXTERNAL_LINKS } from '@/data/constants';
 import ContainerQueries from './ContainerQueries';
 import Image from 'next/image';
+import SectionHeader from './SectionHeader';
+import LinkWithIcon from './LinkWithIcon';
 
 export default function Barbers() {
   // TODO: Replace with unique barber photos when available
@@ -13,12 +15,10 @@ export default function Barbers() {
   return (
     <section id="barbers" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">Master Barbers</h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Meet our team of expert barbers, each with their own unique style and expertise
-          </p>
-        </div>
+        <SectionHeader
+          title="Master Barbers"
+          description="Meet our team of expert barbers, each with their own unique style and expertise"
+        />
         
         <ContainerQueries 
           containerName="barber-grid" 
@@ -55,15 +55,13 @@ export default function Barbers() {
         </ContainerQueries>
         
         <div className="text-center mt-12">
-          <a 
+          <LinkWithIcon
             href={EXTERNAL_LINKS.services}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-black hover:text-amber-500 font-semibold transition-colors"
           >
             Meet All {barbersData.length} Barbers
-            <ChevronRight className="h-5 w-5 ml-2" />
-          </a>
+          </LinkWithIcon>
         </div>
       </div>
     </section>

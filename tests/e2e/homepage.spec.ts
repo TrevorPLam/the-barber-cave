@@ -25,7 +25,7 @@ test.describe('Homepage', () => {
     await bookingLink.click();
     // Should open in new tab, so we check the href
     const bookingHref = await bookingLink.getAttribute('href');
-    expect(bookingHref).toContain('booksy.com');
+    expect(bookingHref).toContain('getsquire.com');
   });
 
   test('business statistics are displayed', async ({ page }) => {

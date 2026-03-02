@@ -6,8 +6,8 @@ module.exports = {
       settings: {
         preset: 'desktop',
         chromeFlags: '--no-sandbox --headless',
-        // Use system Chrome if available
-        chromePath: 'chrome',
+        // Chrome path will be auto-detected or set via CHROME_PATH env var
+        chromePath: process.env.CHROME_PATH || undefined,
       },
     },
     assert: {

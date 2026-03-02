@@ -82,7 +82,7 @@ the-barber-cave/
 
 ```bash
 git clone <repository-url>
-cd trills-barber-cave
+cd the-barber-cave
 ```
 
 1. Install dependencies:
@@ -184,6 +184,7 @@ export default memo(function Component({ prop }: Props) {
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
+
 The project is pre-configured for Vercel deployment:
 
 1. Connect your GitHub repository to Vercel

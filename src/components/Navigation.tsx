@@ -9,9 +9,10 @@ interface NavigationProps {
   onMenuToggle: () => void;
 }
 
-const NavigationItem = memo(({ item }: { item: { href: string; label: string } }) => (
+const NavigationItem = memo(({ item, onClick }: { item: { href: string; label: string }; onClick?: () => void }) => (
   <a
     href={item.href}
+    onClick={onClick}
     className="text-gray-700 hover:text-black transition-colors font-medium"
   >
     {item.label}
@@ -63,7 +64,7 @@ export default memo(function Navigation({ isMenuOpen, onMenuToggle }: Navigation
         <div className="lg:hidden bg-white border-b border-gray-100">
           <div className="px-6 py-4 space-y-3">
             {NAVIGATION_ITEMS.map((item) => (
-              <NavigationItem key={item.href} item={item} />
+              <NavigationItem key={item.href} item={item} onClick={onMenuToggle} />
             ))}
             <a 
               href={EXTERNAL_LINKS.booking}
