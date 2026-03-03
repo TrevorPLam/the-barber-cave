@@ -4,18 +4,27 @@ import { forwardRef, useState, useEffect } from 'react';
 
 export interface ContainerQueriesProps 
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** React components that will respond to container size changes */
   children: React.ReactNode;
+  /** Optional name for targeting specific containers */
   containerName?: string;
+  /** Type of containment (default: 'inline-size') */
   containerType?: 'size' | 'inline-size' | 'normal';
 }
 
 /**
  * ContainerQueries component provides a wrapper for implementing CSS container queries.
  * 
- * @param children - React components that will respond to container size changes
- * @param className - Additional CSS classes
- * @param containerName - Optional name for targeting specific containers
- * @param containerType - Type of containment (default: 'inline-size')
+ * @example
+ * ```tsx
+ * <ContainerQueries containerName="sidebar" containerType="inline-size">
+ *   <div className="grid">
+ *     <div className="@container (min-width: 200px) grid-cols-2">
+ *       Content that adapts to container size
+ *     </div>
+ *   </div>
+ * </ContainerQueries>
+ * ```
  */
 export const ContainerQueries = forwardRef<HTMLDivElement, ContainerQueriesProps>(
   ({ children, className = '', containerName, containerType = 'inline-size', style, ...props }, ref) => {

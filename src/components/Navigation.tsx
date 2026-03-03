@@ -1,23 +1,29 @@
 /**
- * @fileoverview Navigation component with responsive mobile menu and branding
- * @author Development Team
- * @version 1.0.0
- * @license MIT
- *
+ * Navigation component with responsive mobile menu and branding.
+ * 
  * Provides fixed navigation bar with logo, menu items, and booking CTA.
  * Features responsive design with mobile hamburger menu and smooth scrolling.
- */
-
-/**
- * @typedef {Object} NavigationItem
- * @property {string} href - Navigation link URL or anchor
- * @property {string} label - Display text for navigation item
- */
-
-/**
- * @typedef {Object} NavigationProps
- * @property {boolean} isMenuOpen - Whether mobile menu is currently open
- * @property {() => void} onMenuToggle - Function to toggle mobile menu state
+ * 
+ * @example
+ * ```tsx
+ * const [isMenuOpen, setIsMenuOpen] = useState(false);
+ * 
+ * <Navigation
+ *   isMenuOpen={isMenuOpen}
+ *   onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
+ * />
+ * ```
+ * 
+ * @accessibility
+ * - Semantic nav element with proper ARIA attributes
+ * - Keyboard accessible menu toggle button
+ * - Screen reader friendly navigation structure
+ * - Focus management for mobile menu
+ * 
+ * @performance
+ * - Fixed positioning prevents layout shifts
+ * - Backdrop blur for premium visual effect
+ * - Memoized components prevent unnecessary re-renders
  */
 
 'use client';
@@ -26,46 +32,34 @@ import { Menu, X, Scissors } from 'lucide-react';
 import { memo } from 'react';
 import { NAVIGATION_ITEMS, EXTERNAL_LINKS, BUSINESS_INFO } from '@/data/constants';
 
-/**
- * @typedef {Object} NavigationProps
- * @property {boolean} isMenuOpen - Whether mobile menu is currently open
- * @property {() => void} onMenuToggle - Function to toggle mobile menu state
- */
 interface NavigationProps {
+  /** Whether mobile menu is currently open */
   isMenuOpen: boolean;
+  /** Function to toggle mobile menu state */
   onMenuToggle: () => void;
 }
 
+interface NavigationItemProps {
+  /** Navigation item data */
+  item: { href: string; label: string };
+  /** Optional click handler for mobile menu */
+  onClick?: () => void;
+}
+
 /**
- * @component
- * @description Individual navigation menu item component
- *
+ * Individual navigation menu item component.
+ * 
  * Renders a single navigation link with hover effects and optional click handler.
  * Used for both desktop and mobile navigation menus.
- *
- * @param {Object} props - Component props
- * @param {NavigationItem} props.item - Navigation item data
- * @param {() => void} [props.onClick] - Optional click handler for mobile menu
- *
- * @returns {JSX.Element} Navigation link element
- *
+ * 
  * @example
  * ```tsx
  * const homeItem = { href: '#home', label: 'Home' };
- *
+ * 
  * <NavigationItem item={homeItem} onClick={handleMobileClose} />
  * ```
- *
- * @accessibility
- * - Keyboard accessible navigation links
- * - Proper semantic anchor elements
- * - Screen reader friendly link text
- *
- * @performance
- * - Memoized component to prevent unnecessary re-renders
- * - Minimal prop dependencies
  */
-const NavigationItem = memo(({ item, onClick }: { item: { href: string; label: string }; onClick?: () => void }) => (
+const NavigationItem = memo(({ item, onClick }: NavigationItemProps) => (
   <a
     href={item.href}
     onClick={onClick}
@@ -77,62 +71,6 @@ const NavigationItem = memo(({ item, onClick }: { item: { href: string; label: s
 
 NavigationItem.displayName = 'NavigationItem';
 
-/**
- * @component
- * @description Main navigation component with responsive mobile menu
- *
- * Fixed navigation bar with business branding, menu items, and booking CTA.
- * Features responsive design that collapses to hamburger menu on mobile devices.
- * Includes backdrop blur effect and smooth transitions.
- *
- * @param {NavigationProps} props - Component props
- * @param {boolean} props.isMenuOpen - Whether mobile menu is currently open
- * @param {() => void} props.onMenuToggle - Function to toggle mobile menu state
- *
- * @returns {JSX.Element} Navigation bar with branding and menu
- *
- * @example
- * ```tsx
- * import Navigation from '@/components/Navigation';
- *
- * const [isMenuOpen, setIsMenuOpen] = useState(false);
- *
- * <Navigation
- *   isMenuOpen={isMenuOpen}
- *   onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
- * />
- * ```
- *
- * @example
- * ```tsx
- * // With mobile menu wrapper
- * <MobileMenuWrapper>
- *   <Navigation isMenuOpen={isMenuOpen} onMenuToggle={toggleMenu} />
- * </MobileMenuWrapper>
- * ```
- *
- * @accessibility
- * - Semantic nav element with proper ARIA attributes
- * - Keyboard accessible menu toggle button
- * - Screen reader friendly navigation structure
- * - Focus management for mobile menu
- *
- * @performance
- * - Fixed positioning prevents layout shifts
- * - Backdrop blur for premium visual effect
- * - Memoized components prevent unnecessary re-renders
- *
- * @dependencies
- * - @/data/constants - Navigation items and business info
- * - lucide-react - Icon components for logo and menu toggle
- * - NavigationItem - Individual menu item component
- *
- * @business-logic
- * - Navigation items sourced from centralized constants
- * - Booking CTA links to external booking platform
- * - Mobile menu state managed by parent component
- * - Smooth scrolling navigation for anchor links
- */
 export default memo(function Navigation({ isMenuOpen, onMenuToggle }: NavigationProps) {
   return (
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">

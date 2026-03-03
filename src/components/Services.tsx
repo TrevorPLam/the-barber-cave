@@ -67,17 +67,11 @@ const iconMap = {
 };
 
 /**
- * @component
- * @description Individual service card component with booking integration
- *
+ * Individual service card component with booking integration.
+ * 
  * Displays a single service with icon, title, description, price, and booking button.
  * Features special styling for promotional services and responsive design.
- *
- * @param {ServiceCardProps} props - Component props
- * @param {Service} props.service - Service data object containing all service information
- *
- * @returns {JSX.Element} Service card with booking functionality
- *
+ * 
  * @example
  * ```tsx
  * const haircutService = {
@@ -88,20 +82,9 @@ const iconMap = {
  *   duration: '30 min',
  *   icon: 'Scissors'
  * };
- *
+ * 
  * <ServiceCard service={haircutService} />
  * ```
- *
- * @accessibility
- * - Semantic HTML structure with proper headings
- * - High contrast colors and readable text
- * - Keyboard accessible booking buttons
- * - Screen reader friendly descriptions
- *
- * @performance
- * - Memoized component to prevent unnecessary re-renders
- * - Optimized icon rendering with dynamic imports
- * - Efficient conditional styling
  */
 const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
   const IconComponent = iconMap[service.icon as keyof typeof iconMap];

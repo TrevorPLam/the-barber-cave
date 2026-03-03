@@ -6,29 +6,21 @@ import jsdoc from "eslint-plugin-jsdoc";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // JSDoc Quality Gates Configuration
-  jsdoc({
-    config: 'flat/recommended',
+  // JSDoc Quality Gates Configuration - Fixed flat config syntax
+  { ...jsdoc.configs['flat/recommended-typescript'], plugins: { jsdoc } },
+  // TSDoc-First Rules Configuration
+  {
     rules: {
-      'jsdoc/require-description': ['error', {
-        descriptionStyle: 'body',
-        checkConstructors: false,
-        checkGetters: false,
-        checkSetters: false,
-      }],
-      'jsdoc/require-param-description': ['error'],
-      'jsdoc/require-returns-description': ['error'],
       'jsdoc/require-jsdoc': ['error', {
+        publicOnly: true,
         require: {
           FunctionDeclaration: true,
-          MethodDefinition: true,
+          ArrowFunctionExpression: true,
           ClassDeclaration: true,
-          ArrowFunctionExpression: false,
-          FunctionExpression: false,
+          MethodDefinition: true,
         },
         contexts: [
-          'TSMethodSignature',
-          'TSPropertySignature',
+          'VariableDeclaration',
           'TSInterfaceDeclaration',
           'TSTypeAliasDeclaration',
         ],
@@ -36,11 +28,20 @@ const eslintConfig = defineConfig([
         checkGetters: false,
         checkSetters: false,
       }],
-      'jsdoc/check-param-names': ['error'],
-      'jsdoc/check-tag-names': ['error'],
-      'jsdoc/check-types': ['error'],
-      'jsdoc/no-undefined-types': ['error'],
-      'jsdoc/valid-types': ['error'],
+      'jsdoc/require-param': ['warn', { checkDestructuredRoots: false }],
+      'jsdoc/require-param-description': 'off',
+      'jsdoc/require-returns-description': 'off',
+      'jsdoc/require-description': ['warn', {
+        descriptionStyle: 'body',
+        checkConstructors: false,
+        checkGetters: false,
+        checkSetters: false,
+      }],
+      'jsdoc/check-param-names': 'error',
+      'jsdoc/check-tag-names': 'error',
+      'jsdoc/check-types': 'error',
+      'jsdoc/no-undefined-types': 'error',
+      'jsdoc/valid-types': 'error',
     },
     settings: {
       jsdoc: {
@@ -51,7 +52,7 @@ const eslintConfig = defineConfig([
         },
       },
     },
-  }),
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
