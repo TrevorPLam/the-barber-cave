@@ -1,20 +1,3 @@
-Here is your **normalized version**, tightened for:
-
-* Consistent field ordering
-* Canonical label casing (kebab-case)
-* Stable priority model (1–5 only)
-* Explicit `status` enum consistency
-* Clear separation between:
-
-  * Metadata
-  * Tasks
-  * Enhancements (non-committed backlog)
-  * Reference docs
-
-Redundancy, drift, and formatting inconsistencies have been removed while preserving intent.
-
----
-
 # TODO — The Barber Cave
 
 ```yaml
@@ -42,339 +25,6 @@ next_review: 2026-03-10
 
 ---
 
-# Recent Implementation (2026-03-03)
-
-## ✅ Completed: Advanced Best Practices Implementation
-
-Based on assessment of this TODO.md document, the following 5 task types were identified and fully implemented using a hybrid approach (core infrastructure first, then feature enhancements):
-
-### 1. Performance Optimization Implementation ✅
-- **Created `OptimizedImage` component** with advanced Next.js Image features
-  - Priority loading for LCP elements, blur placeholders, error handling
-  - Comprehensive test coverage
-- **Enhanced Next.js configuration** with advanced CSP and image optimization
-- **Implemented React Compiler patterns** for automatic performance optimization
-
-### 2. Security Hardening ✅  
-- **Enhanced CSP in `next.config.ts`** with nonce-based Content Security Policy
-- **Created security utilities** (`src/lib/security.ts`) with comprehensive validation, sanitization, rate limiting, and CSRF protection
-- **Implemented environment variable security** (`src/lib/env.ts`) with type-safe validation
-
-### 3. Accessibility Enhancement ✅
-- **Updated component accessibility** to WCAG 2.2 AA compliance
-- **Enhanced ErrorBoundary** with advanced focus management and ARIA attributes
-- **Improved error UI** with screen reader support and keyboard navigation
-
-### 4. React Pattern Modernization ✅
-- **Built `Card` compound component** with context-based theming and flexible layouts
-- **Implemented `useBooking` custom hook** for state management with validation and error handling  
-- **Created `DataFetcher` render props component** with retry logic and advanced data fetching patterns
-- **All components include comprehensive TypeScript support**
-
-### 5. Code Quality & Validation ✅
-- **Enhanced error boundaries** with exponential backoff retry logic
-- **Created extensive test suites** for all new components and hooks (10 test files total)
-- **Implemented validation framework** with Zod schemas and security utilities
-
-### 📁 New Files Created
-- `src/components/OptimizedImage.tsx` - Advanced image optimization
-- `src/components/Card.tsx` - Compound component pattern
-- `src/components/DataFetcher.tsx` - Render props pattern
-- `src/hooks/useBooking.ts` - Custom hook for booking state
-- `src/lib/security.ts` - Security utilities and validation
-- `src/lib/env.ts` - Type-safe environment variables
-- `src/lib/utils.ts` - Utility functions
-- `src/__tests__/OptimizedImage.test.tsx` - Image component tests
-- `src/__tests__/Card.test.tsx` - Card component tests  
-- `src/__tests__/useBooking.test.ts` - Hook tests
-- `src/__tests__/DataFetcher.test.tsx` - Data fetcher tests
-
-### 🔧 Files Modified
-- `next.config.ts` - Advanced CSP implementation and security headers
-- `src/components/ErrorBoundary.tsx` - Enhanced error handling with retry logic
-- `src/components/Button.tsx` - Updated accessibility documentation
-
-### 📦 Dependencies Added
-- `dompurify` - HTML sanitization for security
-- `@types/dompurify` - TypeScript types for DOMPurify
-- `clsx` - Class name utilities
-- `tailwind-merge` - Tailwind class merging
-- `zod` - Schema validation
-
-All implementations follow the advanced React/Next.js patterns documented in this TODO.md file and include comprehensive TypeScript support, accessibility compliance, and security best practices.
-
----
-
-## ✅ Completed: Database Integration and Management (2026-03-03)
-
-Following the foundation layer approach, database integration was implemented as the critical infrastructure component for the barber shop booking system.
-
-### Database Architecture
-- **Drizzle ORM** with PostgreSQL for type-safe database operations
-- **Supabase-compatible schema** for production deployment readiness
-- **Repository pattern** for clean data access layer separation
-- **Type-safe migrations** with automatic schema generation
-
-### Core Database Tables
-- **Services**: Haircuts, shaves, beard trims with pricing and duration
-- **Barbers**: Staff profiles with contact information and specialties  
-- **Bookings**: Appointment management with availability checking and status tracking
-
-### Key Features Implemented
-- **Availability checking** with conflict detection and time slot management
-- **Booking lifecycle management** (confirmed, completed, cancelled, no-show)
-- **Customer data management** with secure information handling
-- **Soft deletion patterns** for data integrity and audit trails
-- **Comprehensive type safety** throughout the data layer
-
-### Repository Pattern Implementation
-- **ServiceRepository**: CRUD operations for barber shop services
-- **BarberRepository**: Staff management with email uniqueness constraints
-- **BookingRepository**: Advanced booking logic with availability validation and status updates
-- **Database connection pooling** for production performance
-
-### Development Infrastructure
-- **Database seeding** with sample services and barber profiles
-- **Migration scripts** for schema deployment and updates
-- **Test coverage** for all repository operations with mocked database layer
-- **TypeScript integration** with automatic type generation from schema
-
-### Files Created
-- `drizzle.config.ts` - Database configuration and migration settings
-- `src/lib/db/schema.ts` - Complete database schema with relations
-- `src/lib/db/index.ts` - Database connection and Drizzle instance
-- `src/lib/repositories/service-repository.ts` - Service data operations
-- `src/lib/repositories/barber-repository.ts` - Barber profile management
-- `src/lib/repositories/booking-repository.ts` - Booking lifecycle operations
-- `src/__tests__/repositories/service-repository.test.ts` - Service repository tests
-- `src/__tests__/repositories/booking-repository.test.ts` - Booking repository tests
-- `src/data/seed.ts` - Development data seeding
-
-### Files Modified  
-- `package.json` - Added database management scripts (generate, push, migrate, seed, studio)
-
-### Dependencies Added
-- `drizzle-orm` - Type-safe SQL query builder
-- `drizzle-kit` - Database migration and development tools
-- `@supabase/supabase-js` - Supabase client for production deployment
-
----
-
-## ✅ Completed: API Development for Booking System (2026-03-03)
-
-Following the database integration foundation, API development was implemented to provide complete booking system functionality with modern Next.js Route Handlers, comprehensive validation, and security.
-
-### API Architecture
-- **Route Handlers**: App Router API routes replacing legacy Pages API routes
-- **Zod Validation**: Comprehensive input validation with detailed error messages
-- **Rate Limiting**: Per-endpoint rate limiting to prevent abuse
-- **Authentication Integration**: Session-based authentication with role considerations
-- **Error Handling**: Structured error responses with proper HTTP status codes
-
-### Booking System APIs Implemented
-- **Services API** (`/api/services`): CRUD operations for barber shop services
-- **Barbers API** (`/api/barbers`): Staff management with contact information
-- **Bookings API** (`/api/bookings`): Complete booking lifecycle management
-- **Availability API** (`/api/availability`): Real-time availability checking and slot generation
-
-### Key Features Implemented
-- **Real Database Integration**: Replaced mock functions with actual repository operations
-- **Availability Validation**: Conflict detection and business hours enforcement
-- **Customer Bookings**: Email-based booking retrieval for customer convenience
-- **Admin Functionality**: Authenticated access for booking management
-- **Security Measures**: Input sanitization, rate limiting, and validation layers
-
-### API Endpoints Details
-- **POST /api/bookings**: Create bookings with availability checking and service validation
-- **GET /api/bookings**: Retrieve bookings by customer email or admin access
-- **GET /api/services**: List all active barber shop services
-- **GET /api/barbers**: List all active barbers
-- **GET /api/availability**: Check available time slots for specific barber/date/service combinations
-
-### Validation & Security
-- **Input Validation**: Zod schemas for all API inputs with detailed error reporting
-- **Business Logic Validation**: Service/barber existence, availability checking, business hours
-- **Rate Limiting**: 50 requests per 5 minutes for bookings, higher limits for read operations
-- **Error Sanitization**: Generic error messages prevent information leakage
-- **Authentication Checks**: Session validation with graceful guest booking support
-
-### Testing Coverage
-- **API Contract Tests**: Request/response validation testing
-- **Business Logic Tests**: Availability checking and booking creation scenarios
-- **Error Handling Tests**: Invalid inputs, missing resources, and rate limiting
-- **Integration Tests**: Repository interaction and database operations
-- **Security Tests**: Input validation and sanitization verification
-
-### Files Created
-- `src/app/api/services/route.ts` - Service management API
-- `src/app/api/barbers/route.ts` - Barber profile API
-- `src/app/api/availability/route.ts` - Availability checking API
-- `src/__tests__/api/bookings.test.ts` - API endpoint testing
-- Updated `src/app/api/bookings/route.ts` - Real database operations
-
-### Files Modified
-- `src/app/api/bookings/route.ts` - Replaced mock functions with database operations
-
-### Dependencies Leveraged
-- Existing security utilities and rate limiting
-- Database repositories for data operations
-- Zod validation schemas for input validation
-- Next.js Route Handlers for API implementation
-
-This API foundation enables the complete booking workflow: service selection → barber selection → availability checking → booking creation → confirmation, providing a robust backend for the barber shop booking system.
-
-### 📁 New Files Created
-- `src/app/api/services/route.ts` - Service management API endpoints
-- `src/app/api/barbers/route.ts` - Barber profile management API
-- `src/app/api/availability/route.ts` - Real-time availability checking API
-- `src/__tests__/api/bookings.test.ts` - Comprehensive API testing suite
-
-### 🔧 Files Modified
-- `src/app/api/bookings/route.ts` - Upgraded from mock to real database operations
-
-This API development completes the core booking system backend, enabling full booking workflow functionality with proper validation, security, and error handling.
-- **Created `OptimizedImage` component** with advanced Next.js Image features
-  - Priority loading for LCP elements, blur placeholders, error handling
-  - Comprehensive test coverage
-- **Enhanced Next.js configuration** with advanced CSP and image optimization
-- **Implemented React Compiler patterns** for automatic performance optimization
-
-### 2. Security Hardening ✅  
-- **Enhanced CSP in `next.config.ts`** with nonce-based Content Security Policy
-- **Created security utilities** (`src/lib/security.ts`) with comprehensive validation, sanitization, rate limiting, and CSRF protection
-- **Implemented environment variable security** (`src/lib/env.ts`) with type-safe validation
-
-### 3. Accessibility Enhancement ✅
-- **Updated component accessibility** to WCAG 2.2 AA compliance
-- **Enhanced ErrorBoundary** with advanced focus management and ARIA attributes
-- **Improved error UI** with screen reader support and keyboard navigation
-
-### 4. React Pattern Modernization ✅
-- **Built `Card` compound component** with context-based theming and flexible layouts
-- **Implemented `useBooking` custom hook** for state management with validation and error handling  
-- **Created `DataFetcher` render props component** with retry logic and advanced data fetching patterns
-- **All components include comprehensive TypeScript support**
-
-### 5. Code Quality & Validation ✅
-- **Enhanced error boundaries** with exponential backoff retry logic
-- **Created extensive test suites** for all new components and hooks (10 test files total)
-- **Implemented validation framework** with Zod schemas and security utilities
-
-### 📁 New Files Created
-- `src/components/OptimizedImage.tsx` - Advanced image optimization
-- `src/components/Card.tsx` - Compound component pattern
-- `src/components/DataFetcher.tsx` - Render props pattern
-- `src/hooks/useBooking.ts` - Custom hook for booking state
-- `src/lib/security.ts` - Security utilities and validation
-- `src/lib/env.ts` - Type-safe environment variables
-- `src/lib/utils.ts` - Utility functions
-- `src/__tests__/OptimizedImage.test.tsx` - Image component tests
-- `src/__tests__/Card.test.tsx` - Card component tests  
-- `src/__tests__/useBooking.test.ts` - Hook tests
-- `src/__tests__/DataFetcher.test.tsx` - Data fetcher tests
-
-### 🔧 Files Modified
-- `next.config.ts` - Advanced CSP implementation and security headers
-- `src/components/ErrorBoundary.tsx` - Enhanced error handling with retry logic
-- `src/components/Button.tsx` - Updated accessibility documentation
-
-### 📦 Dependencies Added
-- `dompurify` - HTML sanitization for security
-- `@types/dompurify` - TypeScript types for DOMPurify
-- `clsx` - Class name utilities
-- `tailwind-merge` - Tailwind class merging
-- `zod` - Schema validation
-
-All implementations follow the advanced React/Next.js patterns documented in this TODO.md file and include comprehensive TypeScript support, accessibility compliance, and security best practices.
-
----
-
-# Additional Implementation (2026-03-03)
-
-## ✅ Completed: Enterprise-Grade Feature Implementation
-
-Following the successful completion of the initial advanced best practices implementation, the following additional task types were executed to bring the application to enterprise-grade standards:
-
-### 1. Performance Optimization Enhancement ✅
-- **Added bundle analysis capability** with @next/bundle-analyzer for performance monitoring
-  - Environment-controlled analysis with ANALYZE=true
-  - Comprehensive bundle size insights for optimization
-- **Optimized re-renders** in EventCountdown component using useCallback and useMemo
-  - Reduced unnecessary timer re-renders with memoized calculations
-  - Improved performance for real-time countdown functionality
-
-### 2. Security Hardening Expansion ✅
-- **Implemented complete authentication system** with NextAuth.js
-  - Credentials provider with secure session management
-  - Admin and user role differentiation
-  - Type-safe authentication flow with TypeScript
-- **Created secure API routes** with comprehensive protection
-  - Rate limiting (5 requests per 5 minutes per IP)
-  - Input validation using Zod schemas
-  - Business logic validation for booking constraints
-  - Secure error handling without data leakage
-- **Added CSRF protection** with token-based form security
-  - CSRF token generation API endpoint
-  - useCSRF hook for client-side token management
-  - Integration with authentication forms
-
-### 3. Accessibility Enhancement Advancement ✅
-- **Completed WCAG 2.1 AA component audit** with improvements to StatCard
-  - Added proper ARIA attributes and labeling
-  - Screen reader friendly content structure
-  - Semantic HTML improvements
-- **Implemented advanced focus management** with useFocusTrap hook
-  - Comprehensive keyboard navigation support
-  - Focus trapping for modal dialogs
-  - Arrow key navigation for menu systems
-- **Added screen reader announcements** with useAnnouncement hook
-  - Dynamic content announcement system
-  - Polite and assertive announcement modes
-  - Automatic cleanup and performance optimization
-
-### 4. React Pattern Modernization Completion ✅
-- **Created compound components** (Modal, Form) using context-based patterns
-  - Modal with Header/Body/Footer subcomponents
-  - Form with Field/Label/Input/Error/Submit subcomponents
-  - Flexible, reusable component architecture
-- **Implemented utility hooks** (useLocalStorage, useDebounce)
-  - useLocalStorage with cross-tab synchronization
-  - useDebounce with multiple variants (callback, state, value)
-  - Type-safe hook implementations
-- **Applied render props pattern** to data-heavy components
-  - Enhanced Services component with optional renderService prop
-  - Maximum flexibility for component customization
-  - Maintained backward compatibility
-
-### 📁 Additional Files Created
-- `src/app/api/auth/[...nextauth]/route.ts` - NextAuth.js authentication API
-- `src/app/auth/signin/page.tsx` - Authentication sign-in page
-- `src/app/api/bookings/route.ts` - Secure booking API with rate limiting
-- `src/app/api/csrf/route.ts` - CSRF token generation endpoint
-- `src/lib/auth.ts` - NextAuth.js configuration
-- `src/hooks/useFocusTrap.ts` - Advanced focus management hook
-- `src/hooks/useAnnouncement.ts` - Screen reader announcement system
-- `src/hooks/useCSRF.ts` - CSRF token management hook
-- `src/hooks/useLocalStorage.ts` - Enhanced localStorage hook
-- `src/hooks/useDebounce.ts` - Comprehensive debouncing utilities
-- `src/components/Modal.tsx` - Compound modal component
-- `src/components/Form.tsx` - Compound form component
-- `.env.local` - Environment variables for authentication
-
-### 🔧 Additional Files Modified
-- `src/app/layout.tsx` - Added NextAuth SessionProvider
-- `src/components/Navigation.tsx` - Added authentication UI
-- `src/components/StatCard.tsx` - Enhanced accessibility attributes
-- `src/components/Services.tsx` - Added render props flexibility
-- `src/components/EventCountdown.tsx` - Optimized re-renders
-- `next.config.ts` - Added bundle analyzer configuration
-
-### 📦 Additional Dependencies Added
-- `next-auth` - Complete authentication solution
-- `@next/bundle-analyzer` - Bundle analysis and optimization
-
-All implementations maintain the highest standards of security, accessibility, performance, and code quality, bringing The Barber Cave application to enterprise-grade production readiness.
-
 | Priority | Meaning                             |
 | -------- | ----------------------------------- |
 | 1        | Critical – release blocker          |
@@ -385,6474 +35,1317 @@ All implementations maintain the highest standards of security, accessibility, p
 
 ---
 
-# 📚 Best Practices & Standards
+## Execution Strategy
 
-## Advanced React/Next.js Patterns
+Issues are grouped into **6 atomic batches** ordered for maximum parallelism and minimum dependency risk. Each batch ships as one PR. Batches A–B must complete before C–F begin. Batches C–F are independent of each other.
 
-### Performance Optimization Patterns
+```
+Batch A (automated script)  ──► Batch B (DAL + auth foundation)
+                                       │
+              ┌────────────────────────┼────────────────────────┐
+              ▼                        ▼                        ▼
+         Batch C                  Batch D                  Batch E
+      (hook quality)          (CSP + config)          (performance)
+              └────────────────────────┼────────────────────────┘
+                                       ▼
+                                  Batch F
+                               (data + state)
+```
 
-**1. Image Optimization with Next.js Image Component**
+---
 
-```tsx
-// ✅ Advanced image pattern with priority and placeholder
-import Image from 'next/image'
+## 🔴 BATCH A — Automated Fixes
+> Single shell script execution. Zero manual editing required. Run before any other work.
 
-const OptimizedHeroImage = ({ src, alt, priority = false }) => {
+### T-A001 · Automated CVE + Lint Fix Script
+**Priority:** 1 | **Severity:** Critical | **Issues:** #1, #2, #21, #24, #27 | **Batch:** A
+
+**What:** One script resolves five issues — two CVEs via `npm audit`, one missing import via `sed`, one missing `'use client'` via `sed`, one missing hook dependency via ESLint autofix.
+
+**Execution:**
+```bash
+#!/usr/bin/env bash
+set -e
+
+echo "=== Step 1: Patch CVE-2024-23650 (esbuild SSRF via drizzle-kit) ==="
+# drizzle-kit ≥0.21.0 ships with esbuild ≥0.25.0 which patches GHSA-67mh-4wv8-2f99
+npm install drizzle-kit@latest
+
+echo "=== Step 2: Patch CVE-2022-3591 (tmp symlink via @lhci/cli) ==="
+npm install @lhci/cli@latest
+
+echo "=== Step 3: Verify no remaining high/critical CVEs ==="
+npm audit --audit-level=high
+
+echo "=== Step 4: Fix missing useCallback import (Issue #21) ==="
+# useDebounce.ts line 1 — add useCallback to React import
+sed -i "s/import { useState, useEffect, useRef } from 'react'/import { useState, useEffect, useRef, useCallback } from 'react'/" src/hooks/useDebounce.ts
+
+echo "=== Step 5: Fix missing 'use client' directive (Issue #27) ==="
+# Gallery.tsx — prepend directive before first import
+sed -i "1s/^/'use client';
+
+/" src/components/Gallery.tsx
+
+echo "=== Step 6: ESLint autofix for missing hook dep (Issue #24) ==="
+# useFocusTrap.ts line 142 — add getFocusableElements to dependency array
+npx eslint src/hooks/useFocusTrap.ts --fix --rule '{"react-hooks/exhaustive-deps": "error"}'
+
+echo "=== Step 7: Verify build passes ==="
+npm run build
+
+echo "=== All Batch A fixes applied ==="
+```
+
+**Validation:**
+- `npm audit` returns zero high/critical vulnerabilities
+- `npm run build` succeeds without SSR hook errors
+- `useDebouncedState` renders without crash in dev
+- Focus trapping works in modal components
+
+---
+
+### T-A002 · Add npm Audit CI Hard Gate
+**Priority:** 1 | **Severity:** Critical | **Issues:** #1, #2 (prevention) | **Batch:** A
+
+**What:** Block all future PRs if a high or critical CVE enters the dependency tree.
+
+**File:** `.github/workflows/security.yml`
+```yaml
+name: Security Audit
+on: [push, pull_request]
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Fail on high/critical CVEs
+        run: npm audit --audit-level=high
+```
+
+**Best Practice:** `--audit-level=high` (not `critical`) — high-severity CVEs in dev dependencies can escalate to production via CI/CD pipeline compromise (as demonstrated by CVE-2022-3591 attack scenario #4).
+
+---
+
+## 🔴 BATCH B — Data Access Layer & Auth Foundation
+> Establishes the auth architecture that all other security fixes depend on. Must ship as one atomic PR.
+
+### T-B001 · Implement Data Access Layer (DAL)
+**Priority:** 1 | **Severity:** Critical | **Issues:** #15, #3 | **Batch:** B
+
+**What:** Create a centralized `verifySession()` function using React's `cache()` API. This replaces all per-route `getServerSession()` calls and is the **only correct** auth gate for Next.js App Router — middleware alone is exploitable via CVE-2025-29927 (`x-middleware-subrequest` header bypass).
+
+**File:** `src/lib/dal.ts`
+```typescript
+import { cache } from 'react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+
+// cache() ensures only one DB/session call per render tree, regardless
+// of how many Server Components or Route Handlers call verifySession().
+export const verifySession = cache(async () => {
+  const session = await getServerSession(authOptions)
+  if (!session) redirect('/auth/signin')
+  return session
+})
+
+export const verifyAdminSession = cache(async () => {
+  const session = await verifySession()
+  if (session.user.role !== 'admin') {
+    redirect('/')
+  }
+  return session
+})
+```
+
+**Pattern — DAL in every Route Handler:**
+```typescript
+// src/app/api/services/route.ts
+import { verifyAdminSession } from '@/lib/dal'
+
+export async function POST(request: NextRequest) {
+  await verifyAdminSession() // throws redirect if not admin — never reaches below
+  // ... rest of handler
+}
+```
+
+**Why not middleware-only:** CVE-2025-29927 (CVSS 9.1) allows full middleware bypass by sending `x-middleware-subrequest: src/middleware` header. Middleware should only handle UX redirects, never be the sole authorization gate.
+
+**Defense-in-depth — strip bypass header in middleware:**
+```typescript
+// src/middleware.ts — add to top of middleware function
+export function middleware(request: NextRequest) {
+  // Strip CVE-2025-29927 bypass header unconditionally
+  const headers = new Headers(request.headers)
+  headers.delete('x-middleware-subrequest')
+  // ... rest of middleware (UX redirects only)
+}
+```
+
+**Validation:**
+- Direct `POST /api/services` without session returns 307 redirect (not 200)
+- `x-middleware-subrequest` header in request does not bypass auth
+- Single DB query per render tree confirmed via query logging
+
+---
+
+### T-B002 · Replace Demo Authentication with Real Credential Validation
+**Priority:** 1 | **Severity:** Critical | **Issues:** #3, #9 | **Batch:** B
+
+**What:** Remove the `return { id: email, email, ... }` demo bypass from `[...nextauth]/route.ts`. Implement proper DB-backed credential validation with JWT rolling sessions.
+
+**File:** `src/lib/auth.ts`
+```typescript
+import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { z } from 'zod'
+import bcrypt from 'bcryptjs'
+
+const loginSchema = z.object({
+  email: z.string().email().max(254),
+  password: z.string().min(8).max(128),
+})
+
+export const authOptions: NextAuthOptions = {
+  providers: [
+    CredentialsProvider({
+      async authorize(credentials) {
+        try {
+          const { email, password } = loginSchema.parse(credentials)
+
+          // Single admin account — no user table needed for barber shop
+          if (
+            email === process.env.ADMIN_EMAIL &&
+            await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH!)
+          ) {
+            return { id: 'admin', email, name: 'Admin', role: 'admin' }
+          }
+          return null
+        } catch {
+          return null // Zod parse error = invalid input = null (not thrown)
+        }
+      }
+    })
+  ],
+  session: {
+    strategy: 'jwt',
+    maxAge: 24 * 60 * 60,       // 24h absolute expiry
+    updateAge: 30 * 60,          // silent refresh every 30min of activity
+  },
+  jwt: {
+    maxAge: 24 * 60 * 60,
+  },
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) token.role = (user as any).role
+      return token
+    },
+    session({ session, token }) {
+      if (session.user) session.user.role = token.role as string
+      return session
+    },
+  },
+  pages: { signIn: '/auth/signin' },
+}
+```
+
+**Security notes:**
+- Store `ADMIN_PASSWORD_HASH` (bcrypt, cost 12), never plaintext `ADMIN_PASSWORD`
+- Generate hash: `node -e "require('bcryptjs').hash('yourpass', 12).then(console.log)"`
+- `updateAge: 1800` provides rolling sessions without a custom refresh token rotation callback — sufficient for single-role admin credentials app
+- `strategy: 'jwt'` avoids a sessions DB table; token is validated on every request
+
+**Validation:**
+- Any email/password combination other than admin credentials returns 401
+- Correct credentials return session with `role: 'admin'`
+- Session expires after 24h of inactivity
+- Session auto-renews when active within 30min window
+
+---
+
+### T-B003 · Upgrade CSRF to HMAC-Signed Double-Submit
+**Priority:** 2 | **Severity:** High | **Issues:** #10 | **Batch:** B
+
+**What:** Upgrade the existing `/api/csrf` endpoint from a random token to an HMAC-signed token. This closes the subdomain cookie replacement attack vector that makes naive double-submit insecure.
+
+**File:** `src/app/api/csrf/route.ts`
+```typescript
+import { createHmac, randomBytes } from 'crypto'
+import { NextResponse } from 'next/server'
+
+function generateHmacCsrfToken(): { token: string; signature: string } {
+  const token = randomBytes(32).toString('hex')
+  const signature = createHmac('sha256', process.env.CSRF_SECRET!)
+    .update(token)
+    .digest('hex')
+  return { token, signature: `${token}.${signature}` }
+}
+
+export function GET() {
+  const { signature } = generateHmacCsrfToken()
+  const response = NextResponse.json({ csrfToken: signature })
+  // HttpOnly:false — must be readable by JS to include in request header
+  // SameSite:Strict — prevents cross-site submission entirely
+  response.cookies.set('csrf-token', signature, {
+    httpOnly: false,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: 60 * 60, // 1h
+  })
+  return response
+}
+```
+
+**Validation utility in `src/lib/security.ts`:**
+```typescript
+export function validateHmacCsrfToken(tokenWithSig: string): boolean {
+  const [token, sig] = tokenWithSig.split('.')
+  if (!token || !sig) return false
+  const expected = createHmac('sha256', process.env.CSRF_SECRET!)
+    .update(token)
+    .digest('hex')
+  // Constant-time comparison prevents timing attacks
+  return timingSafeEqual(Buffer.from(sig), Buffer.from(expected))
+}
+```
+
+**Add to env schema:** `CSRF_SECRET: z.string().min(32)` in `src/lib/env.ts`
+
+---
+
+## 🟠 BATCH C — Hook Quality Suite
+> All custom hook fixes + shared Vitest test matrix. One PR.
+
+### T-C001 · Fix useBooking Stale Closure Race Condition
+**Priority:** 1 | **Severity:** Critical | **Issues:** #22 | **Batch:** C
+
+**What:** `submitBooking` captures stale `state` via closure. Fix with functional state reads inside the callback — the React 19 / Compiler-safe pattern.
+
+**File:** `src/hooks/useBooking.ts` — line 107
+```typescript
+// ❌ Before — state in dep array = stale closure on rapid re-renders
+const submitBooking = useCallback(async () => {
+  const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = state
+}, [state])
+
+// ✅ After — read current state atomically via functional updater
+const submitBooking = useCallback(async () => {
+  let currentState: BookingState | null = null
+
+  // Read current state without adding it to the dep array
+  setState(prev => {
+    currentState = prev
+    return prev // no mutation
+  })
+
+  if (!currentState) return
+  const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = currentState
+
+  if (!selectedService || !selectedBarber || !selectedDate || !selectedTime || !customerInfo) {
+    setState(prev => ({ ...prev, error: 'Please complete all booking steps' }))
+    return
+  }
+
+  setState(prev => ({ ...prev, isSubmitting: true, error: null }))
+
+  try {
+    const response = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-csrf-token': document.cookie.match(/csrf-token=([^;]+)/)?.[1] ?? '',
+      },
+      body: JSON.stringify({
+        serviceId: selectedService,
+        barberId: selectedBarber,
+        date: selectedDate.toISOString(),
+        time: selectedTime,
+        customerInfo,
+      }),
+    })
+    if (!response.ok) throw new Error((await response.json()).error ?? 'Booking failed')
+    setState(prev => ({ ...prev, isSubmitting: false }))
+  } catch (error) {
+    setState(prev => ({
+      ...prev,
+      error: error instanceof Error ? error.message : 'Booking failed',
+      isSubmitting: false,
+    }))
+  }
+}, []) // Empty dep array — safe because we read state functionally
+```
+
+**Why this works:** `setState(prev => { currentState = prev; return prev })` reads the current committed state without creating a closure over it. This is the idiomatic React 19 pattern and is compatible with React Compiler automatic memoization.
+
+---
+
+### T-C002 · Fix useCSRF Memory Leak with AbortController
+**Priority:** 1 | **Severity:** Critical | **Issues:** #23 | **Batch:** C
+
+**File:** `src/hooks/useCSRF.ts` — lines 8–25
+```typescript
+useEffect(() => {
+  const abortController = new AbortController()
+
+  const fetchCsrfToken = async () => {
+    try {
+      const response = await fetch('/api/csrf', {
+        signal: abortController.signal,
+      })
+      if (!response.ok) throw new Error(`CSRF fetch failed: ${response.status}`)
+      const { csrfToken } = await response.json()
+      setToken(csrfToken)
+    } catch (err) {
+      // AbortError is expected on unmount — not a real error
+      if (err instanceof Error && err.name !== 'AbortError') {
+        setError(err.message)
+      }
+    } finally {
+      // Only update loading state if still mounted (abort check via signal)
+      if (!abortController.signal.aborted) {
+        setLoading(false)
+      }
+    }
+  }
+
+  fetchCsrfToken()
+
+  // Cleanup: cancel in-flight request on unmount or re-render
+  return () => abortController.abort()
+}, []) // Stable empty deps — CSRF token fetched once on mount
+```
+
+**Pattern note:** The `AbortController` pattern is the standard for all async `useEffect` fetches in React 19. It prevents the "Can't perform a React state update on an unmounted component" warning and stops unnecessary network traffic when users navigate rapidly.
+
+---
+
+### T-C003 · Fix useLocalStorage Cross-Tab Race Condition
+**Priority:** 2 | **Severity:** High | **Issues:** #25 | **Batch:** C
+
+**File:** `src/hooks/useLocalStorage.ts` — lines 55–70
+```typescript
+// ✅ Wrap handler in useCallback (stable ref for add/removeEventListener)
+// ✅ Use functional setState to avoid stale prev comparisons
+const handleStorageChange = useCallback((e: StorageEvent) => {
+  if (e.key !== key) return
+  if (e.newValue === null) {
+    // Key was removed in another tab
+    setStoredValue(initialValue)
+    return
+  }
+  try {
+    const incoming = JSON.parse(e.newValue)
+    setStoredValue(prev => {
+      // Referential equality check prevents unnecessary re-renders
+      // when the value hasn't actually changed
+      const prevSerialized = JSON.stringify(prev)
+      return prevSerialized !== e.newValue ? incoming : prev
+    })
+  } catch {
+    // Malformed JSON in storage — ignore silently
+  }
+}, [key, initialValue])
+
+useEffect(() => {
+  window.addEventListener('storage', handleStorageChange)
+  return () => window.removeEventListener('storage', handleStorageChange)
+}, [handleStorageChange])
+```
+
+---
+
+### T-C004 · Fix useAnnouncement DOM Memory Leak
+**Priority:** 2 | **Severity:** High | **Issues:** #26 | **Batch:** C
+
+**File:** `src/hooks/useAnnouncement.ts` — lines 28–40
+```typescript
+useEffect(() => {
+  // Create the ARIA live region once on mount
+  const element = document.createElement('div')
+  element.setAttribute('aria-live', 'polite')
+  element.setAttribute('aria-atomic', 'true')
+  element.setAttribute('aria-relevant', 'additions text')
+  element.className = 'sr-only' // Visually hidden, screen-reader accessible
+  document.body.appendChild(element)
+  announcementRef.current = element
+
+  return () => {
+    // Critical: clear pending timeout before DOM removal
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    // Safe removal: check parentNode before removeChild to avoid
+    // NotFoundError if parent changed during async operations
+    if (element.parentNode) {
+      element.parentNode.removeChild(element)
+    }
+    announcementRef.current = null
+  }
+}, []) // Mount/unmount only — element lifecycle matches component lifecycle
+```
+
+---
+
+### T-C005 · Shared Hook Test Matrix
+**Priority:** 2 | **Severity:** High | **Issues:** #22, #23, #25, #26, #24 | **Batch:** C
+
+**What:** A single parameterized Vitest suite that validates cleanup, stale-closure immunity, and mount/unmount safety across all custom hooks simultaneously.
+
+**File:** `src/__tests__/hooks/hook-lifecycle.test.ts`
+```typescript
+import { renderHook, act } from '@testing-library/react'
+import { vi, describe, it, expect, afterEach } from 'vitest'
+import { useCSRF } from '@/hooks/useCSRF'
+import { useAnnouncement } from '@/hooks/useAnnouncement'
+import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useBooking } from '@/hooks/useBooking'
+
+// Parameterized cleanup matrix — each hook tested for memory safety
+const hooksUnderTest = [
+  {
+    name: 'useCSRF',
+    factory: () => renderHook(() => useCSRF()),
+    expectsCleanup: true, // AbortController
+  },
+  {
+    name: 'useAnnouncement',
+    factory: () => renderHook(() => useAnnouncement()),
+    expectsCleanup: true, // DOM element removal
+  },
+  {
+    name: 'useLocalStorage',
+    factory: () => renderHook(() => useLocalStorage('test-key', null)),
+    expectsCleanup: true, // event listener removal
+  },
+]
+
+describe.each(hooksUnderTest)('$name — lifecycle safety', ({ name, factory, expectsCleanup }) => {
+  afterEach(() => vi.restoreAllMocks())
+
+  it('mounts and unmounts without throwing', () => {
+    const { unmount } = factory()
+    expect(() => unmount()).not.toThrow()
+  })
+
+  it('does not leak DOM nodes after unmount', () => {
+    const nodesBefore = document.body.childNodes.length
+    const { unmount } = factory()
+    unmount()
+    expect(document.body.childNodes.length).toBe(nodesBefore)
+  })
+})
+
+describe('useBooking — stale closure immunity', () => {
+  it('submitBooking uses current state not stale closure', async () => {
+    const { result } = renderHook(() => useBooking())
+
+    act(() => result.current.selectService('service-1'))
+    act(() => result.current.selectBarber('barber-1'))
+    // Rapidly update state to trigger stale closure scenario
+    act(() => result.current.selectService('service-2'))
+
+    // submitBooking should use service-2, not the stale service-1
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => ({}) })
+    await act(() => result.current.submitBooking())
+
+    const body = JSON.parse((global.fetch as any).mock.calls[0][1].body)
+    expect(body.serviceId).toBe('service-2') // not stale 'service-1'
+  })
+})
+
+describe('useLocalStorage — cross-tab race condition', () => {
+  it('ignores storage events that match current value', () => {
+    const { result } = renderHook(() => useLocalStorage('tab-key', 'initial'))
+    const renderCount = vi.fn()
+
+    // Simulate storage event with same value
+    act(() => {
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'tab-key',
+        newValue: JSON.stringify('initial'),
+      }))
+    })
+
+    // Should not cause unnecessary re-render
+    expect(result.current[0]).toBe('initial')
+  })
+})
+```
+
+---
+
+## 🟡 BATCH D — CSP, Config & Security Headers
+> All `next.config.ts`, env vars, logging, and header hardening. One PR.
+
+### T-D001 · Eliminate unsafe-eval / unsafe-inline from CSP
+**Priority:** 1 | **Severity:** High | **Issues:** #4 | **Batch:** D
+
+**What:** Replace broad `unsafe-eval` and `unsafe-inline` directives with nonce-based CSP. Per the Next.js 16 internals issue (GitHub #81496), `unsafe-eval` **cannot be fully removed in production** due to internal `Function()` calls in Next.js utilities — gate it to development only.
+
+**File:** `next.config.ts`
+```typescript
+const isDev = process.env.NODE_ENV === 'development'
+
+const buildCspValue = (nonce: string) => [
+  "default-src 'self'",
+  // unsafe-eval required by Next.js 16 internals in dev; removed in prod
+  isDev
+    ? `script-src 'self' 'unsafe-eval' 'nonce-${nonce}'`
+    : `script-src 'self' 'nonce-${nonce}'`,
+  `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
+  "img-src 'self' data: https: blob:",
+  "font-src 'self' https://fonts.gstatic.com",
+  "connect-src 'self' https://vitals.vercel-insights.com",
+  "media-src 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "upgrade-insecure-requests",
+  // Passive violation reporting BEFORE hard enforcement
+  "report-uri /api/csp-report",
+].join('; ')
+```
+
+**Add CSP report endpoint** — `src/app/api/csp-report/route.ts`:
+```typescript
+export async function POST(request: Request) {
+  const report = await request.json()
+  // Log to Axiom/Pino before enforcement — catch legitimate violations first
+  console.warn('[CSP Violation]', JSON.stringify(report))
+  return new Response(null, { status: 204 })
+}
+```
+
+**Rollout strategy:**
+1. Deploy with `report-uri` only (no enforcement change) — observe violations for 48h
+2. If no legitimate violations, remove `unsafe-inline` from `style-src`
+3. After 1 week of clean reports, remove `unsafe-eval` from prod `script-src`
+
+---
+
+### T-D002 · Centralize All Environment Variables Through Zod Schema
+**Priority:** 2 | **Severity:** Medium | **Issues:** #5 | **Batch:** D
+
+**What:** All `process.env` access routes through `src/lib/env.ts`. No direct `process.env` calls anywhere else. Add all missing variables to the schema.
+
+**File:** `src/lib/env.ts`
+```typescript
+import { z } from 'zod'
+
+const envSchema = z.object({
+  // Runtime
+  NODE_ENV: z.enum(['development', 'test', 'production']),
+
+  // App
+  NEXT_PUBLIC_APP_URL: z.string().url(),
+
+  // Auth
+  NEXTAUTH_SECRET: z.string().min(32),
+  NEXTAUTH_URL: z.string().url(),
+  ADMIN_EMAIL: z.string().email(),
+  ADMIN_PASSWORD_HASH: z.string().min(60), // bcrypt hash
+
+  // CSRF
+  CSRF_SECRET: z.string().min(32),
+
+  // Database
+  DATABASE_URL: z.string().url(),
+
+  // Logging (optional in dev)
+  AXIOM_DATASET: z.string().optional(),
+  AXIOM_TOKEN: z.string().optional(),
+
+  // Analytics (public — safe to expose)
+  NEXT_PUBLIC_ANALYTICS_ID: z.string().optional(),
+})
+
+// Fail loudly at startup if env is misconfigured
+// Never silently fall back to defaults for security-sensitive vars
+export const ENV = envSchema.parse(process.env)
+```
+
+**Migration:** Replace all `process.env.X` in `src/data/constants.ts`, `drizzle.config.ts`, `src/lib/auth.ts` with `ENV.X`.
+
+---
+
+### T-D003 · Implement Structured Production Logging (Pino + Axiom + Sentry)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #7 | **Batch:** D
+
+**What:** Replace all `console.error()` with environment-gated structured logging. Stack: **Pino** (structured JSON) → **Axiom** (log drain, Vercel native) + **Sentry** (error tracking).
+
+**Install:**
+```bash
+npm install pino next-logger next-axiom @sentry/nextjs
+```
+
+**File:** `src/lib/logger.ts`
+```typescript
+import pino from 'pino'
+
+// next-axiom transport routes logs to Axiom in production
+// Falls back to pretty-print in development
+export const logger = pino({
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  ...(process.env.NODE_ENV === 'production'
+    ? {
+        transport: {
+          target: '@axiomhq/pino',
+          options: {
+            dataset: process.env.AXIOM_DATASET,
+            token: process.env.AXIOM_TOKEN,
+          },
+        },
+      }
+    : {
+        transport: { target: 'pino-pretty' },
+      }),
+})
+
+// Drop-in replacement for console.error — never exposes stack traces in prod
+export function logError(context: string, error: unknown, meta?: Record<string, unknown>) {
+  if (process.env.NODE_ENV === 'production') {
+    logger.error({ context, ...meta }, error instanceof Error ? error.message : String(error))
+  } else {
+    logger.error({ context, ...meta }, error)
+  }
+}
+```
+
+**File:** `src/instrumentation.ts`
+```typescript
+export async function register() {
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    const { logger } = await import('./lib/logger')
+    logger.info('Next.js server started')
+  }
+}
+```
+
+**Add to `next.config.ts`:**
+```typescript
+import { withAxiom } from 'next-axiom'
+export default withAxiom(nextConfig)
+```
+
+---
+
+### T-D004 · Fix JSON Parsing Prototype Pollution Vectors
+**Priority:** 2 | **Severity:** Medium | **Issues:** #6 | **Batch:** D
+
+**What:** Replace all bare `JSON.parse()` calls with a `safeJSONParse<T>()` utility that validates output via Zod schema, preventing prototype pollution.
+
+**File:** `src/lib/utils.ts`
+```typescript
+import { z } from 'zod'
+
+export function safeJSONParse<T>(
+  input: string,
+  schema: z.ZodSchema<T>,
+  fallback: T
+): T {
+  try {
+    const raw = JSON.parse(input)
+    // Object.create(null) prevents prototype chain access before validation
+    const sanitized = Object.assign(Object.create(null), raw)
+    return schema.parse(sanitized)
+  } catch {
+    return fallback
+  }
+}
+```
+
+**Apply in `src/utils/seo-validation.ts`:**
+```typescript
+// Before
+const data = JSON.parse(script.textContent || '{}')
+
+// After
+const data = safeJSONParse(script.textContent ?? '{}', SeoDataSchema, {})
+```
+
+**Apply in `src/hooks/useLocalStorage.ts`:**
+```typescript
+// Before
+return item ? JSON.parse(item) : initialValue
+
+// After
+return item ? safeJSONParse(item, storageSchema, initialValue) : initialValue
+```
+
+---
+
+### T-D005 · Fix dangerouslySetInnerHTML in StructuredData (JSON-LD XSS)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #11 | **Batch:** D
+
+**What:** `dangerouslySetInnerHTML` with `JSON.stringify()` is the correct and officially documented Next.js App Router pattern for JSON-LD. The XSS vector is the unescaped `<` character which can break out of the script tag. One-line fix.
+
+**File:** `src/components/StructuredData.tsx`
+```typescript
+// Before — vulnerable to script injection via < in JSON values
+dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+
+// After — < is the JSON-safe Unicode escape for <
+// Browsers render it as < but it cannot terminate the script tag
+dangerouslySetInnerHTML={{
+  __html: JSON.stringify(jsonLd).replace(/</g, '\u003c')
+}}
+```
+
+---
+
+### T-D006 · Fix Open Redirect Risk in External Links
+**Priority:** 3 | **Severity:** Medium | **Issues:** #8 | **Batch:** D
+
+**File:** `src/data/constants.ts`
+```typescript
+// Allowlist of trusted external domains for the barber shop
+const ALLOWED_EXTERNAL_DOMAINS = [
+  'instagram.com',
+  'www.instagram.com',
+  'facebook.com',
+  'www.facebook.com',
+  'google.com',
+  'maps.google.com',
+] as const
+
+export function validateExternalUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url)
+    // Must be https and on the allowlist
+    if (parsed.protocol !== 'https:') return null
+    const domain = parsed.hostname.toLowerCase()
+    if (ALLOWED_EXTERNAL_DOMAINS.some(d => domain === d)) return url
+    return null
+  } catch {
+    return null
+  }
+}
+```
+
+---
+
+### T-D007 · Add Security Header CI Verification
+**Priority:** 3 | **Severity:** Medium | **Issues:** #12 | **Batch:** D
+
+**File:** `.github/workflows/security.yml` — add job:
+```yaml
+  verify-security-headers:
+    runs-on: ubuntu-latest
+    needs: [audit]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Check security headers on staging
+        run: |
+          HEADERS=$(curl -s -I ${{ secrets.STAGING_URL }})
+          echo "$HEADERS" | grep -q "Content-Security-Policy" || (echo "Missing CSP header" && exit 1)
+          echo "$HEADERS" | grep -q "X-Frame-Options" || (echo "Missing X-Frame-Options" && exit 1)
+          echo "$HEADERS" | grep -q "Strict-Transport-Security" || (echo "Missing HSTS header" && exit 1)
+          echo "$HEADERS" | grep -q "X-Content-Type-Options" || (echo "Missing X-Content-Type-Options" && exit 1)
+          echo "All required security headers present"
+```
+
+---
+
+## 🟡 BATCH E — Performance Architecture
+> Two sub-batches: E1 (RSC/client boundary audit) then E2 (bundle + CI pipeline).
+
+### T-E001 · Fix SessionProvider Placement (P0)
+**Priority:** 1 | **Severity:** High | **Issues:** P0-1 | **Batch:** E
+
+**What:** `SessionProvider` wrapping the entire layout forces the root layout into client-side rendering, blocking RSC streaming and costing ~300ms TTI.
+
+**Pattern — SessionProvider in a dedicated client wrapper:**
+```typescript
+// src/components/providers/SessionWrapper.tsx
+'use client'
+import { SessionProvider } from 'next-auth/react'
+export function SessionWrapper({ children }: { children: React.ReactNode }) {
+  return <SessionProvider>{children}</SessionProvider>
+}
+
+// src/app/layout.tsx — root layout stays a Server Component
+// Only SessionWrapper is client-rendered
+export default function RootLayout({ children }) {
   return (
-    <div className="relative w-full h-full">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        priority={priority} // Use priority for LCP elements
-        quality={85} // Balance quality vs file size
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        placeholder="blur" // Only for raster images, not SVG
-        blurDataURL="data:image/jpeg;base64,..." // Base64 blur placeholder
-        className="object-cover transition-transform duration-300 group-hover:scale-105"
-        onError={(e) => {
-          // Fallback handling
-          const target = e.target as HTMLImageElement
-          target.src = '/images/fallback.jpg'
-        }}
-      />
+    <html lang="en">
+      <body>
+        <SessionWrapper>
+          {children}  {/* Server Components stream normally */}
+        </SessionWrapper>
+      </body>
+    </html>
+  )
+}
+```
+
+---
+
+### T-E002 · Remove Unnecessary 'use client' from Static Components (P0)
+**Priority:** 1 | **Severity:** High | **Issues:** P0-2 | **Batch:** E
+
+**What:** Static components (Footer, StatCard, Hero section content) with `'use client'` directive opt the entire component subtree out of RSC streaming. Audit and convert to RSC where no hooks are used.
+
+**Audit script:**
+```bash
+# Find 'use client' components that contain no hooks or event handlers
+grep -rn "'use client'" src/components/ | while read line; do
+  file=$(echo $line | cut -d: -f1)
+  # Check if file uses any React hooks or browser APIs
+  if ! grep -qE "useState|useEffect|useCallback|useMemo|useRef|onClick|onChange|window\.|document\." "$file"; then
+    echo "SAFE TO CONVERT TO RSC: $file"
+  fi
+done
+```
+
+**Conversion checklist per component:**
+- No `useState` / `useEffect` / `useCallback` / `useRef` → safe RSC
+- No `onClick`, `onChange`, or other event handlers → safe RSC
+- No `window`, `document`, `localStorage` access → safe RSC
+- Uses Context → extract context consumer to thin client wrapper
+
+---
+
+### T-E003 · Fix EventCountdown Hydration Mismatch (P1)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #28 | **Batch:** E
+
+**What:** `new Date().getTime()` executes on the server during SSR, producing a timestamp that differs from the client timestamp — causing hydration mismatch and CLS.
+
+**File:** `src/components/EventCountdown.tsx`
+```typescript
+'use client'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+
+export function EventCountdown({ targetDateStr }: { targetDateStr: string }) {
+  // Render nothing server-side — countdown is inherently client-only
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  const targetDate = useMemo(() => new Date(targetDateStr).getTime(), [targetDateStr])
+
+  const calculateTimeLeft = useCallback(() => {
+    const diff = targetDate - Date.now()
+    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+    return {
+      days: Math.floor(diff / 86_400_000),
+      hours: Math.floor((diff % 86_400_000) / 3_600_000),
+      minutes: Math.floor((diff % 3_600_000) / 60_000),
+      seconds: Math.floor((diff % 60_000) / 1000),
+    }
+  }, [targetDate])
+
+  // SSR skeleton — exact same dimensions as the rendered countdown
+  // prevents CLS (Cumulative Layout Shift)
+  if (!isClient) {
+    return <div className="h-24 w-full animate-pulse rounded-lg bg-gray-800" aria-hidden="true" />
+  }
+
+  // ... rest of countdown render
+}
+```
+
+---
+
+### T-E004 · Tree-Shake lucide-react Icon Imports (P1)
+**Priority:** 2 | **Severity:** Medium | **Issues:** P1-3 | **Batch:** E
+
+**What:** Barrel imports of `lucide-react` pull the entire icon library (~800 icons, ~40KB gzipped) into the bundle. Named imports enable tree-shaking.
+
+```typescript
+// ❌ Before — imports entire library
+import { Calendar, Clock, User, Star, Phone } from 'lucide-react'
+// (lucide-react barrel export prevents tree-shaking in some bundler configs)
+
+// ✅ After — direct module path import, always tree-shakeable
+import Calendar from 'lucide-react/dist/esm/icons/calendar'
+import Clock from 'lucide-react/dist/esm/icons/clock'
+import User from 'lucide-react/dist/esm/icons/user'
+```
+
+**Or configure in `next.config.ts`:**
+```typescript
+experimental: {
+  optimizePackageImports: ['lucide-react'],
+}
+```
+`optimizePackageImports` instructs Next.js to automatically rewrite barrel imports to direct imports at build time — zero code change required in components.
+
+---
+
+### T-E005 · Move axe-core to Dev-Only Dynamic Import (P1)
+**Priority:** 2 | **Severity:** Medium | **Issues:** P1-4 | **Batch:** E
+
+**What:** `axe-core` (~150KB) should never ship to production users.
+
+```typescript
+// src/lib/axe.ts — conditionally loaded, never in prod bundle
+export async function initAxe() {
+  if (process.env.NODE_ENV !== 'development') return
+  if (typeof window === 'undefined') return
+
+  const React = (await import('react')).default
+  const ReactDOM = (await import('react-dom')).default
+  const axe = (await import('@axe-core/react')).default
+
+  axe(React, ReactDOM, 1000)
+}
+```
+
+```typescript
+// src/app/layout.tsx
+useEffect(() => {
+  import('@/lib/axe').then(({ initAxe }) => initAxe())
+}, [])
+```
+
+---
+
+### T-E006 · Remove Gallery Custom IntersectionObserver (P1)
+**Priority:** 1 | **Severity:** Critical | **Issues:** #27, #29 | **Batch:** E
+
+> **Note:** This is the atomic merge of Issues #27 and #29. Fixing #29 (remove redundant IntersectionObserver) eliminates the need for `'use client'` in Gallery (Issue #27), potentially converting it to an RSC.
+
+**What:** Next.js `<Image>` implements its own internal IntersectionObserver for lazy loading. The custom `useIntersectionObserver` hook in `Gallery.tsx` is entirely redundant and caused the SSR crash in Issue #27.
+
+**File:** `src/components/Gallery.tsx`
+```typescript
+// Remove 'use client' directive (may no longer be needed post-refactor)
+// Remove useIntersectionObserver import and usage
+
+// Before — manual lazy loading
+function LazyImage({ src, alt, ...props }) {
+  const { ref, isIntersecting } = useIntersectionObserver({ threshold: 0.1 })
+  return (
+    <div ref={ref}>
+      {isIntersecting && <Image src={src} alt={alt} {...props} />}
     </div>
   )
 }
-```
 
-**2. Server Component Optimization**
-
-```tsx
-// ✅ Server component pattern for static content
-export default function StaticFooter() {
-  // No 'use client' directive - renders on server
+// After — Next.js Image handles lazy loading natively
+// loading="lazy" is the default for non-priority images
+function GalleryImage({ src, alt, priority = false, ...props }) {
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <p>&copy; 2026 The Barber Cave. All rights reserved.</p>
-      </div>
-    </footer>
-  )
-}
-
-// ✅ Client component only when needed
-'use client'
-
-import { useState, useEffect } from 'react'
-
-export default function InteractiveNavigation() {
-  const [isOpen, setIsOpen] = useState(false)
-  
-  // Escape key handling
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false)
-    }
-    
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [])
-  
-  return (
-    <nav>
-      {/* Navigation content */}
-    </nav>
+    <Image
+      src={src}
+      alt={alt}
+      priority={priority}     // true only for above-fold images
+      // loading="lazy" is implicit when priority={false}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      quality={85}
+      {...props}
+    />
   )
 }
 ```
 
-**3. Advanced Error Boundary Pattern**
+**After this change:** audit whether any other client hooks remain in `Gallery.tsx`. If none, remove `'use client'` directive and convert to RSC.
 
-```tsx
-// ✅ Production-ready error boundary with retry logic
-import { Component, ErrorInfo, ReactNode } from 'react'
+---
 
-interface Props {
-  children: ReactNode
-  fallback?: ReactNode
-  onError?: (error: Error, errorInfo: ErrorInfo) => void
-  resetKeys?: Array<string | number>
-}
+### T-E007 · Add Bundle Analysis + Performance Budget CI (P2)
+**Priority:** 3 | **Severity:** Medium | **Issues:** #33, P2 | **Batch:** E
 
-interface State {
-  hasError: boolean
-  error?: Error
-  errorInfo?: ErrorInfo
-  retryCount: number
-}
+**Install:** `npm install --save-dev @next/bundle-analyzer knip`
 
-export class ErrorBoundary extends Component<Props, State> {
-  private retryTimeoutId?: NodeJS.Timeout
-  
-  constructor(props: Props) {
-    super(props)
-    this.state = { hasError: false, retryCount: 0 }
-  }
-  
-  static getDerivedStateFromError(error: Error, prevState: State): State {
-    // Preserve retry count on new errors
-    return {
-      hasError: true,
-      error,
-      retryCount: prevState.retryCount
-    }
-  }
-  
-  componentDidUpdate(prevProps: Props) {
-    const { resetKeys } = this.props
-    const { resetKeys: prevResetKeys } = prevProps
-    
-    // Reset on any resetKeys change (length OR values)
-    if (resetKeys && prevResetKeys) {
-      // Check if length changed
-      if (resetKeys.length !== prevResetKeys.length) {
-        this.resetError()
-        return
-      }
-      
-      // Check if values changed
-      const hasChanged = resetKeys.some((key, index) => key !== prevResetKeys[index])
-      if (hasChanged) {
-        this.resetError()
-      }
-    }
-  }
-  
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Log to error service
-    console.error('ErrorBoundary caught error:', error, errorInfo)
-    this.props.onError?.(error, errorInfo)
-  }
-  
-  componentWillUnmount() {
-    if (this.retryTimeoutId) {
-      clearTimeout(this.retryTimeoutId)
-    }
-  }
-  
-  private resetError = () => {
-    const newRetryCount = this.state.retryCount + 1
-    
-    // Prevent infinite retries
-    if (newRetryCount >= 3) {
-      // Keep error state, just update retry count
-      this.setState({ retryCount: newRetryCount })
-      return
-    }
-    
-    // Reset error state to allow retry
-    this.setState({
-      hasError: false,
-      error: undefined,
-      errorInfo: undefined,
-      retryCount: newRetryCount
-    })
-  }
-  
-  render() {
-    if (this.state.hasError) {
-      if (this.props.fallback) {
-        return this.props.fallback
-      }
-      
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="text-center p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Something went wrong
-            </h2>
-            <p className="text-gray-600 mb-6">
-              {this.state.retryCount >= 3 
-                ? 'Maximum retry attempts reached. Please refresh the page.'
-                : 'An unexpected error occurred.'}
-            </p>
-            {this.state.retryCount < 3 && (
-              <button
-                onClick={this.resetError}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Try Again ({3 - this.state.retryCount} attempts left)
-              </button>
-            )}
-          </div>
-        </div>
-      )
-    }
-    
-    return this.props.children
-  }
+**`package.json` scripts:**
+```json
+{
+  "analyze": "ANALYZE=true next build",
+  "deadcode": "knip",
+  "perf:ci": "lhci autorun"
 }
 ```
 
-### Modern React Patterns
+**File:** `.github/workflows/performance.yml`
+```yaml
+name: Performance Budget
+on: [push]
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci && npm run build
+      - name: Run Lighthouse CI
+        run: npx lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+```
 
-**1. Compound Components Pattern**
+---
 
-```tsx
-// ✅ Advanced compound component for flexible card layouts
-interface CardContextValue {
-  variant: 'default' | 'elevated' | 'outlined'
-  size: 'sm' | 'md' | 'lg'
-  interactive: boolean
-}
+### T-E008 · Add Rate Limiting Tests with Vitest Fake Timers (P2)
+**Priority:** 3 | **Severity:** Medium | **Issues:** #14 | **Batch:** E
 
-const CardContext = createContext<CardContextValue>({
-  variant: 'default',
-  size: 'md',
-  interactive: false
+**What:** Rate limiter tests require time manipulation. The critical detail: `toFake` must include `'Date'` — not just `'setTimeout'` — so `Date.now()` inside the `RateLimiter` class is mocked.
+
+**File:** `src/__tests__/rate-limiter.test.ts`
+```typescript
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { RateLimiter } from '@/lib/security'
+
+describe('RateLimiter', () => {
+  beforeEach(() => {
+    // Must include 'Date' so Date.now() calls in RateLimiter are mocked
+    vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] })
+  })
+
+  afterEach(() => vi.useRealTimers())
+
+  it('allows requests within limit', () => {
+    const limiter = new RateLimiter(5, 300_000) // 5 req per 5 min
+    for (let i = 0; i < 5; i++) {
+      expect(limiter.isAllowed('127.0.0.1')).toBe(true)
+    }
+  })
+
+  it('blocks requests exceeding limit', () => {
+    const limiter = new RateLimiter(5, 300_000)
+    for (let i = 0; i < 5; i++) limiter.isAllowed('127.0.0.1')
+    expect(limiter.isAllowed('127.0.0.1')).toBe(false)
+  })
+
+  it('resets after window expires', () => {
+    const limiter = new RateLimiter(5, 300_000)
+    for (let i = 0; i < 5; i++) limiter.isAllowed('127.0.0.1')
+
+    // Advance past the 5-minute window
+    vi.advanceTimersByTime(300_001)
+
+    expect(limiter.isAllowed('127.0.0.1')).toBe(true)
+  })
+
+  it('isolates limits per IP', () => {
+    const limiter = new RateLimiter(1, 300_000)
+    expect(limiter.isAllowed('192.168.1.1')).toBe(true)
+    expect(limiter.isAllowed('192.168.1.1')).toBe(false)
+    expect(limiter.isAllowed('192.168.1.2')).toBe(true) // different IP
+  })
 })
+```
 
-interface CardProps {
-  children: ReactNode
-  variant?: CardContextValue['variant']
-  size?: CardContextValue['size']
-  interactive?: boolean
-  className?: string
-}
+---
 
-export function Card({ 
-  children, 
-  variant = 'default', 
-  size = 'md', 
-  interactive = false,
-  className = '' 
-}: CardProps) {
-  const contextValue = useMemo(() => ({
-    variant,
-    size,
-    interactive
-  }), [variant, size, interactive])
-  
-  const baseClasses = 'rounded-lg transition-all duration-200'
-  const variants = {
-    default: 'bg-white border border-gray-200',
-    elevated: 'bg-white shadow-lg border-0',
-    outlined: 'bg-transparent border-2 border-gray-300'
-  }
-  const sizes = {
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8'
-  }
-  const interactive = interactive ? 'hover:shadow-md cursor-pointer' : ''
-  
-  return (
-    <CardContext.Provider value={contextValue}>
-      <div className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${interactive} ${className}`}>
-        {children}
-      </div>
-    </CardContext.Provider>
-  )
-}
+## 🟢 BATCH F — Data Architecture & State Management
+> Resolves static/DB data duplication (Issues #17 + #19 merged) and state fragmentation.
 
-Card.Header = function CardHeader({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`mb-4 ${className}`}>{children}</div>
-}
+### T-F001 · Migrate Static Data Files to DB + ISR (Issues #17 & #19 merged)
+**Priority:** 2 | **Severity:** High | **Issues:** #17, #19 | **Batch:** F
 
-Card.Body = function CardBody({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`flex-1 ${className}`}>{children}</div>
-}
+**What:** `src/data/barbers.ts` and `src/data/services.ts` serve dual roles as application data sources AND bundle weight (~391 + ~270 lines of JSON-like objects). Migrating to DB-only queries eliminates both problems simultaneously. Static files become seed-only inputs.
 
-Card.Footer = function CardFooter({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`mt-4 pt-4 border-t border-gray-200 ${className}`}>{children}</div>
+**Migration steps:**
+
+**Step 1 — Move static data to seed file only:**
+```typescript
+// src/data/seed.ts — only ever called by `npm run db:seed`
+// This is the single source of truth for initial data
+export const SEED_SERVICES = [/* existing services array */]
+export const SEED_BARBERS = [/* existing barbers array */]
+// Delete src/data/services.ts and src/data/barbers.ts entirely
+```
+
+**Step 2 — Add ISR to data pages:**
+```typescript
+// src/app/services/page.tsx
+export const revalidate = 3600 // Rebuild from DB every 1 hour
+// Staff and menu data changes rarely — 1h cache is appropriate
+
+export default async function ServicesPage() {
+  const services = await serviceRepository.getAll() // Always DB
+  return <ServiceList services={services} />
 }
 ```
 
-**2. Custom Hook Pattern for State Management**
+**Step 3 — Remove dynamic imports of static files:**
+```typescript
+// All components importing from '@/data/services' or '@/data/barbers'
+// now receive data as props from their page's server fetch
+// No dynamic import wrappers needed
+```
 
-```tsx
-// ✅ Advanced custom hook for booking state management
+**Bundle impact:** Removes ~661 lines of static TS objects from the client bundle entirely. Data served via RSC props, never hydrated to client.
+
+---
+
+### T-F002 · Implement Zustand Booking Store (Replace State Fragmentation)
+**Priority:** 3 | **Severity:** Medium | **Issues:** #18 | **Batch:** F
+
+**What:** Replace the fragmented booking state (spread across `useBooking`, `useLocalStorage`, and ad-hoc `useState` calls) with a single Zustand store using the Next.js App Router-safe `useRef` + Context provider pattern.
+
+**Install:** `npm install zustand`
+
+**File:** `src/store/booking-store.ts`
+```typescript
+'use client'
+import { createContext, useContext, useRef } from 'react'
+import { createStore, useStore } from 'zustand'
+
 interface BookingState {
   selectedService: string | null
   selectedBarber: string | null
   selectedDate: Date | null
   selectedTime: string | null
-  customerInfo: {
-    name: string
-    email: string
-    phone: string
-  } | null
+  customerInfo: { name: string; email: string; phone: string } | null
   isSubmitting: boolean
   error: string | null
 }
 
 interface BookingActions {
-  selectService: (serviceId: string) => void
-  selectBarber: (barberId: string) => void
+  selectService: (id: string) => void
+  selectBarber: (id: string) => void
   selectDate: (date: Date) => void
   selectTime: (time: string) => void
   setCustomerInfo: (info: BookingState['customerInfo']) => void
-  submitBooking: () => Promise<void>
-  resetBooking: () => void
-  clearError: () => void
+  setSubmitting: (val: boolean) => void
+  setError: (msg: string | null) => void
+  reset: () => void
 }
 
-export function useBooking(): BookingState & BookingActions {
-  const [state, setState] = useState<BookingState>({
-    selectedService: null,
-    selectedBarber: null,
-    selectedDate: null,
-    selectedTime: null,
-    customerInfo: null,
-    isSubmitting: false,
-    error: null
-  })
-  
-  const selectService = useCallback((serviceId: string) => {
-    setState(prev => ({ ...prev, selectedService: serviceId, error: null }))
-  }, [])
-  
-  const selectBarber = useCallback((barberId: string) => {
-    setState(prev => ({ ...prev, selectedBarber: barberId, error: null }))
-  }, [])
-  
-  const selectDate = useCallback((date: Date) => {
-    setState(prev => ({ ...prev, selectedDate: date, error: null }))
-  }, [])
-  
-  const selectTime = useCallback((time: string) => {
-    setState(prev => ({ ...prev, selectedTime: time, error: null }))
-  }, [])
-  
-  const setCustomerInfo = useCallback((info: BookingState['customerInfo']) => {
-    setState(prev => ({ ...prev, customerInfo: info, error: null }))
-  }, [])
-  
-  const submitBooking = useCallback(async () => {
-    const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = state
-    
-    if (!selectedService || !selectedBarber || !selectedDate || !selectedTime || !customerInfo) {
-      setState(prev => ({ ...prev, error: 'Please complete all booking steps' }))
-      return
-    }
-    
-    setState(prev => ({ ...prev, isSubmitting: true, error: null }))
-    
-    try {
-      // API call to submit booking
-      const response = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          serviceId: selectedService,
-          barberId: selectedBarber,
-          date: selectedDate.toISOString(),
-          time: selectedTime,
-          customerInfo
-        })
-      })
-      
-      if (!response.ok) {
-        throw new Error('Booking failed')
-      }
-      
-      // Reset form on success
-      resetBooking()
-    } catch (error) {
-      setState(prev => ({ 
-        ...prev, 
-        error: error instanceof Error ? error.message : 'Booking failed',
-        isSubmitting: false 
-      }))
-    }
-  }, [state])
-  
-  const resetBooking = useCallback(() => {
-    setState({
-      selectedService: null,
-      selectedBarber: null,
-      selectedDate: null,
-      selectedTime: null,
-      customerInfo: null,
-      isSubmitting: false,
-      error: null
-    })
-  }, [])
-  
-  const clearError = useCallback(() => {
-    setState(prev => ({ ...prev, error: null }))
-  }, [])
-  
-  return {
-    ...state,
-    selectService,
-    selectBarber,
-    selectDate,
-    selectTime,
-    setCustomerInfo,
-    submitBooking,
-    resetBooking,
-    clearError
-  }
-}
-```
-
-**3. Render Props Pattern for Flexibility**
-
-```tsx
-// ✅ Advanced render props component for data fetching
-interface DataFetcherProps<T> {
-  url: string
-  children: (data: {
-    data: T | null
-    loading: boolean
-    error: string | null
-    refetch: () => void
-  }) => ReactNode
-  fallback?: ReactNode
-  onSuccess?: (data: T) => void
-  onError?: (error: string) => void
+const initialState: BookingState = {
+  selectedService: null, selectedBarber: null, selectedDate: null,
+  selectedTime: null, customerInfo: null, isSubmitting: false, error: null,
 }
 
-export function DataFetcher<T>({ 
-  url, 
-  children, 
-  fallback,
-  onSuccess,
-  onError 
-}: DataFetcherProps<T>) {
-  const [data, setData] = useState<T | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      
-      const response = await fetch(url)
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
-      
-      const result = await response.json()
-      setData(result)
-      onSuccess?.(result)
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Unknown error'
-      setError(errorMessage)
-      onError?.(errorMessage)
-    } finally {
-      setLoading(false)
-    }
-  }, [url, onSuccess, onError])
-  
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-  
-  const refetch = useCallback(() => {
-    fetchData()
-  }, [fetchData])
-  
-  if (loading && fallback) {
-    return <>{fallback}</>
-  }
-  
-  return <>{children({ data, loading, error, refetch })}</>
-}
-
-// Usage example
-<DataFetcher url="/api/services">
-  {({ data, loading, error, refetch }) => (
-    <div>
-      {loading && <div>Loading services...</div>}
-      {error && (
-        <div>
-          <p>Error: {error}</p>
-          <button onClick={refetch}>Retry</button>
-        </div>
-      )}
-      {data && (
-        <ul>
-          {data.map((service: any) => (
-            <li key={service.id}>{service.name}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )}
-</DataFetcher>
-```
-
-### Security Best Practices
-
-**1. Content Security Policy (CSP) Configuration**
-
-```typescript
-// next.config.ts - Advanced CSP with nonce support
-const securityHeaders = [
-  {
-    key: 'Content-Security-Policy',
-    value: [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'nonce-%nonce%'", // Remove unsafe-eval when possible
-      "style-src 'self' 'unsafe-inline'", // Consider nonce-based styles
-      "img-src 'self' data: https:",
-      "font-src 'self' data:",
-      "connect-src 'self' https://api.example.com",
-      "frame-src 'none'",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'",
-      "upgrade-insecure-requests"
-    ].join('; ')
-  },
-  {
-    key: 'X-Content-Type-Options',
-    value: 'nosniff'
-  },
-  {
-    key: 'X-Frame-Options',
-    value: 'DENY'
-  },
-  {
-    key: 'X-XSS-Protection',
-    value: '1; mode=block'
-  },
-  {
-    key: 'Referrer-Policy',
-    value: 'strict-origin-when-cross-origin'
-  },
-  {
-    key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=()'
-  }
-]
-
-const nextConfig = {
-  reactStrictMode: true,
-  poweredByHeader: false,
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: securityHeaders
-      }
-    ]
-  }
-}
-```
-
-**2. Advanced Input Validation & Sanitization**
-
-```typescript
-// src/lib/security.ts - Comprehensive security utilities
-import DOMPurify from 'dompurify'
-import { z } from 'zod'
-
-// Advanced validation schemas with security rules
-const SecureEmailSchema = z.string()
-  .email('Invalid email format')
-  .max(254, 'Email too long')
-  .refine(email => {
-    // Prevent suspicious email patterns
-    const suspiciousPatterns = [
-      /<script/i,
-      /javascript:/i,
-      /data:/i,
-      /vbscript:/i
-    ]
-    return !suspiciousPatterns.some(pattern => pattern.test(email))
-  }, 'Email contains suspicious content')
-
-const SecurePhoneSchema = z.string()
-  .regex(/^\+?[\d\s\-\(\)]+$/, 'Invalid phone format')
-  .min(10, 'Phone number too short')
-  .max(20, 'Phone number too long')
-  .refine(phone => {
-    // Prevent injection attempts
-    const dangerousChars = ['<', '>', '&', '"', "'", '/', '\\']
-    return !dangerousChars.some(char => phone.includes(char))
-  }, 'Phone number contains invalid characters')
-
-const SecureNameSchema = z.string()
-  .min(1, 'Name required')
-  .max(100, 'Name too long')
-  .refine(name => {
-    // Allow only safe characters
-    const safePattern = /^[a-zA-Z\s\-\.'']+$/
-    return safePattern.test(name)
-  }, 'Name contains invalid characters')
-  .refine(name => {
-    // Prevent script injection in names
-    const scriptPatterns = [
-      /<script/i,
-      /javascript:/i,
-      /on\w+\s*=/i
-    ]
-    return !scriptPatterns.some(pattern => pattern.test(name))
-  }, 'Name contains potentially dangerous content')
-
-// HTML sanitization for user-generated content
-export function sanitizeHTML(html: string): string {
-  if (typeof window === 'undefined') {
-    // Server-side: return plain text (no HTML allowed)
-    return html.replace(/<[^>]*>/g, '').trim()
-  }
-  
-  // Client-side: use DOMPurify
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u'],
-    ALLOWED_ATTR: [],
-    KEEP_CONTENT: true,
-    RETURN_DOM: false,
-    RETURN_DOM_FRAGMENT: false,
-    RETURN_DOM_IMPORT: false
-  })
-}
-
-// Advanced form validation
-export function validateBookingForm(data: unknown) {
-  const BookingSchema = z.object({
-    customerName: SecureNameSchema,
-    customerEmail: SecureEmailSchema,
-    customerPhone: SecurePhoneSchema,
-    serviceId: z.string().uuid('Invalid service ID'),
-    barberId: z.string().uuid('Invalid barber ID'),
-    date: z.string().datetime('Invalid date format'),
-    time: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Invalid time format'),
-    notes: z.string()
-      .max(500, 'Notes too long')
-      .transform(val => sanitizeHTML(val))
-      .optional()
-  })
-  
-  return BookingSchema.parse(data)
-}
-
-// Rate limiting for API endpoints
-export class RateLimiter {
-  private requests = new Map<string, { count: number; resetTime: number }>()
-  
-  constructor(
-    private maxRequests: number = 10,
-    private windowMs: number = 60000 // 1 minute
-  ) {}
-  
-  isAllowed(identifier: string): boolean {
-    const now = Date.now()
-    const key = identifier
-    const record = this.requests.get(key)
-    
-    if (!record || now > record.resetTime) {
-      this.requests.set(key, {
-        count: 1,
-        resetTime: now + this.windowMs
-      })
-      return true
-    }
-    
-    if (record.count >= this.maxRequests) {
-      return false
-    }
-    
-    record.count++
-    return true
-  }
-  
-  getRemainingRequests(identifier: string): number {
-    const record = this.requests.get(identifier)
-    if (!record || Date.now() > record.resetTime) {
-      return this.maxRequests
-    }
-    return Math.max(0, this.maxRequests - record.count)
-  }
-}
-
-// CSRF protection utilities
-export function generateCSRFToken(): string {
-  if (typeof window !== 'undefined') {
-    // Client-side: use crypto API
-    const array = new Uint8Array(32)
-    crypto.getRandomValues(array)
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('')
-  }
-  
-  // Server-side: use Node.js crypto
-  const crypto = require('crypto')
-  return crypto.randomBytes(32).toString('hex')
-}
-
-export function validateCSRFToken(token: string, sessionToken: string): boolean {
-  // Implement secure comparison to prevent timing attacks
-  if (token.length !== sessionToken.length) {
-    return false
-  }
-  
-  let result = 0
-  for (let i = 0; i < token.length; i++) {
-    result |= token.charCodeAt(i) ^ sessionToken.charCodeAt(i)
-  }
-  
-  return result === 0
-}
-```
-
-**3. Secure API Patterns**
-
-```typescript
-// src/app/api/bookings/route.ts - Secure API endpoint
-import { NextRequest, NextResponse } from 'next/server'
-import { validateBookingForm, RateLimiter } from '@/lib/security'
-import { z } from 'zod'
-
-// Initialize rate limiter for booking endpoint
-const bookingRateLimiter = new RateLimiter(5, 300000) // 5 requests per 5 minutes
-
-export async function POST(request: NextRequest) {
-  try {
-    // Get client IP for rate limiting
-    const clientIP = request.ip || 
-      request.headers.get('x-forwarded-for')?.split(',')[0] || 
-      'unknown'
-    
-    // Apply rate limiting
-    if (!bookingRateLimiter.isAllowed(clientIP)) {
-      return NextResponse.json(
-        { error: 'Too many booking requests. Please try again later.' },
-        { status: 429 }
-      )
-    }
-    
-    // Validate CSRF token if session exists
-    const csrfToken = request.headers.get('x-csrf-token')
-    const sessionToken = request.cookies.get('csrf-token')?.value
-    
-    if (sessionToken && (!csrfToken || !validateCSRFToken(csrfToken, sessionToken))) {
-      return NextResponse.json(
-        { error: 'Invalid CSRF token' },
-        { status: 403 }
-      )
-    }
-    
-    // Parse and validate request body
-    const body = await request.json()
-    const validatedData = validateBookingForm(body)
-    
-    // Additional business logic validation
-    const bookingDate = new Date(validatedData.date)
-    const now = new Date()
-    
-    if (bookingDate < now) {
-      return NextResponse.json(
-        { error: 'Cannot book appointments in the past' },
-        { status: 400 }
-      )
-    }
-    
-    // Check if time slot is available
-    const isAvailable = await checkTimeSlotAvailability(
-      validatedData.barberId,
-      validatedData.date,
-      validatedData.time
-    )
-    
-    if (!isAvailable) {
-      return NextResponse.json(
-        { error: 'Selected time slot is not available' },
-        { status: 409 }
-      )
-    }
-    
-    // Process booking
-    const booking = await createBooking(validatedData)
-    
-    // Return success response (without sensitive data)
-    return NextResponse.json({
-      id: booking.id,
-      status: 'confirmed',
-      message: 'Booking confirmed successfully'
-    })
-    
-  } catch (error) {
-    console.error('Booking API error:', error)
-    
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid booking data', details: error.errors },
-        { status: 400 }
-      )
-    }
-    
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
-  }
-}
-
-async function checkTimeSlotAvailability(
-  barberId: string,
-  date: string,
-  time: string
-): Promise<boolean> {
-  // Implementation for checking availability
-  // This would query your database or booking system
-  return true // Placeholder
-}
-
-async function createBooking(data: any): Promise<{ id: string }> {
-  // Implementation for creating booking
-  // This would save to your database
-  return { id: 'booking-123' } // Placeholder
-}
-```
-
-**2. Environment Variable Security**
-
-```typescript
-// src/lib/env.ts - Type-safe environment variables
-import { z } from 'zod'
-
-const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']),
-  NEXT_PUBLIC_APP_URL: z.string().url(),
-  NEXT_PUBLIC_ANALYTICS_ID: z.string().optional(),
-  API_SECRET_KEY: z.string().min(32), // Server-side only
-  DATABASE_URL: z.string().url(), // Server-side only
-  SMTP_PASSWORD: z.string().min(16) // Server-side only
-})
-
-// Validate environment variables at runtime
-try {
-  const env = envSchema.parse(process.env)
-  
-  // Export validated environment
-  export const ENV = {
-    NODE_ENV: env.NODE_ENV,
-    NEXT_PUBLIC_APP_URL: env.NEXT_PUBLIC_APP_URL,
-    NEXT_PUBLIC_ANALYTICS_ID: env.NEXT_PUBLIC_ANALYTICS_ID,
-    // Server-only variables
-    API_SECRET_KEY: env.API_SECRET_KEY,
-    DATABASE_URL: env.DATABASE_URL,
-    SMTP_PASSWORD: env.SMTP_PASSWORD
-  }
-} catch (error) {
-  console.error('❌ Invalid environment variables:', error)
-  process.exit(1)
-}
-
-// Development-only checks
-if (ENV.NODE_ENV === 'development') {
-  console.log('🔧 Development mode detected')
-  console.log('📊 Analytics:', ENV.NEXT_PUBLIC_ANALYTICS_ID ? 'enabled' : 'disabled')
-}
-```
-
-### Accessibility Standards
-
-**1. WCAG 2.2 AA Compliant Component Pattern**
-
-```tsx
-// ✅ Accessible button with proper ARIA and keyboard support
-import { forwardRef } from 'react'
-import { cn } from '@/lib/utils'
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline'
-  size?: 'sm' | 'md' | 'lg'
-  loading?: boolean
-  icon?: React.ReactNode
-  iconPosition?: 'left' | 'right'
-  description?: string // For additional context
-}
-
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
-  className,
-  variant = 'primary',
-  size = 'md',
-  loading = false,
-  icon,
-  iconPosition = 'left',
-  description,
-  children,
-  disabled,
-  ...props
-}, ref) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-offset-2'
-  
-  const variants = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-300',
-    secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 disabled:bg-gray-100',
-    outline: 'border-2 border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500 disabled:border-gray-200 disabled:text-gray-400'
-  }
-  
-  const sizes = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg'
-  }
-  
-  const generateId = () => `button-${Math.random().toString(36).substr(2, 9)}`
-  const descriptionId = description ? generateId() : undefined
-  
-  return (
-    <button
-      ref={ref}
-      className={cn(
-        baseClasses,
-        variants[variant],
-        sizes[size],
-        (disabled || loading) && 'opacity-50 cursor-not-allowed',
-        className
-      )}
-      disabled={disabled || loading}
-      aria-disabled={disabled || loading}
-      aria-describedby={descriptionId}
-      aria-busy={loading}
-      {...props}
-    >
-      {loading && (
-        <span className="sr-only" aria-live="polite">
-          Loading, please wait
-        </span>
-      )}
-      
-      {description && (
-        <span id={descriptionId} className="sr-only">
-          {description}
-        </span>
-      )}
-      
-      {icon && iconPosition === 'left' && (
-        <span className="mr-2" aria-hidden="true">
-          {icon}
-        </span>
-      )}
-      
-      {loading ? (
-        <span className="animate-spin mr-2" aria-hidden="true">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-          </svg>
-        </span>
-      ) : null}
-      
-      <span className={loading ? 'opacity-70' : ''}>
-        {children}
-      </span>
-      
-      {icon && iconPosition === 'right' && (
-        <span className="ml-2" aria-hidden="true">
-          {icon}
-        </span>
-      )}
-    </button>
-  )
-})
-
-Button.displayName = 'Button'
-export default Button
-```
-
-**2. Advanced Focus Management Pattern**
-
-```tsx
-// ✅ Comprehensive focus management for modals and dropdowns
-import { useEffect, useRef, useCallback } from 'react'
-
-interface UseFocusTrapOptions {
-  isActive: boolean
-  onEscape?: () => void
-  restoreFocus?: boolean
-  initialFocus?: HTMLElement | null
-}
-
-export function useFocusTrap({ 
-  isActive, 
-  onEscape, 
-  restoreFocus = true,
-  initialFocus 
-}: UseFocusTrapOptions) {
-  const containerRef = useRef<HTMLElement>(null)
-  const previousFocusRef = useRef<HTMLElement | null>(null)
-  const keydownHandlerRef = useRef<((e: KeyboardEvent) => void) | null>(null)
-  
-  const getFocusableElements = useCallback(() => {
-    if (!containerRef.current) return []
-    
-    const selector = [
-      'button:not([disabled])',
-      '[href]',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      'textarea:not([disabled])',
-      '[tabindex]:not([tabindex="-1"])',
-      'details summary',
-      'iframe',
-      'embed',
-      'object'
-    ].join(', ')
-    
-    return containerRef.current.querySelectorAll(selector) as NodeListOf<HTMLElement>
-  }, [])
-  
-  const setInitialFocus = useCallback(() => {
-    if (!isActive) return
-    
-    // Use provided initial focus or first focusable element
-    const target = initialFocus || getFocusableElements()[0]
-    
-    if (target) {
-      // Small delay to ensure DOM is ready
-      setTimeout(() => {
-        target.focus()
-        // Announce to screen readers
-        target.setAttribute('aria-live', 'polite')
-        setTimeout(() => target.removeAttribute('aria-live'), 1000)
-      }, 50)
-    }
-  }, [isActive, initialFocus, getFocusableElements])
-  
-  const handleKeydown = useCallback((e: KeyboardEvent) => {
-    if (!isActive) return
-    
-    // Handle Escape key
-    if (e.key === 'Escape' && onEscape) {
-      e.preventDefault()
-      onEscape()
-      return
-    }
-    
-    // Handle Tab key for focus trapping
-    if (e.key === 'Tab') {
-      const focusableElements = getFocusableElements()
-      
-      if (focusableElements.length === 0) return
-      
-      const firstElement = focusableElements[0]
-      const lastElement = focusableElements[focusableElements.length - 1]
-      
-      if (e.shiftKey) {
-        // Shift + Tab (backward)
-        if (document.activeElement === firstElement) {
-          e.preventDefault()
-          lastElement.focus()
-        }
-      } else {
-        // Tab (forward)
-        if (document.activeElement === lastElement) {
-          e.preventDefault()
-          firstElement.focus()
-        }
-      }
-    }
-    
-    // Handle arrow keys for menu navigation
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      const focusableElements = getFocusableElements()
-      const currentIndex = Array.from(focusableElements).indexOf(document.activeElement as HTMLElement)
-      
-      if (currentIndex !== -1) {
-        e.preventDefault()
-        const nextIndex = e.key === 'ArrowDown' 
-          ? (currentIndex + 1) % focusableElements.length
-          : (currentIndex - 1 + focusableElements.length) % focusableElements.length
-        
-        focusableElements[nextIndex].focus()
-      }
-    }
-  }, [isActive, onEscape, getFocusableElements])
-  
-  useEffect(() => {
-    if (!isActive || !containerRef.current) return
-    
-    // Store current focus
-    if (restoreFocus) {
-      previousFocusRef.current = document.activeElement as HTMLElement
-    }
-    
-    // Set initial focus
-    setInitialFocus()
-    
-    // Add event listeners
-    keydownHandlerRef.current = handleKeydown
-    document.addEventListener('keydown', keydownHandlerRef.current)
-    
-    // Prevent body scroll when modal is open
-    const originalOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    
-    return () => {
-      // Clean up event listeners
-      if (keydownHandlerRef.current) {
-        document.removeEventListener('keydown', keydownHandlerRef.current)
-        keydownHandlerRef.current = null
-      }
-      
-      // Restore body scroll
-      document.body.style.overflow = originalOverflow
-      
-      // Restore focus when unmounting
-      if (restoreFocus && previousFocusRef.current) {
-        setTimeout(() => {
-          previousFocusRef.current?.focus()
-        }, 0)
-      }
-    }
-  }, [isActive, handleKeydown, setInitialFocus, restoreFocus])
-  
-  return containerRef
-}
-
-// Usage example for modal
-function Modal({ isOpen, onClose, children }: ModalProps) {
-  const modalRef = useFocusTrap({
-    isActive: isOpen,
-    onEscape: onClose,
-    restoreFocus: true
-  })
-  
-  if (!isOpen) return null
-  
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div 
-        className="absolute inset-0 bg-black/50" 
-        onClick={onClose}
-        aria-label="Close modal"
-      />
-      <div 
-        ref={modalRef}
-        role="dialog"
-        aria-modal="true"
-        className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4"
-      >
-        {children}
-      </div>
-    </div>
-  )
-}
-```
-
-**3. Screen Reader Announcements Pattern**
-
-```tsx
-// ✅ Advanced screen reader announcement system
-import { useEffect, useRef, useState } from 'react'
-
-interface AnnouncementOptions {
-  politeness?: 'polite' | 'assertive' | 'off'
-  timeout?: number
-  clearPrevious?: boolean
-}
-
-export function useAnnouncement() {
-  const announcementRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<NodeJS.Timeout>()
-  
-  const announce = useCallback((message: string, options: AnnouncementOptions = {}) => {
-    const {
-      politeness = 'polite',
-      timeout = 1000,
-      clearPrevious = true
-    } = options
-    
-    if (!announcementRef.current) return
-    
-    // Clear any existing timeout
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-    
-    // Clear previous announcement if requested
-    if (clearPrevious) {
-      announcementRef.current.textContent = ''
-    }
-    
-    // Set politeness level
-    announcementRef.current.setAttribute('aria-live', politeness)
-    
-    // Add the message
-    announcementRef.current.textContent = message
-    
-    // Clear after timeout to prevent screen reader clutter
-    timeoutRef.current = setTimeout(() => {
-      if (announcementRef.current) {
-        announcementRef.current.textContent = ''
-      }
-    }, timeout)
-  }, [])
-  
-  const AnnouncementRegion = useCallback(() => (
-    <div
-      ref={announcementRef}
-      className="sr-only"
-      aria-live="polite"
-      aria-atomic="true"
-    />
-  ), [])
-  
-  return { announce, AnnouncementRegion }
-}
-
-// Usage in a component
-function BookingForm() {
-  const { announce, AnnouncementRegion } = useAnnouncement()
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    
-    announce('Booking is being processed, please wait', {
-      politeness: 'assertive',
-      timeout: 3000
-    })
-    
-    try {
-      await submitBooking()
-      announce('Booking confirmed successfully! You will receive a confirmation email shortly.', {
-        politeness: 'assertive',
-        timeout: 5000
-      })
-    } catch (error) {
-      announce('Booking failed. Please check your information and try again.', {
-        politeness: 'assertive',
-        timeout: 5000
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-  
-  return (
-    <>
-      <AnnouncementRegion />
-      <form onSubmit={handleSubmit}>
-        {/* Form fields */}
-        <button 
-          type="submit" 
-          disabled={isSubmitting}
-          aria-busy={isSubmitting}
-        >
-          {isSubmitting ? 'Processing...' : 'Book Appointment'}
-        </button>
-      </form>
-    </>
-  )
-}
-```
-
-**4. Advanced Navigation Accessibility**
-
-```tsx
-// ✅ Fully accessible navigation component
-import { useState, useEffect, useRef } from 'react'
-import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
-
-interface NavigationItem {
-  id: string
-  label: string
-  href: string
-  current?: boolean
-  children?: NavigationItem[]
-}
-
-export function AccessibleNavigation({ items }: { items: NavigationItem[] }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null)
-  const menuRef = useFocusTrap({
-    isActive: isOpen,
-    onEscape: () => setIsOpen(false)
-  })
-  
-  const handleMenuToggle = () => {
-    setIsOpen(!isOpen)
-    if (!isOpen) {
-      // Announce menu opening
-      announce('Main menu opened')
-    }
-  }
-  
-  const handleSubmenuToggle = (itemId: string) => {
-    const wasOpen = activeSubmenu === itemId
-    setActiveSubmenu(wasOpen ? null : itemId)
-    
-    if (!wasOpen) {
-      const item = items.find(i => i.id === itemId)
-      announce(`Submenu ${item?.label} opened`)
-    }
-  }
-  
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    switch (e.key) {
-      case 'Enter':
-      case ' ':
-        if (e.currentTarget.getAttribute('role') === 'menuitem') {
-          e.preventDefault()
-          const href = e.currentTarget.getAttribute('href')
-          if (href && href !== '#') {
-            window.location.href = href
-          }
-        }
-        break
-        
-      case 'ArrowDown':
-        e.preventDefault()
-        // Focus next menu item
-        const nextItem = e.currentTarget.nextElementSibling as HTMLElement
-        nextItem?.focus()
-        break
-        
-      case 'ArrowUp':
-        e.preventDefault()
-        // Focus previous menu item
-        const prevItem = e.currentTarget.previousElementSibling as HTMLElement
-        prevItem?.focus()
-        break
-        
-      case 'Home':
-        e.preventDefault()
-        // Focus first menu item
-        const firstItem = menuRef.current?.querySelector('[role="menuitem"]') as HTMLElement
-        firstItem?.focus()
-        break
-        
-      case 'End':
-        e.preventDefault()
-        // Focus last menu item
-        const menuItems = menuRef.current?.querySelectorAll('[role="menuitem"]') as NodeListOf<HTMLElement>
-        const lastItem = menuItems?.[menuItems.length - 1]
-        lastItem?.focus()
-        break
-    }
-  }
-  
-  return (
-    <nav aria-label="Main navigation">
-      {/* Mobile menu button */}
-      <button
-        onClick={handleMenuToggle}
-        aria-expanded={isOpen}
-        aria-controls="main-menu"
-        className="md:hidden p-2"
-      >
-        <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
-        {/* Hamburger icon */}
-      </button>
-      
-      {/* Navigation menu */}
-      <div
-        ref={menuRef}
-        id="main-menu"
-        role={isOpen ? 'dialog' : 'navigation'}
-        aria-modal={isOpen}
-        className={`${isOpen ? 'block' : 'hidden'} md:block`}
-      >
-        <ul role="menubar" className="flex flex-col md:flex-row">
-          {items.map((item) => (
-            <li key={item.id} role="none">
-              {item.children ? (
-                // Submenu
-                <div>
-                  <button
-                    role="menuitem"
-                    aria-haspopup="true"
-                    aria-expanded={activeSubmenu === item.id}
-                    onClick={() => handleSubmenuToggle(item.id)}
-                    onKeyDown={handleKeyDown}
-                    className="flex items-center justify-between w-full px-4 py-2"
-                  >
-                    {item.label}
-                    <span aria-hidden="true">▼</span>
-                  </button>
-                  
-                  {activeSubmenu === item.id && (
-                    <ul role="menu" className="ml-4">
-                      {item.children.map((child) => (
-                        <li key={child.id} role="none">
-                          <a
-                            role="menuitem"
-                            href={child.href}
-                            aria-current={child.current ? 'page' : undefined}
-                            onKeyDown={handleKeyDown}
-                            className="block px-4 py-2"
-                          >
-                            {child.label}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ) : (
-                // Regular link
-                <a
-                  role="menuitem"
-                  href={item.href}
-                  aria-current={item.current ? 'page' : undefined}
-                  onKeyDown={handleKeyDown}
-                  className="block px-4 py-2"
-                >
-                  {item.label}
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </nav>
-  )
-}
-
-// Helper function for announcements
-function announce(message: string) {
-  const announcement = document.createElement('div')
-  announcement.setAttribute('aria-live', 'polite')
-  announcement.setAttribute('aria-atomic', 'true')
-  announcement.className = 'sr-only'
-  announcement.textContent = message
-  
-  document.body.appendChild(announcement)
-  
-  setTimeout(() => {
-    document.body.removeChild(announcement)
-  }, 1000)
-}
-```
-
-### Testing Standards
-
-**1. Advanced Component Testing Pattern**
-
-```tsx
-// ✅ Comprehensive component testing with React Testing Library
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
-import Button from '../Button'
-
-// Test utilities for consistent testing
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(
-    <div className="theme-provider">
-      {component}
-    </div>
-  )
-}
-
-const getButtonByRole = (name: RegExp | string) => {
-  return screen.getByRole('button', { name })
-}
-
-const expectButtonToBeDisabled = (button: HTMLElement) => {
-  expect(button).toBeDisabled()
-  expect(button).toHaveAttribute('aria-disabled', 'true')
-  expect(button).toHaveClass('opacity-50', 'cursor-not-allowed')
-}
-
-describe('Button Component', () => {
-  const user = userEvent.setup({
-    // Configure user event options
-    delay: null, // No delay for faster tests
-    advanceTimers: vi.advanceTimersByTime
-  })
-  
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.useFakeTimers()
-  })
-  
-  afterEach(() => {
-    vi.useRealTimers()
-  })
-  
-  describe('Accessibility Tests', () => {
-    it('should have proper ARIA attributes by default', () => {
-      renderWithTheme(<Button>Click me</Button>)
-      
-      const button = getButtonByRole(/click me/i)
-      
-      expect(button).toHaveAttribute('type', 'button')
-      expect(button).not.toHaveAttribute('aria-disabled')
-      expect(button).not.toHaveAttribute('aria-busy')
-      expect(button).not.toHaveAttribute('aria-describedby')
-    })
-    
-    it('should announce loading state to screen readers', async () => {
-      renderWithTheme(<Button loading>Loading</Button>)
-      
-      const button = getButtonByRole(/loading/i)
-      
-      expectButtonToBeDisabled(button)
-      expect(button).toHaveAttribute('aria-busy', 'true')
-      
-      // Check for loading announcement
-      const loadingAnnouncement = screen.getByText('Loading, please wait')
-      expect(loadingAnnouncement).toBeInTheDocument()
-      expect(loadingAnnouncement).toHaveAttribute('aria-live', 'polite')
-    })
-    
-    it('should include description when provided', () => {
-      const description = 'This action will save your changes'
-      renderWithTheme(
-        <Button description={description}>Save</Button>
-      )
-      
-      const button = getButtonByRole(/save/i)
-      const descriptionId = button.getAttribute('aria-describedby')
-      
-      expect(descriptionId).toBeTruthy()
-      
-      if (descriptionId) {
-        const descriptionElement = document.getElementById(descriptionId)
-        expect(descriptionElement).toBeInTheDocument()
-        expect(descriptionElement).toHaveTextContent(description)
-        expect(descriptionElement).toHaveClass('sr-only')
-      }
-    })
-    
-    it('should support keyboard navigation', async () => {
-      const handleClick = vi.fn()
-      renderWithTheme(<Button onClick={handleClick}>Click me</Button>)
-      
-      const button = getButtonByRole(/click me/i)
-      
-      // Test Enter key
-      await user.keyboard('[Tab]') // Focus button
-      expect(button).toHaveFocus()
-      
-      await user.keyboard('[Enter]')
-      expect(handleClick).toHaveBeenCalledTimes(1)
-      
-      handleClick.mockClear()
-      
-      // Test Space key
-      await user.keyboard('[Space]')
-      expect(handleClick).toHaveBeenCalledTimes(1)
-    })
-  })
-  
-  describe('User Interaction Tests', () => {
-    it('should handle click events correctly', async () => {
-      const handleClick = vi.fn()
-      renderWithTheme(<Button onClick={handleClick}>Click me</Button>)
-      
-      const button = getButtonByRole(/click me/i)
-      
-      await user.click(button)
-      expect(handleClick).toHaveBeenCalledTimes(1)
-    })
-    
-    it('should not trigger events when disabled', async () => {
-      const handleClick = vi.fn()
-      renderWithTheme(
-        <Button onClick={handleClick} disabled>
-          Disabled Button
-        </Button>
-      )
-      
-      const button = getButtonByRole(/disabled button/i)
-      
-      expectButtonToBeDisabled(button)
-      
-      await user.click(button)
-      expect(handleClick).not.toHaveBeenCalled()
-    })
-    
-    it('should not trigger events when loading', async () => {
-      const handleClick = vi.fn()
-      renderWithTheme(
-        <Button onClick={handleClick} loading>
-          Loading Button
-        </Button>
-      )
-      
-      const button = getButtonByRole(/loading button/i)
-      
-      expectButtonToBeDisabled(button)
-      
-      await user.click(button)
-      expect(handleClick).not.toHaveBeenCalled()
-    })
-  })
-  
-  describe('Visual State Tests', () => {
-    it('should apply correct variant classes', () => {
-      const { rerender } = renderWithTheme(
-        <Button variant="primary">Primary</Button>
-      )
-      
-      const button = getButtonByRole(/primary/i)
-      expect(button).toHaveClass('bg-blue-600', 'text-white')
-      
-      rerender(<Button variant="secondary">Secondary</Button>)
-      expect(button).toHaveClass('bg-gray-200', 'text-gray-900')
-      
-      rerender(<Button variant="outline">Outline</Button>)
-      expect(button).toHaveClass('border-2', 'border-gray-300', 'text-gray-700')
-    })
-    
-    it('should apply correct size classes', () => {
-      const { rerender } = renderWithTheme(<Button size="sm">Small</Button>)
-      
-      const button = getButtonByRole(/small/i)
-      expect(button).toHaveClass('px-3', 'py-1.5', 'text-sm')
-      
-      rerender(<Button size="md">Medium</Button>)
-      expect(button).toHaveClass('px-4', 'py-2', 'text-base')
-      
-      rerender(<Button size="lg">Large</Button>)
-      expect(button).toHaveClass('px-6', 'py-3', 'text-lg')
-    })
-    
-    it('should render icons in correct positions', () => {
-      const MockIcon = () => <div data-testid="mock-icon">Icon</div>
-      
-      const { rerender } = renderWithTheme(
-        <Button icon={<MockIcon />} iconPosition="left">
-          With Left Icon
-        </Button>
-      )
-      
-      const button = getButtonByRole(/with left icon/i)
-      const icon = screen.getByTestId('mock-icon')
-      
-      expect(icon).toBeInTheDocument()
-      expect(button).toContainElement(icon)
-      
-      // Test icon position
-      const buttonContent = button.textContent
-      expect(buttonContent?.indexOf('Icon')).toBeLessThan(buttonContent?.indexOf('With Left Icon') ?? -1)
-      
-      rerender(
-        <Button icon={<MockIcon />} iconPosition="right">
-          With Right Icon
-        </Button>
-      )
-      
-      const rightButtonContent = button.textContent
-      expect(rightButtonContent?.indexOf('With Right Icon')).toBeLessThan(rightButtonContent?.indexOf('Icon') ?? -1)
-    })
-  })
-  
-  describe('Edge Cases', () => {
-    it('should handle missing children gracefully', () => {
-      // @ts-expect-error Testing invalid props
-      renderWithTheme(<Button />)
-      
-      const button = screen.getByRole('button')
-      expect(button).toBeInTheDocument()
-      expect(button).toHaveTextContent('')
-    })
-    
-    it('should handle extremely long text', () => {
-      const longText = 'A'.repeat(1000)
-      renderWithTheme(<Button>{longText}</Button>)
-      
-      const button = screen.getByRole('button')
-      expect(button).toBeInTheDocument()
-      expect(button).toHaveTextContent(longText)
-    })
-    
-    it('should handle rapid state changes', async () => {
-      const { rerender } = renderWithTheme(<Button>Normal</Button>)
-      
-      const button = screen.getByRole('button')
-      
-      // Rapidly change states
-      rerender(<Button loading>Loading</Button>)
-      expectButtonToBeDisabled(button)
-      
-      rerender(<Button disabled>Disabled</Button>)
-      expectButtonToBeDisabled(button)
-      
-      rerender(<Button>Normal Again</Button>)
-      expect(button).not.toBeDisabled()
-    })
-  })
-})
-```
-
-**2. Integration Testing with Mock APIs**
-
-```tsx
-// ✅ Advanced integration testing with API mocking
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
-import BookingForm from '../BookingForm'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-// Mock API responses
-const mockBookingResponse = {
-  id: 'booking-123',
-  status: 'confirmed',
-  message: 'Booking confirmed successfully'
-}
-
-const mockServices = [
-  { id: 'service-1', name: 'Haircut', price: 50, duration: '30min' },
-  { id: 'service-2', name: 'Shave', price: 30, duration: '20min' }
-]
-
-const mockBarbers = [
-  { id: 'barber-1', name: 'John Doe', available: true },
-  { id: 'barber-2', name: 'Jane Smith', available: false }
-]
-
-// Mock fetch API
-const mockFetch = vi.fn()
-global.fetch = mockFetch
-
-describe('BookingForm Integration Tests', () => {
-  const user = userEvent.setup()
-  let queryClient: QueryClient
-  
-  beforeEach(() => {
-    queryClient = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-        mutations: { retry: false }
-      }
-    })
-    
-    vi.clearAllMocks()
-    mockFetch.mockClear()
-  })
-  
-  const renderWithProviders = (component: React.ReactElement) => {
-    return render(
-      <QueryClientProvider client={queryClient}>
-        {component}
-      </QueryClientProvider>
-    )
-  }
-  
-  it('should complete full booking flow successfully', async () => {
-    // Mock API responses
-    mockFetch
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockServices
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockBarbers
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockBookingResponse
-      })
-    
-    renderWithProviders(<BookingForm />)
-    
-    // Wait for initial data to load
-    await waitFor(() => {
-      expect(screen.getByText('Haircut')).toBeInTheDocument()
-      expect(screen.getByText('John Doe')).toBeInTheDocument()
-    })
-    
-    // Fill out the form
-    await user.type(screen.getByLabelText(/name/i), 'John Smith')
-    await user.type(screen.getByLabelText(/email/i), 'john@example.com')
-    await user.type(screen.getByLabelText(/phone/i), '+1234567890')
-    
-    // Select service
-    await user.click(screen.getByText('Haircut'))
-    
-    // Select barber
-    await user.click(screen.getByText('John Doe'))
-    
-    // Select date and time (mock implementation)
-    const dateInput = screen.getByLabelText(/date/i)
-    await user.clear(dateInput)
-    await user.type(dateInput, '2026-12-25')
-    
-    const timeSelect = screen.getByLabelText(/time/i)
-    await user.selectOptions(timeSelect, '10:00')
-    
-    // Submit form
-    const submitButton = screen.getByRole('button', { name: /book appointment/i })
-    await user.click(submitButton)
-    
-    // Verify loading state
-    expect(submitButton).toBeDisabled()
-    expect(submitButton).toHaveTextContent(/processing/i)
-    
-    // Wait for success
-    await waitFor(() => {
-      expect(screen.getByText(/booking confirmed/i)).toBeInTheDocument()
-    })
-    
-    // Verify API calls
-    expect(mockFetch).toHaveBeenCalledTimes(3)
-    expect(mockFetch).toHaveBeenLastCalledWith(
-      '/api/bookings',
-      expect.objectContaining({
-        method: 'POST',
-        headers: expect.objectContaining({
-          'Content-Type': 'application/json'
-        }),
-        body: expect.stringContaining('John Smith')
-      })
-    )
-  })
-  
-  it('should handle API errors gracefully', async () => {
-    // Mock API error
-    mockFetch
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockServices
-      })
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockBarbers
-      })
-      .mockResolvedValueOnce({
-        ok: false,
-        status: 500,
-        json: async () => ({ error: 'Server error' })
-      })
-    
-    renderWithProviders(<BookingForm />)
-    
-    // Fill out form minimally
-    await user.type(screen.getByLabelText(/name/i), 'John Smith')
-    await user.type(screen.getByLabelText(/email/i), 'john@example.com')
-    await user.type(screen.getByLabelText(/phone/i), '+1234567890')
-    
-    await user.click(screen.getByText('Haircut'))
-    await user.click(screen.getByText('John Doe'))
-    
-    // Submit form
-    await user.click(screen.getByRole('button', { name: /book appointment/i }))
-    
-    // Wait for error message
-    await waitFor(() => {
-      expect(screen.getByText(/booking failed/i)).toBeInTheDocument()
-    })
-    
-    // Verify button is re-enabled
-    const submitButton = screen.getByRole('button', { name: /book appointment/i })
-    expect(submitButton).not.toBeDisabled()
-  })
-  
-  it('should validate form fields correctly', async () => {
-    renderWithProviders(<BookingForm />)
-    
-    // Try to submit empty form
-    const submitButton = screen.getByRole('button', { name: /book appointment/i })
-    await user.click(submitButton)
-    
-    // Check for validation errors
-    await waitFor(() => {
-      expect(screen.getByText(/name is required/i)).toBeInTheDocument()
-      expect(screen.getByText(/email is required/i)).toBeInTheDocument()
-      expect(screen.getByText(/phone is required/i)).toBeInTheDocument()
-    })
-    
-    // Verify form was not submitted
-    expect(mockFetch).not.toHaveBeenCalled()
-  })
-})
-```
-
-**3. Performance Testing with Lighthouse CI**
-
-```tsx
-// ✅ Performance testing configuration
-import { test, expect } from '@playwright/test'
-import { audit } from 'lighthouse'
-import { startFlow, continueFlow } from 'lighthouse/core/flow.js'
-
-test.describe('Performance Tests', () => {
-  test('should meet Lighthouse performance budgets', async ({ page }) => {
-    await page.goto('/')
-    
-    // Wait for page to fully load
-    await page.waitForLoadState('networkidle')
-    
-    // Run Lighthouse audit
-    const { lhr } = await audit(page, {
-      onlyCategories: ['performance'],
-      settings: {
-        formFactor: 'desktop',
-        throttling: {
-          rttMs: 40,
-          throughputKbps: 10240,
-          cpuSlowdownMultiplier: 1,
-          requestLatencyMs: 0,
-          downloadThroughputKbps: 0,
-          uploadThroughputKbps: 0
-        }
-      }
-    })
-    
-    // Assert performance scores
-    expect(lhr.categories.performance.score).toBeGreaterThanOrEqual(0.9)
-    
-    // Assert specific metrics
-    const metrics = {
-      'first-contentful-paint': lhr.audits['first-contentful-paint'].numericValue,
-      'largest-contentful-paint': lhr.audits['largest-contentful-paint'].numericValue,
-      'cumulative-layout-shift': lhr.audits['cumulative-layout-shift'].numericValue,
-      'total-blocking-time': lhr.audits['total-blocking-time'].numericValue
-    }
-    
-    expect(metrics['first-contentful-paint']).toBeLessThan(2000) // 2s
-    expect(metrics['largest-contentful-paint']).toBeLessThan(2500) // 2.5s
-    expect(metrics['cumulative-layout-shift']).toBeLessThan(0.1)
-    expect(metrics['total-blocking-time']).toBeLessThan(300) // 300ms
-  })
-  
-  test('should handle user interactions smoothly', async ({ page }) => {
-    const flow = await startFlow(page)
-    
-    // Navigate to page
-    await flow.navigate({
-      url: '/',
-      stepName: 'Initial navigation'
-    })
-    
-    // Simulate user interactions
-    await page.click('[data-testid="services-button"]')
-    await flow.continue({
-      stepName: 'Open services modal'
-    })
-    
-    await page.click('[data-testid="booking-form"]')
-    await flow.continue({
-      stepName: 'Open booking form'
-    })
-    
-    // Fill form
-    await page.fill('[data-testid="name-input"]', 'John Doe')
-    await page.fill('[data-testid="email-input"]', 'john@example.com')
-    await flow.continue({
-      stepName: 'Fill booking form'
-    })
-    
-    // Get flow results
-    const { lhr } = await flow.createFlowResult()
-    
-    // Assert interaction performance
-    const interactionMetrics = lhr.audits['user-timings'].details.items
-    
-    // Check that interactions complete within reasonable time
-    for (const metric of interactionMetrics) {
-      if (metric.name.includes('Click') || metric.name.includes('Keypress')) {
-        expect(metric.duration).toBeLessThan(200) // 200ms max for interactions
-      }
-    }
-  })
-  
-  test('should maintain performance on mobile', async ({ page }) => {
-    // Set mobile viewport
-    await page.setViewportSize({ width: 375, height: 667 })
-    
-    // Simulate mobile network conditions
-    await page.route('**/*', async (route) => {
-      // Add network throttling for mobile simulation
-      await route.continue()
-    })
-    
-    await page.goto('/')
-    await page.waitForLoadState('networkidle')
-    
-    // Run mobile-specific Lighthouse audit
-    const { lhr } = await audit(page, {
-      onlyCategories: ['performance'],
-      settings: {
-        formFactor: 'mobile',
-        throttling: {
-          rttMs: 150,
-          throughputKbps: 1638,
-          cpuSlowdownMultiplier: 4,
-          requestLatencyMs: 0,
-          downloadThroughputKbps: 0,
-          uploadThroughputKbps: 0
-        }
-      }
-    })
-    
-    // Mobile has slightly relaxed thresholds but still strict
-    expect(lhr.categories.performance.score).toBeGreaterThanOrEqual(0.8)
-    
-    const mobileMetrics = {
-      'first-contentful-paint': lhr.audits['first-contentful-paint'].numericValue,
-      'largest-contentful-paint': lhr.audits['largest-contentful-paint'].numericValue,
-      'cumulative-layout-shift': lhr.audits['cumulative-layout-shift'].numericValue
-    }
-    
-    expect(mobileMetrics['first-contentful-paint']).toBeLessThan(3000) // 3s for mobile
-    expect(mobileMetrics['largest-contentful-paint']).toBeLessThan(4000) // 4s for mobile
-    expect(mobileMetrics['cumulative-layout-shift']).toBeLessThan(0.1)
-  })
-})
-```
-
-### SEO & Structured Data Standards
-
-**1. Advanced Structured Data Pattern**
-
-```tsx
-// ✅ Comprehensive structured data with proper validation
-import { BUSINESS_INFO } from '@/data/constants'
-import { useMemo } from 'react'
-import { usePathname } from 'next/navigation'
-
-interface StructuredDataConfig {
-  type: 'Organization' | 'LocalBusiness' | 'Service' | 'BreadcrumbList' | 'FAQPage' | 'Review'
-  data?: Record<string, any>
-  condition?: boolean
-  priority?: boolean
-}
-
-interface StructuredDataProps {
-  configs: StructuredDataConfig[]
-}
-
-export default function StructuredDataManager({ configs }: StructuredDataProps) {
-  const pathname = usePathname()
-  
-  const structuredData = useMemo(() => {
-    // Filter and validate structured data based on current page
-    const validConfigs = configs.filter(config => {
-      // Skip if condition is explicitly false
-      if (config.condition === false) return false
-      
-      // Page-specific validation
-      switch (config.type) {
-        case 'BreadcrumbList':
-          const items = config.data?.items
-          return items && items.length >= 2 // Only show breadcrumbs with meaningful navigation
-        
-        case 'Organization':
-        case 'LocalBusiness':
-          return pathname === '/' // Only on homepage
-        
-        case 'Service':
-          return pathname.startsWith('/services')
-        
-        case 'FAQPage':
-          return pathname.startsWith('/faq') || config.data?.faqs?.length > 0
-        
-        case 'Review':
-          return config.data?.reviews?.length > 0
-        
-        default:
-          return true
-      }
-    })
-    
-    // Generate structured data objects with validation
-    return validConfigs.map(config => {
-      switch (config.type) {
-        case 'Organization':
-          return generateOrganizationData(config.data)
-        
-        case 'LocalBusiness':
-          return generateLocalBusinessData(config.data)
-        
-        case 'BreadcrumbList':
-          return generateBreadcrumbData(config.data)
-        
-        case 'Service':
-          return generateServiceData(config.data)
-        
-        case 'FAQPage':
-          return generateFAQData(config.data)
-        
-        case 'Review':
-          return generateReviewData(config.data)
-        
-        default:
-          return config.data || {}
-      }
-    }).filter(data => Object.keys(data).length > 0) // Remove empty objects
-  }, [configs, pathname])
-  
-  return (
-    <>
-      {structuredData.map((data, index) => (
-        <script
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(data, null, 0)
-          }}
-        />
-      ))}
-    </>
-  )
-}
-
-// Data generators with validation
-function generateOrganizationData(data: any) {
-  const orgData = {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: BUSINESS_INFO.name,
-    url: BUSINESS_INFO.url,
-    logo: BUSINESS_INFO.logo,
-    description: BUSINESS_INFO.description,
-    foundingDate: BUSINESS_INFO.foundedDate,
-    areaServed: {
-      '@type': 'Place',
-      name: 'Dallas, Texas',
-      address: generateAddressData()
-    },
-    contactPoint: {
-      '@type': 'ContactPoint',
-      telephone: BUSINESS_INFO.phone,
-      contactType: 'customer service',
-      availableLanguage: ['English'],
-      areaServed: 'US'
-    },
-    sameAs: generateSocialLinks(),
-    openingHours: BUSINESS_INFO.hours.map(day => 
-      `${day.name} ${day.open}-${day.close}`
-    ),
-    priceRange: '$$$',
-    paymentAccepted: 'Cash, Credit Card, Digital'
-  }
-  
-  // Validate required fields
-  if (!orgData.name || !orgData.url) {
-    console.warn('Missing required Organization fields')
-    return null
-  }
-  
-  return orgData
-}
-
-function generateLocalBusinessData(data: any) {
-  const businessData = generateOrganizationData(data)
-  if (!businessData) return null
-  
-  return {
-    ...businessData,
-    '@type': 'LocalBusiness',
-    address: generateAddressData(),
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: BUSINESS_INFO.coordinates?.lat,
-      longitude: BUSINESS_INFO.coordinates?.lng
-    },
-    hasMap: BUSINESS_INFO.mapUrl,
-    photo: BUSINESS_INFO.images?.[0],
-    servesCuisine: ['Barber Services'],
-    aggregateRating: BUSINESS_INFO.aggregateRating ? {
-      '@type': 'AggregateRating',
-      ratingValue: BUSINESS_INFO.aggregateRating.rating,
-      reviewCount: BUSINESS_INFO.aggregateRating.count,
-      bestRating: 5,
-      worstRating: 1
-    } : undefined
-  }
-}
-
-function generateAddressData() {
-  const addressParts = BUSINESS_INFO.address.split(', ')
-  const streetAddress = addressParts[0]
-  const cityStateZip = addressParts[1] || ''
-  const [city, stateZip] = cityStateZip.split(', ')
-  const [state, zipCode] = stateZip?.split(' ') || []
-  
-  return {
-    '@type': 'PostalAddress',
-    streetAddress,
-    addressLocality: city || 'Dallas',
-    addressRegion: state || 'TX',
-    postalCode: zipCode || '75201',
-    addressCountry: 'US'
-  }
-}
-
-function generateSocialLinks() {
-  const social = BUSINESS_INFO.social || {}
-  const links = []
-  
-  if (social.instagram) {
-    links.push(`https://www.instagram.com/${social.instagram}`)
-  }
-  if (social.facebook) {
-    links.push(`https://www.facebook.com/${social.facebook}`)
-  }
-  if (social.twitter) {
-    links.push(`https://twitter.com/${social.twitter}`)
-  }
-  if (social.youtube) {
-    links.push(`https://www.youtube.com/${social.youtube}`)
-  }
-  
-  return links
-}
-
-function generateBreadcrumbData(data: any) {
-  const { items } = data
-  
-  if (!items || items.length < 2) {
-    return null
-  }
-  
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item: any, index: number) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: item.href,
-      ...(item.image && { image: item.image })
-    }))
-  }
-}
-
-function generateServiceData(data: any) {
-  const { service, barber } = data
-  
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: service.name,
-    description: service.description,
-    provider: {
-      '@type': 'Organization',
-      name: BUSINESS_INFO.name,
-      url: BUSINESS_INFO.url
-    },
-    areaServed: generateAddressData(),
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: 'Barber Services',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: service.name,
-            description: service.description
-          },
-          price: service.price,
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-          validFrom: new Date().toISOString()
-        }
-      ]
-    },
-    ...(barber && {
-      performer: {
-        '@type': 'Person',
-        name: barber.name,
-        jobTitle: 'Barber',
-        image: barber.image,
-        description: barber.description
-      }
-    })
-  }
-}
-
-function generateFAQData(data: any) {
-  const { faqs } = data
-  
-  if (!faqs || faqs.length === 0) {
-    return null
-  }
-  
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map((faq: any) => ({
-      '@type': 'Question',
-      name: faq.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer
-      }
-    }))
-  }
-}
-
-function generateReviewData(data: any) {
-  const { reviews, aggregateRating } = data
-  
-  if (!reviews || reviews.length === 0) {
-    return null
-  }
-  
-  const reviewData = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: BUSINESS_INFO.name,
-    review: reviews.map((review: any) => ({
-      '@type': 'Review',
-      author: {
-        '@type': 'Person',
-        name: review.authorName
-      },
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: review.rating,
-        bestRating: 5,
-        worstRating: 1
-      },
-      reviewBody: review.comment,
-      datePublished: review.date,
-      ...(review.helpful && {
-        helpfulVoting: {
-          '@type': 'InteractionCounter',
-          interactionType: 'https://schema.org/LikeAction',
-          userInteractionCount: review.helpful
-        }
-      })
-    }))
-  }
-  
-  // Add aggregate rating if available
-  if (aggregateRating) {
-    reviewData.aggregateRating = {
-      '@type': 'AggregateRating',
-      ratingValue: aggregateRating.rating,
-      reviewCount: aggregateRating.count,
-      bestRating: 5,
-      worstRating: 1
-    }
-  }
-  
-  return reviewData
-}
-```
-
-**2. Advanced Meta Tag Management**
-
-```tsx
-// ✅ Dynamic meta tag generation with SEO optimization
-import { Metadata } from 'next'
-import { BUSINESS_INFO } from '@/data/constants'
-
-interface SEOConfig {
-  title: string
-  description: string
-  keywords?: string[]
-  canonical?: string
-  noindex?: boolean
-  nofollow?: boolean
-  openGraph?: {
-    title?: string
-    description?: string
-    image?: string
-    url?: string
-    type?: 'website' | 'article'
-    locale?: string
-    siteName?: string
-  }
-  twitter?: {
-    card?: 'summary' | 'summary_large_image'
-    title?: string
-    description?: string
-    image?: string
-    creator?: string
-    site?: string
-  }
-  jsonLd?: any[]
-  alternates?: {
-    languages: Record<string, string>
-    canonical?: string
-  }
-}
-
-export function generateMetadata(config: SEOConfig): Metadata {
-  const baseUrl = BUSINESS_INFO.url
-  const defaultTitle = BUSINESS_INFO.name
-  const defaultDescription = BUSINESS_INFO.description
-  
-  const title = config.title ? `${config.title} | ${defaultTitle}` : defaultTitle
-  const description = config.description || defaultDescription
-  const canonical = config.canonical ? `${baseUrl}${config.canonical}` : baseUrl
-  
-  const metadata: Metadata = {
-    title,
-    description,
-    keywords: config.keywords?.join(', '),
-    authors: [{ name: BUSINESS_INFO.name }],
-    creator: BUSINESS_INFO.name,
-    publisher: BUSINESS_INFO.name,
-    
-    // Canonical URL
-    alternates: {
-      canonical: canonical,
-      ...(config.alternates?.languages && {
-        languages: config.alternates.languages
-      })
-    },
-    
-    // Robots meta
-    robots: {
-      index: !config.noindex,
-      follow: !config.nofollow,
-      googleBot: {
-        index: !config.noindex,
-        follow: !config.nofollow,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1
-      }
-    },
-    
-    // Open Graph
-    openGraph: {
-      title: config.openGraph?.title || title,
-      description: config.openGraph?.description || description,
-      url: config.openGraph?.url ? `${baseUrl}${config.openGraph.url}` : canonical,
-      siteName: config.openGraph?.siteName || BUSINESS_INFO.name,
-      locale: config.openGraph?.locale || 'en_US',
-      type: config.openGraph?.type || 'website',
-      ...(config.openGraph?.image && {
-        images: [
-          {
-            url: config.openGraph.image,
-            width: 1200,
-            height: 630,
-            alt: title,
-            type: 'image/jpeg'
-          }
-        ]
-      })
-    },
-    
-    // Twitter Card
-    twitter: {
-      card: config.twitter?.card || 'summary_large_image',
-      title: config.twitter?.title || title,
-      description: config.twitter?.description || description,
-      creator: config.twitter?.creator || `@${BUSINESS_INFO.social?.twitter || BUSINESS_INFO.name}`,
-      site: config.twitter?.site || `@${BUSINESS_INFO.social?.twitter || BUSINESS_INFO.name}`,
-      ...(config.twitter?.image && {
-        images: [config.twitter.image]
-      })
-    },
-    
-    // Verification and other meta tags
-    verification: {
-      google: BUSINESS_INFO.verification?.google,
-      yandex: BUSINESS_INFO.verification?.yandex,
-      bing: BUSINESS_INFO.verification?.bing
-    },
-    
-    // App icons
-    icons: {
-      icon: '/favicon.ico',
-      shortcut: '/favicon-16x16.png',
-      apple: '/apple-touch-icon.png',
-      other: {
-        rel: 'apple-touch-icon-precomposed',
-        url: '/apple-touch-icon-precomposed.png'
-      }
-    },
-    
-    // Additional meta tags
-    other: {
-      'theme-color': '#000000',
-      'msapplication-TileColor': '#000000',
-      'format-detection': 'telephone=no',
-      'apple-mobile-web-app-capable': 'yes',
-      'apple-mobile-web-app-status-bar-style': 'default',
-      'apple-mobile-web-app-title': BUSINESS_INFO.name,
-      'application-name': BUSINESS_INFO.name,
-      'msapplication-tooltip': BUSINESS_INFO.description,
-      'msapplication-starturl': '/',
-      'msapplication-navbutton-color': '#000000',
-      'msapplication-window': 'width=1024;height=768'
-    }
-  }
-  
-  return metadata
-}
-
-// Usage examples
-export const homePageMetadata = generateMetadata({
-  title: 'Professional Barber Services in Dallas',
-  description: 'Experience the best barber services in Dallas. Expert cuts, shaves, and grooming at The Barber Cave.',
-  keywords: ['barber', 'haircut', 'dallas', 'grooming', 'mens haircut', 'shave'],
-  openGraph: {
-    type: 'website',
-    image: '/images/og-home.jpg'
-  },
-  jsonLd: [
-    {
-      type: 'Organization',
-      data: BUSINESS_INFO
-    },
-    {
-      type: 'LocalBusiness',
-      data: BUSINESS_INFO
-    }
-  ]
-})
-
-export const servicesPageMetadata = generateMetadata({
-  title: 'Our Barber Services',
-  description: 'Complete range of professional barber services including haircuts, shaves, beard trimming, and more.',
-  keywords: ['barber services', 'haircut styles', 'beard trim', 'hot towel shave', 'dallas barber'],
-  canonical: '/services',
-  openGraph: {
-    title: 'Professional Barber Services - The Barber Cave',
-    image: '/images/og-services.jpg'
-  },
-  jsonLd: [
-    {
-      type: 'Service',
-      data: {
-        name: 'Barber Services',
-        description: 'Professional barber and grooming services'
-      }
-    }
-  ]
-})
-```
-
-**3. Advanced Sitemap Generation**
-
-```tsx
-// ✅ Dynamic sitemap generation with priority and update frequency
-import { MetadataRoute } from 'next'
-import { services, barbers } from '@/data'
-import { BUSINESS_INFO } from '@/data/constants'
-
-interface SitemapEntry {
-  url: string
-  lastModified?: string | Date
-  changeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
-  priority?: number
-}
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = BUSINESS_INFO.url
-  
-  // Static pages with their priorities and update frequencies
-  const staticPages: SitemapEntry[] = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1.0
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9
-    },
-    {
-      url: `${baseUrl}/barbers`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8
-    },
-    {
-      url: `${baseUrl}/gallery`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.7
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6
-    },
-    {
-      url: `${baseUrl}/faq`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5
-    },
-    {
-      url: `${baseUrl}/booking`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3
-    },
-    {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3
-    }
-  ]
-  
-  // Dynamic service pages
-  const servicePages: SitemapEntry[] = services.map((service) => ({
-    url: `${baseUrl}/services/${service.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7
+const createBookingStore = () =>
+  createStore<BookingState & BookingActions>()((set) => ({
+    ...initialState,
+    selectService: (id) => set({ selectedService: id, error: null }),
+    selectBarber: (id) => set({ selectedBarber: id, error: null }),
+    selectDate: (date) => set({ selectedDate: date, error: null }),
+    selectTime: (time) => set({ selectedTime: time, error: null }),
+    setCustomerInfo: (info) => set({ customerInfo: info, error: null }),
+    setSubmitting: (val) => set({ isSubmitting: val }),
+    setError: (msg) => set({ error: msg }),
+    reset: () => set(initialState),
   }))
-  
-  // Dynamic barber pages
-  const barberPages: SitemapEntry[] = barbers.map((barber) => ({
-    url: `${baseUrl}/barbers/${barber.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6
-  }))
-  
-  // Gallery category pages
-  const galleryCategories = ['mens-cuts', 'beard-styles', 'classic-shaves', 'modern-styles']
-  const galleryPages: SitemapEntry[] = galleryCategories.map((category) => ({
-    url: `${baseUrl}/gallery/${category}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.6
-  }))
-  
-  // Blog posts (if applicable)
-  const blogPosts: SitemapEntry[] = [
-    {
-      url: `${baseUrl}/blog/barber-trends-2026`,
-      lastModified: new Date('2026-01-15'),
-      changeFrequency: 'monthly',
-      priority: 0.5
-    },
-    {
-      url: `${baseUrl}/blog/beard-care-tips`,
-      lastModified: new Date('2026-01-10'),
-      changeFrequency: 'monthly',
-      priority: 0.5
-    }
-  ]
-  
-  // Combine all entries
-  const allEntries = [
-    ...staticPages,
-    ...servicePages,
-    ...barberPages,
-    ...galleryPages,
-    ...blogPosts
-  ]
-  
-  // Sort by priority (highest first) and then by URL
-  const sortedEntries = allEntries.sort((a, b) => {
-    if (b.priority !== a.priority) {
-      return (b.priority || 0) - (a.priority || 0)
-    }
-    return a.url.localeCompare(b.url)
-  })
-  
-  return sortedEntries
-}
 
-// Generate robots.txt
-export function robots(): MetadataRoute.Robots {
-  const baseUrl = BUSINESS_INFO.url
-  
-  return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: [
-          '/admin/',
-          '/api/',
-          '/_next/',
-          '/static/',
-          '/temp/',
-          '*.json',
-          '/search'
-        ]
-      },
-      {
-        userAgent: 'Googlebot',
-        allow: '/',
-        disallow: [
-          '/admin/',
-          '/api/',
-          '/_next/',
-          '/search'
-        ],
-        crawlDelay: 1
-      },
-      {
-        userAgent: 'Bingbot',
-        allow: '/',
-        disallow: [
-          '/admin/',
-          '/api/',
-          '/_next/'
-        ],
-        crawlDelay: 1
-      }
-    ],
-    sitemap: `${baseUrl}/sitemap.xml`,
-    host: baseUrl
-  }
-}
-```
+// Context + useRef pattern: each component tree gets its own store instance
+// Prevents shared state across concurrent server renders (Next.js App Router safe)
+const BookingStoreContext = createContext<ReturnType<typeof createBookingStore> | null>(null)
 
-### Code Quality Standards
-
-**1. ESLint Configuration for Modern React**
-
-```javascript
-// eslint.config.mjs - Modern flat config
-import js from '@eslint/js'
-import typescript from '@typescript-eslint/eslint-plugin'
-import typescriptParser from '@typescript-eslint/parser'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
-import importPlugin from 'eslint-plugin-import'
-
-export default [
-  js.configs.recommended,
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
-    languageOptions: {
-      parser: typescriptParser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true
-        },
-        project: './tsconfig.json'
-      },
-      globals: {
-        console: 'readonly',
-        process: 'readonly'
-      }
-    },
-    plugins: {
-      '@typescript-eslint': typescript,
-      react,
-      'react-hooks': reactHooks,
-      'jsx-a11y': jsxA11y,
-      import: importPlugin
-    },
-    settings: {
-      react: {
-        version: 'detect'
-      },
-      'import/resolver': {
-        typescript: {
-          alwaysTryTypes: true,
-          project: './tsconfig.json'
-        }
-      }
-    },
-    rules: {
-      // TypeScript rules
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/prefer-const': 'error',
-      
-      // React rules
-      'react/react-in-jsx-scope': 'off', // Not needed in Next.js
-      'react/prop-types': 'off', // Using TypeScript for prop validation
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      
-      // Accessibility rules
-      'jsx-a11y/alt-text': 'error',
-      'jsx-a11y/anchor-has-content': 'error',
-      'jsx-a11y/anchor-is-valid': 'error',
-      'jsx-a11y/click-events-have-key-events': 'error',
-      'jsx-a11y/no-static-element-interactions': 'warn',
-      
-      // Import rules
-      'import/order': [
-        'error',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index'
-          ],
-          'newlines-between': 'always'
-        }
-      ]
-    }
-  },
-  {
-    // Ignore story files for stricter linting
-    files: ['**/*.stories.{js,jsx,ts,tsx}'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      'jsx-a11y/no-static-element-interactions': 'off'
-    }
-  },
-  {
-    // Test file configuration
-    files: ['**/__tests__/**/*.{js,jsx,ts,tsx}', '**/*.test.{js,jsx,ts,tsx}'],
-    rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-      'jsx-a11y/alt-text': 'off' // Test images may not have alt text
-    }
-  }
-]
-```
-
-**2. TypeScript Configuration for Strict Type Safety**
-
-```json
-// tsconfig.json - Strict TypeScript configuration
-{
-  "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["dom", "dom.iterable", "ES2022"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/data/*": ["./src/data/*"],
-      "@/types/*": ["./src/types/*"]
-    },
-    // Additional strict rules
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true
-  },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules", "storybook-static"]
-}
-```
-
-## Critical Priority (P1) Best Practices
-
-### Image Optimization Standards
-
-**Core Principles for P1 Image Fixes:**
-
-1. **LCP Optimization**: Always use `priority` prop for hero images that affect Largest Contentful Paint
-2. **Placeholder Strategy**: Use `placeholder="blur"` only for raster images (JPEG, PNG, WebP), never for SVG
-3. **Error Handling**: Implement fallback mechanisms for failed image loads
-4. **Responsive Sizing**: Provide appropriate `sizes` attribute for optimal responsive loading
-
-```tsx
-// ✅ Production-ready image component pattern
-const ProductionImage = ({ 
-  src, 
-  alt, 
-  isHero = false, 
-  isSvg = false,
-  fallbackSrc = '/images/fallback.jpg' 
-}) => {
+export function BookingStoreProvider({ children }: { children: React.ReactNode }) {
+  const storeRef = useRef<ReturnType<typeof createBookingStore>>()
+  if (!storeRef.current) storeRef.current = createBookingStore()
   return (
-    <div className="relative w-full h-full">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        priority={isHero} // Critical for LCP elements
-        quality={85}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        placeholder={isSvg ? undefined : "blur"} // Never use with SVG
-        blurDataURL={isSvg ? undefined : generateBlurDataURL(src)}
-        className="object-cover"
-        onError={(e) => {
-          const target = e.target as HTMLImageElement
-          target.src = fallbackSrc
-        }}
-      />
-    </div>
-  )
-}
-```
-
-### Component Architecture Standards
-
-**P1 Component Fix Patterns:**
-
-1. **Error Boundaries**: Implement comprehensive error handling with retry logic
-2. **Ref Forwarding**: Use `forwardRef` for all interactive components
-3. **Props Validation**: Leverage TypeScript for strict type checking
-4. **Accessibility**: Ensure WCAG 2.2 AA compliance for all components
-
-```tsx
-// ✅ Advanced component pattern for P1 fixes
-import { forwardRef, useState, useEffect } from 'react'
-import type { ComponentProps } from 'react'
-
-interface SafeComponentProps extends ComponentProps<'div'> {
-  variant?: 'primary' | 'secondary'
-  fallback?: React.ReactNode
-  onError?: (error: Error) => void
-}
-
-const SafeComponent = forwardRef<HTMLDivElement, SafeComponentProps>(
-  ({ children, variant = 'primary', fallback, onError, ...props }, ref) => {
-    const [hasError, setHasError] = useState(false)
-    
-    useEffect(() => {
-      const handleError = (event: ErrorEvent) => {
-        setHasError(true)
-        onError?.(new Error(event.message))
-      }
-      
-      window.addEventListener('error', handleError)
-      return () => window.removeEventListener('error', handleError)
-    }, [onError])
-    
-    if (hasError) {
-      return fallback || <div>Something went wrong</div>
-    }
-    
-    return (
-      <div 
-        ref={ref} 
-        className={`component component--${variant}`}
-        role={props.role || 'region'}
-        aria-label={props['aria-label']}
-        {...props}
-      >
-        {children}
-      </div>
-    )
-  }
-)
-
-SafeComponent.displayName = 'SafeComponent'
-```
-
-### Data Integrity Standards
-
-**Critical Data Handling Patterns:**
-
-1. **Schema Validation**: Use Zod for runtime data validation
-2. **Type Safety**: Implement strict TypeScript interfaces
-3. **Error Recovery**: Provide fallback data structures
-4. **Data Consistency**: Ensure single source of truth
-
-```typescript
-// ✅ Advanced data validation pattern
-import { z } from 'zod'
-
-const BusinessInfoSchema = z.object({
-  name: z.string().min(1),
-  address: z.string().regex(/^[^,]+, [^,]+, [A-Z]{2} \d{5}$/),
-  phone: z.string().regex(/^\+?1?[ -]?\(?\d{3}\)?[ -]?\d{3}[ -]?\d{4}$/),
-  hours: z.array(z.object({
-    name: z.enum(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']),
-    open: z.string().regex(/^\d{2}:\d{2}$/),
-    close: z.string().regex(/^\d{2}:\d{2}$/)
-  }))
-})
-
-// Type-safe data extraction
-const extractPostalCode = (address: string): string => {
-  const match = address.match(/([A-Z]{2}) (\d{5})$/)
-  if (!match) throw new Error('Invalid address format')
-  return match[2] // Returns just the ZIP code
-}
-
-// Safe data access with fallback
-const getBusinessInfo = (rawData: unknown) => {
-  try {
-    return BusinessInfoSchema.parse(rawData)
-  } catch (error) {
-    console.error('Invalid business data:', error)
-    return getFallbackBusinessInfo()
-  }
-}
-```
-
----
-
-# 🔥 Critical (P1) — Due: 2026-03-05
-
-* [ ] `T-1001` **Fix Hero.tsx next/image preload usage**
-
-  * priority: 1
-  * estimate_m: 30
-  * labels: [bug, frontend, performance]
-  * assignee: @frontend
-  * status: blocked
-  * due: 2026-03-05
-  * deps: []
-  * target_files: [src/components/Hero.tsx]
-  * related_files: [src/__tests__/image-optimization.test.tsx, src/components/Hero.stories.tsx]
-  * sub-tasks:
-
-    - [x] Replace invalid `preload` prop with `priority` in src/components/Hero.tsx.
-    - [x] Ensure no TypeScript or ESLint errors in src/components/Hero.tsx.
-    - [x] Verify no Lighthouse FCP regression using src/__tests__/image-optimization.test.tsx.
-    - [x] Run `npm run dev` locally and inspect browser network tab for image loading behavior.
-    - [ ] Run Lighthouse audit and verify FCP score with src/components/Hero.stories.tsx. (Blocked: local Chrome/Chromium executable unavailable for LHCI in CI environment; Playwright browser download returned 403)
-
-    1. Replace invalid `preload` prop with `priority` in src/components/Hero.tsx.
-    2. No TypeScript or ESLint errors.
-    3. No Lighthouse FCP regression.
-  * test_steps:
-    - [x] Run `npm run dev` locally.
-    - [x] Inspect browser network tab for image loading behavior.
-    - [ ] Run Lighthouse audit and verify FCP score. (Blocked: local Chrome/Chromium executable unavailable for LHCI in CI environment; Playwright browser download returned 403)
-
-  * **Existing Code Pattern:**
-    ```tsx
-    <Image 
-      src="/images/hero/hero-bg.svg"
-      alt=""
-      fill
-      preload  // Invalid prop - should be 'priority'
-      quality={75}
-      sizes="100vw"
-      className="object-cover"
-    />
-    ```
-
-  * **Corrected Pattern:**
-    ```tsx
-    <Image 
-      src="/images/hero/hero-bg.svg"
-      alt=""
-      fill
-      priority  // Correct prop for preloading hero images
-      quality={75}
-      sizes="100vw"
-      className="object-cover"
-    />
-    ```
-
----
-
-* [ ] `T-1002` **Fix Gallery.tsx SVG blur placeholder**
-
-  * priority: 1
-  * estimate_m: 45
-  * labels: [bug, frontend, images]
-  * assignee: @frontend
-  * status: blocked
-  * due: 2026-03-05
-  * target_files: [src/components/Gallery.tsx]
-  * related_files: [src/__tests__/image-optimization.test.tsx, src/components/Gallery.stories.tsx, src/components/__tests__/Gallery.test.tsx]
-  * sub-tasks:
-
-    - [x] Provide valid `blurDataURL` or remove `placeholder="blur"` in src/components/Gallery.tsx.
-    - [x] Ensure no console warnings in src/components/Gallery.tsx.
-    - [ ] Run preview build and check image render and network payload. (Blocked: Google Fonts fetch failed in CI environment)
-    - [x] Verify behavior using src/__tests__/image-optimization.test.tsx and src/components/Gallery.stories.tsx.
-
-    1. Provide valid `blurDataURL` OR remove `placeholder="blur"`.
-    2. No console warnings.
-  * test_steps:
-
-    - Run preview build.
-    - Check image render and network payload.
-  * notes: For SVG placeholders, provide a base64 encoded data URL or omit the placeholder prop.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    {galleryItems.map((item) => (
-      <div key={item.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square">
-        <Image 
-          src={item.src}  // SVG file: '/images/gallery/work-1.svg'
-          alt={item.alt}
-          fill
-          placeholder="blur"  // Invalid for SVG - causes console warnings
-          quality={75}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        // ... overlay content
-      </div>
-    ))}
-    ```
-
-  * **Corrected Pattern:**
-    ```tsx
-    {galleryItems.map((item) => (
-      <div key={item.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square">
-        <Image 
-          src={item.src}  // SVG file: '/images/gallery/work-1.svg'
-          alt={item.alt}
-          fill
-          // Remove placeholder for SVG images (or provide blurDataURL for raster images)
-          quality={75}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        // ... overlay content
-      </div>
-    ))}
-    ```
-
----
-
-* [ ] `T-1003` **Fix Barbers.tsx blur placeholder**
-
-  * priority: 1
-  * estimate_m: 45
-  * labels: [bug, frontend, images]
-  * assignee: @frontend
-  * status: blocked
-  * due: 2026-03-05
-  * deps: [T-1002]
-  * target_files: [src/components/Barbers.tsx]
-  * related_files: [src/data/barbers.ts, src/components/Barbers.stories.tsx, src/components/__tests__/Barbers.test.tsx, src/__tests__/image-optimization.test.tsx]
-  * sub-tasks:
-
-    - [x] Apply same fix pattern as T-1002 to barber images in src/components/Barbers.tsx.
-    - [x] Ensure no image warnings in console for src/components/Barbers.tsx.
-    - [ ] Run preview build and verify no console warnings. (Blocked: Google Fonts fetch failed in CI environment)
-    - [x] Verify using src/components/Barbers.stories.tsx and src/__tests__/image-optimization.test.tsx.
-
-    1. Same resolution pattern as T-1002.
-    2. No image warnings in console.
-  * test_steps:
-
-    - Apply same fix pattern as T-1002 to barber images.
-    - Run preview build and verify no console warnings.
-  * notes: Ensure barber images use valid blur placeholders or remove placeholder prop.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    {barbersData.map((barber) => (
-      <div key={barber.id} className="barber-card text-center group container-card">
-        <div className="relative mb-6 overflow-hidden rounded-2xl bg-gray-200 aspect-square">
-          <Image 
-            src={barber.image}  // SVG file: '/images/barbers/trill-l.svg'
-            alt={barber.name}
-            fill
-            placeholder="blur"  // Invalid for SVG - causes console warnings
-            quality={75}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          // ... availability badge
-        </div>
-        // ... barber info
-      </div>
-    ))}
-    ```
-
-  * **Corrected Pattern:**
-    ```tsx
-    {barbersData.map((barber) => (
-      <div key={barber.id} className="barber-card text-center group container-card">
-        <div className="relative mb-6 overflow-hidden rounded-2xl bg-gray-200 aspect-square">
-          <Image 
-            src={barber.image}  // SVG file: '/images/barbers/trill-l.svg'
-            alt={barber.name}
-            fill
-            // Remove placeholder for SVG images (or provide blurDataURL for raster images)
-            quality={75}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-          // ... availability badge
-        </div>
-        // ... barber info
-      </div>
-    ))}
-    ```
-
----
-
-* [x] `T-1004` **Fix P3Color.tsx rendering**
-
-  * priority: 1
-  * estimate_m: 60
-  * labels: [bug, frontend, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-05
-  * target_files: [src/components/P3Color.tsx]
-  * related_files: [src/components/Hero.tsx]
-  * sub-tasks:
-
-    - [x] Ensure gradient renders from props (colors + angle) in src/components/P3Color.tsx.
-    - [x] Ensure children render correctly in src/components/P3Color.tsx.
-    - [x] Run unit tests for P3Color component.
-    - [x] Check Storybook story for visual rendering using src/components/Hero.tsx.
-    - [x] Verify gradient appearance in different browsers.
-
-    1. Gradient renders from props (colors + angle).
-    2. Children render correctly.
-    3. Unit + Storybook visual checks pass.
-  * test_steps:
-
-    - Run unit tests for P3Color component.
-    - Check Storybook story for visual rendering.
-    - Verify gradient appearance in different browsers.
-  * notes: Ensure the component handles P3 color space correctly and falls back gracefully.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/P3Color.tsx
-    interface P3GradientProps {
-      children: ReactNode;
-      className?: string;
-      from: string;
-      to: string;
-    }
-
-    export function P3Gradient({ children, className = '', from, to }: P3GradientProps) {
-      return (
-        <div
-          className={className}
-          style={{
-            background: `linear-gradient(to bottom, ${from}, ${to})`,  // Fixed direction, no angle support
-          }}
-        >
-          {children}
-        </div>
-      );
-    }
-    ```
-
-  * **Usage in Hero.tsx:**
-    ```tsx
-    <P3Gradient 
-      className="absolute inset-0"
-      from="color(display-p3 0 0 0 / 0.6)"
-      to="color(display-p3 0 0 0 / 0.4)"
-    >
-      <Image src="/images/hero/hero-bg.svg" alt="" fill />
-    </P3Gradient>
-    ```
-
-  * **Potential Issues to Fix:**
-    - Missing angle prop support (currently fixed to "to bottom")
-    - No fallback for browsers that don't support P3 color space
-    - May need angle prop for gradient direction control
-
----
-
-* [x] `T-1005` **Fix StructuredData.tsx postalCode extraction**
-
-  * priority: 1
-  * estimate_m: 30
-  * labels: [bug, seo, data]
-  * assignee: @seo
-  * status: completed
-  * due: 2026-03-05
-  * target_files: [src/components/StructuredData.tsx]
-  * related_files: [src/data/constants.ts]
-  * sub-tasks:
-
-    - [x] Ensure postalCode = '75201' in src/components/StructuredData.tsx.
-    - [x] Ensure JSON-LD validates for PostalAddress in src/components/StructuredData.tsx.
-    - [x] Validate JSON-LD output using a schema validator.
-    - [x] Check that postalCode is extracted as '75201' not 'TX 75201' using src/data/constants.ts.
-
-    1. postalCode = `75201`
-    2. JSON-LD validates for PostalAddress.
-  * test_steps:
-
-    - Validate JSON-LD output using a schema validator.
-    - Check that postalCode is extracted as '75201' not 'TX 75201'.
-  * notes: Ensure the extraction logic correctly parses the address string.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/StructuredData.tsx (lines 40-44)
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": BUSINESS_INFO.address.split(',')[0],
-      "addressLocality": "Dallas",
-      "addressRegion": "TX",
-      "postalCode": BUSINESS_INFO.address.split(', ')[2],  // BUG: extracts 'TX 75201'
-      "addressCountry": "US"
-    }
-    ```
-
-  * **Data Source:**
-    ```tsx
-    // src/data/constants.ts (line 127)
-    address: '1234 Real Street, Dallas, TX 75201',
-    ```
-
-  * **Current Issue:**
-    - `BUSINESS_INFO.address.split(', ')[2]` returns `'TX 75201'`
-    - Should return just `'75201'` for proper PostalAddress schema validation
-
-  * **Corrected Pattern:**
-    ```tsx
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": BUSINESS_INFO.address.split(',')[0],
-      "addressLocality": "Dallas",
-      "addressRegion": "TX",
-      "postalCode": BUSINESS_INFO.address.split(', ')[2].split(' ')[1],  // Extract '75201' only
-      "addressCountry": "US"
-    }
-    ```
-
----
-
-* [x] `T-1006` **Fix Services.tsx icon fallback**
-
-  * priority: 1
-  * estimate_m: 30
-  * labels: [bug, frontend, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-05
-  * target_files: [src/components/Services.tsx]
-  * related_files: [src/data/services.ts, src/components/IconContainer.tsx]
-  * sub-tasks:
-
-    - [x] Implement fallback icon in src/components/Services.tsx.
-    - [x] Ensure no runtime crashes in src/components/Services.tsx.
-    - [x] Test services with missing icons to ensure fallback renders using src/data/services.ts and src/components/IconContainer.tsx.
-    - [x] Run the app and navigate to services page without crashes.
-
-    1. Fallback icon implemented.
-    2. No runtime crashes.
-  * test_steps:
-
-    - Test services with missing icons to ensure fallback renders.
-    - Run the app and navigate to services page without crashes.
-  * notes: Add a default icon from Lucide React when service.icon is not found in the iconMap.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/Services.tsx (lines 88-89)
-    const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
-      const IconComponent = iconMap[service.icon as keyof typeof iconMap];  // CRASH: undefined if icon not found
-      const isSpecial = service.id === 'new-client-special';
-      
-      return (
-        <div className="service-card container-card...">
-          <div className="flex items-center mb-4">
-            <IconContainer bg={isSpecial ? 'amber' : 'black'}>
-              <IconComponent className="w-6 h-6" />  // CRASH: Cannot render undefined
-            </IconContainer>
-            // ... rest of service card
-          </div>
-        </div>
-      );
-    });
-    ```
-
-  * **Icon Map:**
-    ```tsx
-    // src/components/Services.tsx (lines 42-66)
-    const iconMap = {
-      Crown, Scissors, Star, Users, Award, Zap, Sparkles, Gem, Heart,
-      Target, Move, Smile, Flower, Diamond, Sun, Moon, RefreshCw,
-      Wind, Droplet, Link, Plus, RotateCcw, ChevronRight
-    };
-    ```
-
-  * **Service Data:**
-    ```tsx
-    // src/data/services.ts - various services with icon names
-    { id: 'mens-haircut', icon: 'Users' },
-    { id: 'new-client-special', icon: 'ChevronRight' },
-    // If any service has an icon not in iconMap, it will crash
-    ```
-
-  * **Corrected Pattern:**
-    ```tsx
-    const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
-      const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Star;  // Fallback to Star
-      const isSpecial = service.id === 'new-client-special';
-      
-      return (
-        <div className="service-card container-card...">
-          <div className="flex items-center mb-4">
-            <IconContainer bg={isSpecial ? 'amber' : 'black'}>
-              <IconComponent className="w-6 h-6" />  // Safe: always has a component
-            </IconContainer>
-            // ... rest of service card
-          </div>
-        </div>
-      );
-    });
-    ```
-
----
-
-* [x] `T-1007` **Fix About.tsx Image fill positioning**
-
-  * priority: 1
-  * estimate_m: 30
-  * labels: [bug, frontend, images]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-05
-  * target_files: [src/components/About.tsx]
-  * related_files: [src/components/__tests__/About.test.tsx, src/__tests__/image-optimization.test.tsx]
-  * sub-tasks:
-
-    - [x] Ensure parent wrapper uses `position: relative` in src/components/About.tsx.
-    - [x] Ensure layout stable across breakpoints in src/components/About.tsx.
-    - [x] Check About page layout on different screen sizes.
-    - [x] Verify image fill positioning works correctly using src/components/__tests__/About.test.tsx and src/__tests__/image-optimization.test.tsx.
-
-    1. Parent wrapper uses `position: relative`.
-    2. Layout stable across breakpoints.
-  * test_steps:
-
-    - Check About page layout on different screen sizes.
-    - Verify image fill positioning works correctly.
-  * notes: Ensure the wrapper div has position: relative for Next.js Image fill to work.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/About.tsx (lines 107-117)
-    <div className="relative">  // GOOD: Has position: relative
-      <div className="aspect-square rounded-2xl overflow-hidden bg-gray-200">
-        <Image 
-          src="/images/about/shop-interior.svg"
-          alt="The Barber Cave Interior"
-          fill
-          quality={75}
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-      </div>
-    </div>
-    ```
-
-  * **Current Implementation Analysis:**
-    - Outer div: `className="relative"` ✓ (correct)
-    - Inner div: `className="aspect-square rounded-2xl overflow-hidden bg-gray-200"` ❌ (missing position: relative)
-    - Image: `fill` prop requires parent to have `position: relative`
-
-  * **Issue:**
-    The Next.js Image component with `fill` prop needs its immediate parent to have `position: relative`. Currently the inner wrapper div doesn't have this positioning.
-
-  * **Corrected Pattern:**
-    ```tsx
-    <div className="relative">
-      <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-200">  // ADD position: relative
-        <Image 
-          src="/images/about/shop-interior.svg"
-          alt="The Barber Cave Interior"
-          fill
-          quality={75}
-          sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-cover"
-        />
-      </div>
-    </div>
-    ```
-
----
-
-## High Priority (P2) Best Practices
-
-### Error Boundary Architecture Standards
-
-**Advanced Error Handling Patterns for P2 Fixes:**
-
-1. **Reset Key Management**: Implement robust array comparison for error boundary resets
-2. **Retry Logic**: Prevent infinite retry loops with exponential backoff
-3. **Error Reporting**: Integrate with error monitoring services
-4. **Graceful Degradation**: Provide meaningful fallbacks for different error types
-
-```tsx
-// ✅ Production-ready error boundary with advanced reset logic
-import { Component, ErrorInfo, ReactNode } from 'react'
-import type { Props, State } from './ErrorBoundary.types'
-
-class AdvancedErrorBoundary extends Component<Props, State> {
-  private retryTimeouts: Map<string, NodeJS.Timeout> = new Map()
-  private errorCount: Map<string, number> = new Map()
-  
-  componentDidUpdate(prevProps: Props) {
-    const { resetKeys = [] } = this.props
-    const { resetKeys: prevResetKeys = [] } = prevProps
-    
-    // Comprehensive reset logic: check length AND values
-    const shouldReset = this.shouldResetBoundary(resetKeys, prevResetKeys)
-    
-    if (shouldReset) {
-      this.resetBoundary()
-    }
-  }
-  
-  private shouldResetBoundary(current: Array<string | number>, previous: Array<string | number>): boolean {
-    // Reset if length changed
-    if (current.length !== previous.length) {
-      return true
-    }
-    
-    // Reset if any values changed
-    return current.some((key, index) => key !== previous[index])
-  }
-  
-  private resetBoundary = () => {
-    const errorId = this.generateErrorId()
-    const currentCount = this.errorCount.get(errorId) || 0
-    
-    // Exponential backoff for retries
-    const delay = Math.min(1000 * Math.pow(2, currentCount), 30000)
-    
-    if (currentCount >= 5) {
-      // Max retries reached, show permanent error
-      this.setState({ hasError: true, errorType: 'permanent' })
-      return
-    }
-    
-    const timeoutId = setTimeout(() => {
-      this.setState({
-        hasError: false,
-        error: undefined,
-        errorInfo: undefined,
-        errorType: undefined
-      })
-    }, delay)
-    
-    this.retryTimeouts.set(errorId, timeoutId)
-    this.errorCount.set(errorId, currentCount + 1)
-  }
-  
-  private generateErrorId = (): string => {
-    return `${this.state.error?.name || 'unknown'}-${Date.now()}`
-  }
-  
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Report to error monitoring service
-    this.reportError(error, errorInfo)
-    
-    // Categorize error type
-    const errorType = this.categorizeError(error)
-    
-    this.setState({
-      hasError: true,
-      error,
-      errorInfo,
-      errorType
-    })
-  }
-  
-  private categorizeError = (error: Error): string => {
-    if (error.name === 'ChunkLoadError') return 'chunk-load'
-    if (error.message.includes('Network')) return 'network'
-    if (error.message.includes('Permission')) return 'permission'
-    return 'unknown'
-  }
-  
-  private reportError = (error: Error, errorInfo: ErrorInfo) => {
-    // Integration with error monitoring (Sentry, etc.)
-    console.error('Error Boundary caught:', {
-      error: error.message,
-      stack: error.stack,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent
-    })
-  }
-}
-```
-
-### Navigation & Routing Standards
-
-**P2 Navigation Component Patterns:**
-
-1. **SPA Navigation**: Use Next.js router for client-side navigation
-2. **Focus Management**: Implement proper focus restoration after navigation
-3. **Route Validation**: Ensure navigation targets are valid
-4. **Loading States**: Provide feedback during navigation transitions
-
-```tsx
-// ✅ Advanced navigation component with SPA behavior
-'use client'
-
-import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useRef } from 'react'
-
-interface SafeNavigationProps {
-  href: string
-  children: React.ReactNode
-  className?: string
-  prefetch?: boolean
-  onClick?: () => void
-}
-
-export default function SafeNavigation({
-  href,
-  children,
-  className,
-  prefetch = true,
-  onClick
-}: SafeNavigationProps) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const linkRef = useRef<HTMLAnchorElement>(null)
-  
-  useEffect(() => {
-    // Prefetch on hover for better UX
-    if (prefetch && linkRef.current) {
-      linkRef.current.addEventListener('mouseenter', () => {
-        router.prefetch(href)
-      })
-    }
-  }, [href, prefetch, router])
-  
-  const handleClick = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    
-    // Validate href
-    if (!href || typeof href !== 'string') {
-      console.error('Invalid navigation href:', href)
-      return
-    }
-    
-    // Check if it's an external link
-    if (href.startsWith('http') || href.startsWith('//')) {
-      window.open(href, '_blank', 'noopener,noreferrer')
-      return
-    }
-    
-    // Execute custom onClick
-    onClick?.()
-    
-    // Navigate with focus management
-    try {
-      await router.push(href)
-      
-      // Restore focus to main content after navigation
-      setTimeout(() => {
-        const mainContent = document.querySelector('main, [role="main"]')
-        if (mainContent) {
-          mainContent.focus()
-        }
-      }, 100)
-    } catch (error) {
-      console.error('Navigation failed:', error)
-      // Fallback to window.location
-      window.location.href = href
-    }
-  }
-  
-  const isActive = pathname === href
-  
-  return (
-    <a
-      ref={linkRef}
-      href={href}
-      onClick={handleClick}
-      className={className}
-      aria-current={isActive ? 'page' : undefined}
-      role="link"
-      tabIndex={0}
-    >
+    <BookingStoreContext.Provider value={storeRef.current}>
       {children}
-    </a>
+    </BookingStoreContext.Provider>
   )
+}
+
+export function useBookingStore<T>(selector: (state: BookingState & BookingActions) => T): T {
+  const store = useContext(BookingStoreContext)
+  if (!store) throw new Error('useBookingStore must be used within BookingStoreProvider')
+  return useStore(store, selector)
 }
 ```
 
-### Component Refactoring Standards
+**Why `useRef` + Context, not global module store:** Even `'use client'` components are initially rendered on the server in Next.js App Router. A global Zustand module store (exported directly) would share state across concurrent user requests in the server process — a critical data leak. The `useRef` + Context pattern scopes state to the component subtree per-render.
 
-**P2 Component Modernization Patterns:**
+---
 
-1. **forwardRef Migration**: Convert legacy ref patterns to modern forwardRef
-2. **Props Interface Design**: Create comprehensive TypeScript interfaces
-3. **Component Composition**: Favor composition over inheritance
-4. **Performance Optimization**: Implement memo and useMemo appropriately
+### T-F003 · Simplify Over-Engineered Compound Components
+**Priority:** 3 | **Severity:** Medium | **Issues:** #36, #37, #38, #39 | **Batch:** F
 
-```tsx
-// ✅ Modern component pattern with forwardRef and composition
-import { forwardRef, useMemo, useCallback } from 'react'
-import type { HTMLAnchorElement, ComponentProps } from 'react'
+**Architectural decisions (per research):**
 
-// Comprehensive props interface
-interface LinkWithIconProps extends Omit<ComponentProps<typeof Link>, 'ref'> {
-  href: string
+| Component | Decision | Rationale |
+|-----------|----------|-----------|
+| `Card` | Simplify to props-only | Static marketing site; no shared implicit state needed |
+| `Modal` | Keep compound, slim Context | Header/Body/Footer composition is justified; remove over-engineered ModalContext |
+| `Form` | Keep compound pattern | Booking form needs shared validation state across Field sub-components |
+| Unused Modal | Delete if no consumer | Don't maintain dead code |
+
+**Card — slim to props:**
+```typescript
+// Before — Context-based compound component
+// After — Simple props, same flexibility
+interface CardProps {
+  header?: React.ReactNode
+  footer?: React.ReactNode
   children: React.ReactNode
-  icon?: React.ComponentType<{ className?: string }>
-  variant?: 'primary' | 'secondary' | 'ghost'
-  size?: 'sm' | 'md' | 'lg'
-  external?: boolean
-  showExternalIcon?: boolean
-  loading?: boolean
-  disabled?: boolean
+  variant?: 'default' | 'elevated' | 'outlined'
+  className?: string
 }
 
-// Base Link component
-const BaseLink = forwardRef<HTMLAnchorElement, ComponentProps<'a'>>((props, ref) => (
-  <a ref={ref} {...props} />
-))
-BaseLink.displayName = 'BaseLink'
-
-// Advanced LinkWithIcon with forwardRef
-const LinkWithIcon = forwardRef<HTMLAnchorElement, LinkWithIconProps>(
-  ({
-    href,
-    children,
-    icon: IconComponent,
-    variant = 'primary',
-    size = 'md',
-    external = false,
-    showExternalIcon = external,
-    loading = false,
-    disabled = false,
-    className,
-    onClick,
-    ...rest
-  }, ref) => {
-    // Memoize computed styles
-    const computedClasses = useMemo(() => {
-      const base = 'inline-flex items-center gap-2 font-medium transition-colors'
-      const variants = {
-        primary: 'text-blue-600 hover:text-blue-700',
-        secondary: 'text-gray-600 hover:text-gray-700',
-        ghost: 'text-transparent hover:text-current'
-      }
-      const sizes = {
-        sm: 'text-sm',
-        md: 'text-base',
-        lg: 'text-lg'
-      }
-      const states = disabled ? 'opacity-50 cursor-not-allowed' : ''
-      
-      return `${base} ${variants[variant]} ${sizes[size]} ${states} ${className || ''}`
-    }, [variant, size, disabled, className])
-    
-    // Memoize click handler
-    const handleClick = useCallback((e: React.MouseEvent) => {
-      if (disabled || loading) {
-        e.preventDefault()
-        return
-      }
-      onClick?.(e)
-    }, [disabled, loading, onClick])
-    
-    // Memoize external icon
-    const ExternalIcon = useMemo(() => {
-      if (!showExternalIcon) return null
-      return (
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-        </svg>
-      )
-    }, [showExternalIcon])
-    
-    return (
-      <BaseLink
-        ref={ref}
-        href={href}
-        className={computedClasses}
-        onClick={handleClick}
-        target={external ? '_blank' : undefined}
-        rel={external ? 'noopener noreferrer' : undefined}
-        aria-disabled={disabled}
-        {...rest}
-      >
-        {loading && (
-          <div className="animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full" />
-        )}
-        
-        {IconComponent && !loading && (
-          <IconComponent className="w-4 h-4 flex-shrink-0" />
-        )}
-        
-        <span className="truncate">{children}</span>
-        
-        {ExternalIcon}
-      </BaseLink>
-    )
-  }
-)
-
-LinkWithIcon.displayName = 'LinkWithIcon'
-export default LinkWithIcon
-```
-
-### SEO & Structured Data Standards
-
-**P2 SEO Optimization Patterns:**
-
-1. **Schema Consolidation**: Eliminate duplicate structured data
-2. **Breadcrumb Optimization**: Conditionally render based on navigation depth
-3. **Meta Tag Management**: Implement dynamic meta tag generation
-4. **Performance Optimization**: Minimize JSON-LD payload size
-
-```tsx
-// ✅ Advanced structured data management
-import { useMemo } from 'react'
-import { usePathname } from 'next/navigation'
-
-interface StructuredDataConfig {
-  type: 'Organization' | 'LocalBusiness' | 'Service' | 'BreadcrumbList'
-  data?: Record<string, any>
-  condition?: boolean
-}
-
-export function useStructuredData(configs: StructuredDataConfig[]) {
-  const pathname = usePathname()
-  
-  return useMemo(() => {
-    // Filter and validate structured data
-    const validConfigs = configs.filter(config => {
-      // Skip if condition is explicitly false
-      if (config.condition === false) return false
-      
-      // Skip breadcrumb lists with less than 2 items
-      if (config.type === 'BreadcrumbList') {
-        const items = config.data?.items
-        return items && items.length >= 2
-      }
-      
-      // Skip Organization/LocalBusiness if not on homepage
-      if (['Organization', 'LocalBusiness'].includes(config.type)) {
-        return pathname === '/'
-      }
-      
-      return true
-    })
-    
-    // Generate structured data objects
-    return validConfigs.map(config => {
-      switch (config.type) {
-        case 'BreadcrumbList':
-          return {
-            '@context': 'https://schema.org',
-            '@type': 'BreadcrumbList',
-            itemListElement: config.data.items.map((item: any, index: number) => ({
-              '@type': 'ListItem',
-              position: index + 1,
-              name: item.name,
-              item: item.href
-            }))
-          }
-        
-        case 'Organization':
-        case 'LocalBusiness':
-          return {
-            '@context': 'https://schema.org',
-            '@type': config.type,
-            ...config.data
-          }
-        
-        default:
-          return config.data || {}
-      }
-    })
-  }, [configs, pathname])
-}
-
-// Usage in layout component
-export default function StructuredDataManager() {
-  const structuredData = useStructuredData([
-    {
-      type: 'Organization',
-      data: BUSINESS_INFO,
-      condition: true // Only on homepage via useStructuredData logic
-    },
-    {
-      type: 'BreadcrumbList',
-      data: { items: breadcrumbItems },
-      condition: breadcrumbItems.length >= 2
-    }
-  ])
-  
+export function Card({ header, children, footer, variant = 'default', className }: CardProps) {
   return (
-    <>
-      {structuredData.map((data, index) => (
-        <script
-          key={index}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(data, null, 0)
-          }}
-        />
-      ))}
-    </>
+    <div className={cn(cardVariants[variant], className)}>
+      {header && <div className="mb-4">{header}</div>}
+      <div>{children}</div>
+      {footer && <div className="mt-4 pt-4 border-t border-gray-700">{footer}</div>}
+    </div>
   )
 }
 ```
 
----
-
-# 🟠 High (P2) — Due: 2026-03-08
-
-Tasks normalized for consistency. All P2 tasks follow same structure.
-
-* [x] `T-2001` **Fix ErrorBoundary.tsx resetKeys logic**
-
-  * priority: 2
-  * estimate_m: 45
-  * labels: [bug, frontend, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-08
-  * deps: []
-  * target_files: [src/components/ErrorBoundary.tsx]
-  * related_files: [src/components/ErrorBoundary.stories.tsx, src/components/__tests__/ErrorBoundary.test.tsx]
-  * sub-tasks:
-
-    - [x] Implement `resetKeys` to trigger reset when array length changes in src/components/ErrorBoundary.tsx.
-    - [x] Implement `resetKeys` to trigger reset when values change in src/components/ErrorBoundary.tsx.
-    - [x] Add unit tests for resetKeys logic in src/components/__tests__/ErrorBoundary.test.tsx.
-    - [x] Run unit tests for ErrorBoundary component.
-    - [x] Manually test error reset scenarios in development using src/components/ErrorBoundary.stories.tsx.
-
-    1. `resetKeys` triggers reset when its array length changes.
-    2. `resetKeys` triggers reset when its values change.
-    3. Unit tests added and passing.
-  * test_steps:
-
-    - Run unit tests for ErrorBoundary component.
-    - Manually test error reset scenarios in development.
-  * notes: Implement resetKeys as an array that triggers reset when it changes.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/ErrorBoundary.tsx (lines 59-70)
-    componentDidUpdate(prevProps: Props) {
-      const { resetKeys } = this.props;
-      const { resetKeys: prevResetKeys } = prevProps;
-
-      // Reset error boundary if resetKeys have changed
-      if (resetKeys && prevResetKeys && resetKeys.length === prevResetKeys.length) {  // BUG: Only checks length
-        const hasChanged = resetKeys.some((key, index) => key !== prevResetKeys[index]);
-        if (hasChanged) {
-          this.setState({ hasError: false, error: undefined, errorInfo: undefined });
-        }
-      }
-    }
-    ```
-
-  * **Current Issues:**
-    - Line 64: Only triggers reset when `resetKeys.length === prevResetKeys.length`
-    - If array length changes (e.g., from `[1,2]` to `[1]`), reset doesn't trigger
-    - Should trigger reset on ANY change to resetKeys array
-
-  * **Corrected Pattern:**
-    ```tsx
-    componentDidUpdate(prevProps: Props) {
-      const { resetKeys } = this.props;
-      const { resetKeys: prevResetKeys } = prevProps;
-
-      // Reset error boundary if resetKeys have changed (length OR values)
-      if (resetKeys && prevResetKeys) {
-        // Check if length changed
-        if (resetKeys.length !== prevResetKeys.length) {
-          this.setState({ hasError: false, error: undefined, errorInfo: undefined });
-          return;
-        }
-        
-        // Check if values changed
-        const hasChanged = resetKeys.some((key, index) => key !== prevResetKeys[index]);
-        if (hasChanged) {
-          this.setState({ hasError: false, error: undefined, errorInfo: undefined });
-        }
-      }
-    }
-    ```
-* [x] `T-2002` **Fix ErrorBoundary.tsx retry bypass**
-
-  * priority: 2
-  * estimate_m: 30
-  * labels: [bug, frontend, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-08
-  * deps: []
-  * target_files: [src/components/ErrorBoundary.tsx]
-  * related_files: [src/components/ErrorBoundary.stories.tsx, src/components/__tests__/ErrorBoundary.test.tsx]
-  * sub-tasks:
-
-    - [x] Ensure retry count is preserved when error occurs in src/components/ErrorBoundary.tsx.
-    - [x] Ensure retry count is not reset in getDerivedStateFromError in src/components/ErrorBoundary.tsx.
-    - [x] Add unit tests to verify retry logic in src/components/__tests__/ErrorBoundary.test.tsx.
-    - [x] Run unit tests for ErrorBoundary retry functionality.
-    - [x] Simulate errors and check retry behavior using src/components/ErrorBoundary.stories.tsx.
-
-    1. Retry count is preserved when error occurs.
-    2. Retry count is not reset in getDerivedStateFromError.
-    3. Unit tests verify retry logic.
-  * test_steps:
-
-    - Run unit tests for ErrorBoundary retry functionality.
-    - Simulate errors and check retry behavior.
-  * notes: Ensure retry state is managed separately from error state.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/ErrorBoundary.tsx (lines 36-38)
-    static getDerivedStateFromError(error: Error): State {
-      return { hasError: true, error, retryCount: 0 };  // BUG: Resets retry count to 0
-    }
-
-    // src/components/ErrorBoundary.tsx (lines 72-106)
-    handleReset = () => {
-      const newRetryCount = this.state.retryCount + 1;  // Increments retry count
-
-      // Always update retry count for UI state management
-      this.setState({ retryCount: newRetryCount });
-
-      // Prevent infinite retries - show permanent error after 3 attempts
-      if (newRetryCount >= 3) {
-        // Don't reset error state, just update retry count so UI shows permanent error
-        return;
-      }
-
-      // Reset error state to allow retry
-      this.setState({
-        hasError: false,
-        error: undefined,
-        errorInfo: undefined
-      });
-    };
-    ```
-
-  * **Current Issues:**
-    - Line 37: `getDerivedStateFromError` resets `retryCount: 0` every time a new error occurs
-    - This defeats the retry limit mechanism - user gets infinite retries
-    - Should preserve existing retry count when new errors occur
-
-  * **Corrected Pattern:**
-    ```tsx
-    static getDerivedStateFromError(error: Error): State {
-      return { hasError: true, error };  // Don't reset retryCount
-    }
-
-    // In constructor, ensure retryCount is initialized
-    constructor(props: Props) {
-      super(props);
-      this.state = { hasError: false, retryCount: 0 };
-    }
-
-    // Or better yet, preserve retryCount from previous state
-    static getDerivedStateFromError(error: Error, prevState: State): State {
-      return { 
-        hasError: true, 
-        error, 
-        retryCount: prevState.retryCount  // Preserve existing retry count
-      };
-    }
-    ```
-* [x] `T-2003` **Consolidate duplicate structured data in layout.tsx**
-
-  * priority: 2
-  * estimate_m: 30
-  * labels: [cleanup, seo, performance]
-  * assignee: @seo
-  * status: completed
-  * due: 2026-03-08
-  * deps: []
-  * target_files: [src/app/layout.tsx]
-  * related_files: [src/components/StructuredData.tsx]
-  * sub-tasks:
-
-    - [ ] Ensure single authoritative JSON-LD for Organization/LocalBusiness in src/app/layout.tsx.
-    - [ ] Validate output against schema in src/app/layout.tsx.
-    - [ ] Ensure no duplicate structured data by removing from src/components/StructuredData.tsx.
-    - [ ] Run the app and check JSON-LD output.
-    - [ ] Validate using schema validator.
-
-    1. Single authoritative JSON-LD for Organization/LocalBusiness.
-    2. Validate output against schema.
-    3. No duplicate structured data.
-  * test_steps:
-
-    - Run the app and check JSON-LD output.
-    - Validate using schema validator.
-  * notes: Move structured data to layout.tsx and remove from other locations.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/app/layout.tsx (lines 58-61)
-    <head>
-      <StructuredData type="Organization" />
-      <StructuredData type="LocalBusiness" />
-    </head>
-    ```
-
-  * **StructuredData Component Usage:**
-    ```tsx
-    // src/components/StructuredData.tsx - Used throughout the app
-    // Multiple instances can be rendered in different components
-    // This creates duplicate JSON-LD scripts in the DOM
-    ```
-
-  * **Current Issues:**
-    - Duplicate Organization and LocalBusiness schemas in page head
-    - Multiple JSON-LD scripts for same business entity
-    - SEO confusion and potential search engine penalties
-    - Performance impact from redundant structured data
-
-  * **Corrected Pattern:**
-    ```tsx
-    // src/app/layout.tsx - Single authoritative source
-    <head>
-      <StructuredData type="Organization" />
-      <StructuredData type="LocalBusiness" />
-      {/* Remove all other Organization/LocalBusiness instances */}
-    </head>
-
-    // Other components should only use:
-    // - StructuredData type="BreadcrumbList" 
-    // - StructuredData type="Service"
-    // Never use Organization/LocalBusiness outside layout.tsx
-    ```
-
-  * **Files to Update:**
-    - Remove Organization/LocalBusiness StructuredData from all components except layout.tsx
-    - Keep only BreadcrumbList and Service types in other components
-* [x] `T-2004` **Fix page.tsx breadcrumbs rendering**
-
-  * priority: 2
-  * estimate_m: 45
-  * labels: [bug, frontend, navigation]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-08
-  * deps: []
-  * target_files: [src/app/page.tsx]
-  * related_files: [src/components/Breadcrumbs.tsx]
-  * sub-tasks:
-
-    - [x] Ensure breadcrumbs render when breadcrumbItems.length >= 2 in src/app/page.tsx.
-    - [x] Ensure navigation links are correct in src/app/page.tsx using src/components/Breadcrumbs.tsx.
-    - [x] Verify visual and functional testing passes.
-    - [x] Navigate to pages with different breadcrumb depths.
-    - [x] Verify breadcrumbs appear and link correctly.
-
-    1. Breadcrumbs render when breadcrumbItems.length >= 2.
-    2. Navigation links are correct.
-    3. Visual and functional testing passes.
-  * test_steps:
-
-    - Navigate to pages with different breadcrumb depths.
-    - Verify breadcrumbs appear and link correctly.
-  * notes: Conditionally render breadcrumbs based on item count.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/app/page.tsx (lines 39-41, 55-59)
-    const breadcrumbItems = [
-      { name: 'Home', href: '/' }
-    ];
-
-    // Only render breadcrumbs if there's actual navigation value (more than 1 item)
-    {breadcrumbItems.length > 1 && (
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <Breadcrumbs items={breadcrumbItems} />
-      </div>
-    )}
-    ```
-
-  * **Current Issues:**
-    - Line 55: Uses `> 1` condition, but task description says `>= 2`
-    - Home page has only 1 breadcrumb item, so breadcrumbs don't render
-    - Should render breadcrumbs when there are 2+ items for meaningful navigation
-    - Current logic is correct but inconsistent with task requirements
-
-  * **Expected Behavior:**
-    - Home page: 1 item ("Home") → No breadcrumbs (correct)
-    - Services page: 2 items ("Home", "Services") → Should show breadcrumbs
-    - Service detail page: 3 items ("Home", "Services", "Haircut") → Should show breadcrumbs
-
-  * **Corrected Pattern:**
-    ```tsx
-    // Consistent with task requirements
-    {breadcrumbItems.length >= 2 && (
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <Breadcrumbs items={breadcrumbItems} />
-      </div>
-    )}
-    ```
-
-  * **Note:** Current implementation (`> 1`) is functionally equivalent to `>= 2`, but should be updated for consistency with task specification.
-* [x] `T-2005` **Convert LinkWithIcon.tsx to forwardRef**
-
-  * priority: 2
-  * estimate_m: 30
-  * labels: [refactor, frontend, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-08
-  * deps: []
-  * target_files: [src/components/LinkWithIcon.tsx]
-  * related_files: [src/components/Barbers.tsx, src/components/Services.tsx]
-  * sub-tasks:
-
-    - [x] Convert component to use forwardRef pattern in src/components/LinkWithIcon.tsx.
-    - [x] Ensure existing consumers (src/components/Barbers.tsx, src/components/Services.tsx) update without runtime warnings.
-    - [x] Ensure TypeScript types are correct in src/components/LinkWithIcon.tsx.
-    - [x] Check that ref is properly forwarded.
-    - [x] Run tests and ensure no warnings.
-
-    1. Component uses forwardRef pattern.
-    2. Existing consumers update without runtime warnings.
-    3. TypeScript types are correct.
-  * test_steps:
-
-    - Check that ref is properly forwarded.
-    - Run tests and ensure no warnings.
-  * notes: Use React.forwardRef to allow ref access to the underlying link element.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/LinkWithIcon.tsx (lines 31-42, 54-64)
-    interface LinkWithIconProps {
-      href: string;
-      children: React.ReactNode;
-      icon?: React.ComponentType<{ className?: string }>;
-      variant?: LinkVariant;
-      className?: string;
-      target?: string;
-      rel?: string;
-      external?: boolean;
-      ref?: React.Ref<HTMLAnchorElement>;  // Already has ref prop
-    }
-
-    export default function LinkWithIcon({
-      href,
-      children,
-      icon: Icon = ChevronRight,
-      variant = 'default',
-      className,
-      target,
-      rel,
-      external,
-      ref,  // Already accepts ref
-    }: LinkWithIconProps) {
-      // Component logic...
-    }
-    ```
-
-  * **Current Implementation Analysis:**
-    - Component already accepts a `ref` prop in the interface
-    - Uses React 19 ref-as-prop pattern (lines 80, 95)
-    - Does NOT use `React.forwardRef()` wrapper
-    - This may cause TypeScript warnings in some scenarios
-
-  * **Current Issues:**
-    - Not using `forwardRef` wrapper may cause ref forwarding issues
-    - React 19 ref-as-prop works but `forwardRef` is more explicit
-    - Some consumers may expect traditional forwardRef pattern
-
-  * **Corrected Pattern:**
-    ```tsx
-    import { forwardRef } from 'react';
-
-    interface LinkWithIconProps {
-      href: string;
-      children: React.ReactNode;
-      icon?: React.ComponentType<{ className?: string }>;
-      variant?: LinkVariant;
-      className?: string;
-      target?: string;
-      rel?: string;
-      external?: boolean;
-      // Remove ref from props - will be provided by forwardRef
-    }
-
-    const LinkWithIcon = forwardRef<HTMLAnchorElement, LinkWithIconProps>(({
-      href,
-      children,
-      icon: Icon = ChevronRight,
-      variant = 'default',
-      className,
-      target,
-      rel,
-      external,
-    }, ref) => {
-      // Component implementation with forwarded ref
-      const baseClasses = 'inline-flex items-center font-semibold transition-colors';
-      const variantClasses = {
-        default: 'text-black hover:text-amber-500',
-        accent: 'text-amber-500 hover:text-black',
-      };
-      const classes = `${baseClasses} ${variantClasses[variant]} ${className || ''}`.trim();
-      const isExternal = external ?? isExternalUrl(href);
-
-      if (isExternal) {
-        return (
-          <a
-            ref={ref}
-            href={href}
-            target={target}
-            rel={rel || (href.startsWith('http') ? 'noopener noreferrer' : undefined)}
-            className={classes}
-          >
-            {children}
-            <Icon className="h-5 w-5 ml-2" />
-          </a>
-        );
-      }
-
-      return (
-        <Link
-          ref={ref}
-          href={href}
-          target={target}
-          rel={rel}
-          className={classes}
-        >
-          {children}
-          <Icon className="h-5 w-5 ml-2" />
-        </Link>
-      );
-    });
-
-    LinkWithIcon.displayName = 'LinkWithIcon';
-    export default LinkWithIcon;
-    ```
-
----
-
-# 🟡 Medium (P3) — Due: 2026-03-12
-
-* [x] `T-3001` **Add angle prop support to P3Color.tsx**
-
-  * priority: 3
-  * estimate_m: 45
-  * labels: [enhancement, frontend, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-12
-  * deps: []
-  * target_files: [src/components/P3Color.tsx]
-  * related_files: [src/components/Hero.tsx, src/components/P3Color.stories.tsx]
-  * sub-tasks:
-
-    - [x] Add optional `angle` prop to P3Gradient interface in src/components/P3Color.tsx.
-    - [x] Update gradient CSS to use angle parameter when provided in src/components/P3Color.tsx.
-    - [x] Ensure backward compatibility with existing usage in src/components/Hero.tsx.
-    - [x] Add Storybook stories for different angle values.
-    - [x] Test gradient rendering at various angles.
-
-    1. Optional `angle` prop added to interface.
-    2. Gradient CSS uses angle parameter when provided.
-    3. Backward compatibility maintained.
-  * test_steps:
-
-    - Add Storybook stories for different angle values.
-    - Test gradient rendering at various angles.
-  * notes: Default angle should be "to bottom" for backward compatibility.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/P3Color.tsx (current implementation)
-    interface P3GradientProps {
-      children: ReactNode;
-      className?: string;
-      from: string;
-      to: string;
-    }
-
-    export function P3Gradient({ children, className = '', from, to }: P3GradientProps) {
-      return (
-        <div
-          className={className}
-          style={{
-            background: `linear-gradient(to bottom, ${from}, ${to})`,  // Fixed direction
-          }}
-        >
-          {children}
-        </div>
-      );
-    }
-    ```
-
-  * **Enhanced Pattern:**
-    ```tsx
-    // src/components/P3Color.tsx (enhanced with angle support)
-    interface P3GradientProps {
-      children: ReactNode;
-      className?: string;
-      from: string;
-      to: string;
-      angle?: string; // Optional angle prop
-    }
-
-    export function P3Gradient({ 
-      children, 
-      className = '', 
-      from, 
-      to, 
-      angle = 'to bottom' // Default for backward compatibility
-    }: P3GradientProps) {
-      return (
-        <div
-          className={className}
-          style={{
-            background: `linear-gradient(${angle}, ${from}, ${to})`,  // Dynamic angle
-          }}
-        >
-          {children}
-        </div>
-      );
-    }
-    ```
-
-  * **Usage Examples:**
-    ```tsx
-    // Existing usage (unchanged)
-    <P3Gradient from="color(display-p3 0 0 0 / 0.6)" to="color(display-p3 0 0 0 / 0.4)">
-      <Image src="/images/hero/hero-bg.svg" alt="" fill />
-    </P3Gradient>
-
-    // New usage with custom angles
-    <P3Gradient 
-      from="color(display-p3 0.831 0.647 0.455 / 0.8)" 
-      to="color(display-p3 0 0 0 / 0.2)"
-      angle="135deg"
-    >
-      <div>Content</div>
-    </P3Gradient>
-
-    <P3Gradient 
-      from="color(display-p3 1 0 0 / 0.6)" 
-      to="color(display-p3 0 0 1 / 0.6)"
-      angle="to right"
-    >
-      <div>Content</div>
-    </P3Gradient>
-    ```
-
----
-
-* [ ] `T-3002` **Add P3 color fallback support**
-
-  * priority: 3
-  * estimate_m: 60
-  * labels: [enhancement, frontend, accessibility]
-  * assignee: @frontend
-  * status: open
-  * due: 2026-03-12
-  * deps: [T-3001]
-  * target_files: [src/components/P3Color.tsx]
-  * related_files: [src/components/Hero.tsx]
-  * sub-tasks:
-
-    - [ ] Add @supports query for P3 color space detection in src/components/P3Color.tsx.
-    - [ ] Provide sRGB fallback colors for P3 gradients in src/components/P3Color.tsx.
-    - [ ] Ensure graceful degradation on unsupported browsers in src/components/P3Color.tsx.
-    - [ ] Test on browsers with and without P3 support.
-    - [ ] Verify performance impact of fallback logic.
-
-    1. @supports query detects P3 color space support.
-    2. sRGB fallback colors provided.
-    3. Graceful degradation on unsupported browsers.
-  * test_steps:
-
-    - Test on browsers with and without P3 support.
-    - Verify performance impact of fallback logic.
-  * notes: Use CSS @supports for feature detection, maintain visual consistency.
-
-  * **Enhanced Pattern with Fallback:**
-    ```tsx
-    // src/components/P3Color.tsx (with P3 fallback support)
-    interface P3GradientProps {
-      children: ReactNode;
-      className?: string;
-      from: string;
-      to: string;
-      angle?: string;
-      // Optional sRGB fallback colors
-      fallbackFrom?: string;
-      fallbackTo?: string;
-    }
-
-    // Helper function to convert P3 colors to sRGB fallbacks
-    function convertP3ToSRGB(p3Color: string): string {
-      // Simple conversion for common P3 colors to sRGB equivalents
-      // In production, use a proper color space conversion library
-      const colorMap: Record<string, string> = {
-        'color(display-p3 0 0 0 / 0.6)': 'rgba(0, 0, 0, 0.6)',
-        'color(display-p3 0 0 0 / 0.4)': 'rgba(0, 0, 0, 0.4)',
-        'color(display-p3 0.831 0.647 0.455 / 0.3)': 'rgba(212, 165, 116, 0.3)',
-        'color(display-p3 0.831 0.647 0.455 / 0.8)': 'rgba(212, 165, 116, 0.8)',
-      };
-      
-      return colorMap[p3Color] || p3Color.replace(/color\(display-p3\s+/, '').replace(/\)/, '');
-    }
-
-    export function P3Gradient({ 
-      children, 
-      className = '', 
-      from, 
-      to, 
-      angle = 'to bottom',
-      fallbackFrom,
-      fallbackTo
-    }: P3GradientProps) {
-      const srgbFrom = fallbackFrom || convertP3ToSRGB(from);
-      const srgbTo = fallbackTo || convertP3ToSRGB(to);
-
-      return (
-        <div
-          className={className}
-          style={{
-            // P3 color space for supported displays
-            '@supports (color: color(display-p3 1 1 1))': {
-              background: `linear-gradient(${angle}, ${from}, ${to})`,
-            },
-            // sRGB fallback for unsupported displays
-            background: `linear-gradient(${angle}, ${srgbFrom}, ${srgbTo})`,
-          }}
-        >
-          {children}
-        </div>
-      );
-    }
-    ```
-
----
-
-* [x] `T-3003` **Add accessibility improvements to ErrorBoundary**
-
-  * priority: 3
-  * estimate_m: 45
-  * labels: [enhancement, accessibility, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-12
-  * deps: []
-  * target_files: [src/components/ErrorBoundary.tsx]
-  * related_files: [src/components/ErrorBoundary.stories.tsx]
-  * sub-tasks:
-
-    - [x] Add ARIA live region announcements for error states in src/components/ErrorBoundary.tsx.
-    - [x] Improve keyboard navigation for error recovery buttons in src/components/ErrorBoundary.tsx.
-    - [x] Add screen reader-friendly error messages in src/components/ErrorBoundary.tsx.
-    - [x] Test with screen readers and keyboard navigation.
-    - [x] Verify WCAG compliance of error UI.
-
-    1. ARIA live region announcements added.
-    2. Keyboard navigation improved.
-    3. Screen reader-friendly messages added.
-  * test_steps:
-
-    - Test with screen readers and keyboard navigation.
-    - Verify WCAG compliance of error UI.
-  * notes: Focus management and clear error communication are key.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/ErrorBoundary.tsx (current accessibility)
-    return (
-      <div 
-        role="alert" 
-        aria-live="assertive"
-        className="min-h-screen flex items-center justify-center bg-gray-50 px-4"
-      >
-        <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <AlertTriangle className="w-8 h-8 text-red-600" aria-hidden="true" />
-          </div>
-          
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Something went wrong
-          </h1>
-          
-          <p className="text-gray-700 mb-6">
-            {this.state.retryCount >= 3
-              ? "We're experiencing technical difficulties. Please refresh the page to try again."
-              : "We're sorry, but something unexpected happened. Our team has been notified and is working on a fix."
-            }
-          </p>
-          
-          <div className="space-y-3">
-            <button
-              onClick={this.handleReset}
-              className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Try Again
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-    ```
-
-  * **Enhanced Accessibility Pattern:**
-    ```tsx
-    // src/components/ErrorBoundary.tsx (enhanced accessibility)
-    constructor(props: Props) {
-      super(props);
-      this.state = { hasError: false, retryCount: 0 };
-      // Create ref for focus management
-      this.errorRef = React.createRef<HTMLDivElement>();
-    }
-
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-      // ... existing error handling
-      
-      // Announce error to screen readers
-      if (typeof window !== 'undefined') {
-        const announcement = `An error has occurred: ${error.message}. ${this.state.retryCount >= 3 
-          ? 'Please refresh the page to continue.' 
-          : 'You may try again or return to the home page.'}`;
-        
-        // Create temporary live region for announcement
-        const liveRegion = document.createElement('div');
-        liveRegion.setAttribute('aria-live', 'polite');
-        liveRegion.setAttribute('aria-atomic', 'true');
-        liveRegion.style.position = 'absolute';
-        liveRegion.style.left = '-10000px';
-        liveRegion.textContent = announcement;
-        document.body.appendChild(liveRegion);
-        
-        // Clean up after announcement
-        setTimeout(() => document.body.removeChild(liveRegion), 1000);
-      }
-    }
-
-    // Focus management when error occurs
-    componentDidUpdate(prevProps: Props, prevState: State) {
-      if (!prevState.hasError && this.state.hasError && this.errorRef.current) {
-        // Focus the error container when error occurs
-        this.errorRef.current.focus();
-      }
-    }
-
-    render() {
-      if (this.state.hasError) {
-        return (
-          <div 
-            ref={this.errorRef}
-            role="alertdialog"
-            aria-modal="true"
-            aria-labelledby="error-title"
-            aria-describedby="error-description"
-            className="min-h-screen flex items-center justify-center bg-gray-50 px-4"
-            tabIndex={-1} // Allow programmatic focus
-          >
-            <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <AlertTriangle className="w-8 h-8 text-red-600" aria-hidden="true" />
-              </div>
-              
-              <h1 
-                id="error-title"
-                className="text-2xl font-bold text-gray-900 mb-4"
-              >
-                Something went wrong
-              </h1>
-              
-              <p 
-                id="error-description"
-                className="text-gray-700 mb-6"
-              >
-                {this.state.retryCount >= 3
-                  ? "We're experiencing technical difficulties. Please refresh the page to try again."
-                  : "We're sorry, but something unexpected happened. Our team has been notified and is working on a fix."
-                }
-              </p>
-              
-              <div className="space-y-3" role="group" aria-label="Error recovery options">
-                {this.state.retryCount < 3 ? (
-                  <button
-                    onClick={this.handleReset}
-                    className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
-                    aria-describedby="retry-help"
-                  >
-                    <RefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Try Again
-                    <span id="retry-help" className="sr-only">
-                      Attempt to recover from the error and reload the content
-                    </span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => window.location.reload()}
-                    className="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
-                    aria-describedby="refresh-help"
-                  >
-                    <RefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Refresh Page
-                    <span id="refresh-help" className="sr-only">
-                      Refresh the entire page to clear the error
-                    </span>
-                  </button>
-                )}
-                
-                <button
-                  onClick={() => window.location.href = '/'}
-                  className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
-                  aria-describedby="home-help"
-                >
-                  Go Home
-                  <span id="home-help" className="sr-only">
-                    Navigate to the home page
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      return this.props.children;
-    }
-    ```
-
----
-
-# 🟢 Low (P4) — Due: 2026-03-15
-
-* [x] `T-4001` **Add loading states to ServiceCard**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [enhancement, ux, components]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [src/components/Services.tsx]
-  * related_files: [src/components/Button.tsx]
-  * sub-tasks:
-
-    - [x] Add loading prop to ServiceCard component in src/components/Services.tsx.
-    - [x] Show skeleton loader during booking action in src/components/Services.tsx.
-    - [x] Maintain button dimensions during loading state in src/components/Services.tsx.
-    - [x] Test loading state behavior and animations.
-    - [x] Ensure accessibility during loading state.
-
-    1. Loading prop added to ServiceCard.
-    2. Skeleton loader shows during booking.
-    3. Button dimensions maintained.
-  * test_steps:
-
-    - Test loading state behavior and animations.
-    - Ensure accessibility during loading state.
-  * notes: Use consistent loading patterns with other components.
-  * **Implementation:** Added `loading?: boolean` prop with skeleton UI using `animate-pulse`. Includes accessibility attributes (`aria-busy`, `aria-label`) and matches content dimensions to prevent layout shift.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/Services.tsx (current ServiceCard)
-    const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
-      const IconComponent = iconMap[service.icon as keyof typeof iconMap];
-      const isSpecial = service.id === 'new-client-special';
-      
-      return (
-        <div className="service-card container-card relative p-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105">
-          {/* Service content */}
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-black">{service.price}</span>
-            <Button
-              variant="primary"
-              href={EXTERNAL_LINKS.booking}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={isSpecial ? 'bg-amber-500 text-black hover:bg-amber-400' : ''}
-            >
-              Book Now
-              <ChevronRight className="w-4 h-4 ml-1" />
-            </Button>
-          </div>
-        </div>
-      );
-    });
-    ```
-
-  * **Enhanced Pattern with Loading State:**
-    ```tsx
-    // src/components/Services.tsx (with loading state)
-    interface ServiceCardProps {
-      service: typeof services[0];
-      loading?: boolean;
-    }
-
-    const ServiceCard = memo(({ service, loading = false }: ServiceCardProps) => {
-      const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Star;
-      const isSpecial = service.id === 'new-client-special';
-      
-      return (
-        <div className={`service-card container-card relative p-8 rounded-2xl border-2 transition-all duration-300 ${
-          loading ? 'opacity-75 pointer-events-none' : 'hover:scale-105'
-        }`}>
-          {isSpecial && (
-            <div className="absolute -top-3 -right-3 bg-amber-500 text-black px-3 py-1 rounded-full text-sm font-bold">
-              POPULAR
-            </div>
-          )}
-          
-          <div className="flex items-center mb-4">
-            <IconContainer bg={isSpecial ? 'amber' : 'black'}>
-              {loading ? (
-                <div className="w-6 h-6 bg-gray-300 rounded animate-pulse" />
-              ) : (
-                <IconComponent className="w-6 h-6" />
-              )}
-            </IconContainer>
-            <div className="ml-4">
-              <h3 className="text-xl font-bold text-black">
-                {loading ? (
-                  <div className="h-6 w-32 bg-gray-300 rounded animate-pulse" />
-                ) : (
-                  service.title
-                )}
-              </h3>
-              <p className="text-gray-600">
-                {loading ? (
-                  <div className="h-4 w-20 bg-gray-200 rounded animate-pulse mt-1" />
-                ) : (
-                  service.duration
-                )}
-              </p>
-            </div>
-          </div>
-          
-          <p className="text-gray-700 mb-6">
-            {loading ? (
-              <>
-                <div className="h-4 bg-gray-200 rounded animate-pulse mb-2" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
-              </>
-            ) : (
-              service.description
-            )}
-          </p>
-          
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-black">
-              {loading ? (
-                <div className="h-8 w-16 bg-gray-300 rounded animate-pulse" />
-              ) : (
-                service.price
-              )}
-            </span>
-            <Button
-              variant="primary"
-              href={loading ? undefined : EXTERNAL_LINKS.booking}
-              target={loading ? undefined : "_blank"}
-              rel={loading ? undefined : "noopener noreferrer"}
-              disabled={loading}
-              className={`${
-                isSpecial ? 'bg-amber-500 text-black hover:bg-amber-400' : ''
-              } ${loading ? 'cursor-not-allowed' : ''}`}
-            >
-              {loading ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2" />
-                  Booking...
-                </>
-              ) : (
-                <>
-                  Book Now
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      );
-    });
-    ```
-
----
-
-* [x] `T-4002` **Add hover animations to Gallery items**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [enhancement, ux, animations]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [src/components/Gallery.tsx]
-  * related_files: [src/components/Gallery.stories.tsx]
-  * sub-tasks:
-
-    - [x] Enhance hover animations with smooth transitions in src/components/Gallery.tsx.
-    - [x] Add subtle scale and overlay effects in src/components/Gallery.tsx.
-    - [x] Ensure performance with CSS transforms in src/components/Gallery.tsx.
-    - [x] Test animations across different devices.
-    - [x] Verify accessibility with reduced motion preferences.
-
-    1. Enhanced hover animations added.
-    2. Smooth scale and overlay effects implemented.
-    3. CSS transforms used for performance.
-  * test_steps:
-
-    - Test animations across different devices.
-    - Verify accessibility with reduced motion preferences.
-  * notes: Respect prefers-reduced-motion for accessibility.
-  * **Implementation:** Enhanced with scale-110 transform, gradient overlay, slide-up content animation, and amber border highlight. Added keyboard accessibility (`tabIndex`, `role="button"`) and `motion-safe:` variants for reduced motion support.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/Gallery.tsx (current hover effects)
-    {galleryItems.map((item) => (
-      <div key={item.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square">
-        <Image 
-          src={item.src}
-          alt={item.alt}
-          fill
-          placeholder="blur"
-          quality={75}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
-            <p className="text-white font-semibold">{item.title}</p>
-            <p className="text-gray-300 text-sm">by {item.barber}</p>
-          </div>
-        </div>
-      </div>
-    ))}
-    ```
-
-  * **Enhanced Animation Pattern:**
-    ```tsx
-    // src/components/Gallery.tsx (enhanced animations)
-    {galleryItems.map((item) => (
-      <div key={item.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square">
-        <Image 
-          src={item.src}
-          alt={item.alt}
-          fill
-          placeholder="blur"
-          quality={75}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-all duration-500 ease-out group-hover:scale-110 group-hover:brightness-90"
-        />
-        
-        {/* Enhanced overlay with gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out" />
-        
-        {/* Content overlay */}
-        <div className="absolute inset-0 flex items-end justify-center p-6">
-          <div className="text-center transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out delay-100">
-            <p className="text-white font-bold text-lg mb-1 drop-shadow-lg">{item.title}</p>
-            <p className="text-gray-200 text-sm drop-shadow-md">by {item.barber}</p>
-          </div>
-        </div>
-
-        {/* Subtle border highlight on hover */}
-        <div className="absolute inset-0 border-2 border-amber-500/0 group-hover:border-amber-500/50 rounded-2xl transition-all duration-300 ease-out pointer-events-none" />
-
-        {/* Respect reduced motion preference */}
-        <style jsx>{`
-          @media (prefers-reduced-motion: reduce) {
-            .group:hover .group-hover\\:scale-110 {
-              transform: scale(1);
-            }
-            .group:hover .group-hover\\:translate-y-0 {
-              transform: translateY(1rem);
-            }
-            .group-hover\\:opacity-100 {
-              opacity: 0;
-            }
-            .transition-all {
-              transition: none;
-            }
-          }
-        `}</style>
-      </div>
-    ))}
-    ```
-
----
-
-# 🔵 Backlog (P5) — No Due Date
-
-* [ ] `T-5001` **Add comprehensive error logging**
-
-  * priority: 5
-  * estimate_m: 60
-  * labels: [enhancement, logging, monitoring]
-  * assignee: @frontend
-  * status: open
-  * deps: []
-  * target_files: [src/components/ErrorBoundary.tsx]
-  * related_files: []
-  * sub-tasks:
-
-    - [ ] Integrate error reporting service (Sentry) in src/components/ErrorBoundary.tsx.
-    - [ ] Add structured error logging in src/components/ErrorBoundary.tsx.
-    - [ ] Include user context and browser info in error reports.
-    - [ ] Test error reporting with various error types.
-    - [ ] Verify error dashboard integration.
-
-    1. Error reporting service integrated.
-    2. Structured error logging added.
-    3. User context included in reports.
-  * test_steps:
-
-    - Test error reporting with various error types.
-    - Verify error dashboard integration.
-  * notes: Consider privacy implications of error data collection.
-
-  * **Existing Code Pattern:**
-    ```tsx
-    // src/components/ErrorBoundary.tsx (current error handling)
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-      this.setState({
-        error,
-        errorInfo,
-      });
-
-      this.props.onError?.(error, errorInfo);
-
-      // Log error to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.error('ErrorBoundary caught an error:', error, errorInfo);
-      }
-
-      // In production, you would send this to an error reporting service
-      // like Sentry, LogRocket, etc.
-      // Example: Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
-    }
-    ```
-
-  * **Enhanced Logging Pattern:**
-    ```tsx
-    // src/components/ErrorBoundary.tsx (with comprehensive logging)
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-      this.setState({
-        error,
-        errorInfo,
-      });
-
-      this.props.onError?.(error, errorInfo);
-
-      // Enhanced error logging
-      const errorContext = this.gatherErrorContext(error, errorInfo);
-      
-      // Log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.error('ErrorBoundary caught an error:', {
-          error: error.toString(),
-          stack: error.stack,
-          componentStack: errorInfo.componentStack,
-          context: errorContext,
-        });
-      }
-
-      // Production error reporting
-      if (process.env.NODE_ENV === 'production') {
-        this.reportError(error, errorInfo, errorContext);
-      }
-    }
-
-    private gatherErrorContext = (error: Error, errorInfo: ErrorInfo) => {
-      // Gather comprehensive context for error reporting
-      return {
-        // User context (privacy-conscious)
-        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
-        url: typeof window !== 'undefined' ? window.location.href : undefined,
-        timestamp: new Date().toISOString(),
-        
-        // Application context
-        reactVersion: React.version,
-        errorBoundaryName: this.constructor.name,
-        retryCount: this.state.retryCount,
-        
-        // Error classification
-        errorType: error.constructor.name,
-        isNetworkError: error.message.includes('fetch') || error.message.includes('network'),
-        isChunkError: error.message.includes('Loading chunk'),
-        
-        // Performance context
-        memoryUsage: typeof performance !== 'undefined' && 'memory' in performance ? {
-          used: Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024),
-          total: Math.round((performance as any).memory.totalJSHeapSize / 1024 / 1024),
-        } : undefined,
-        
-        // Browser capabilities
-        supportsP3: typeof CSS !== 'undefined' && CSS.supports('color', 'color(display-p3 1 1 1)'),
-        supportsWebP: typeof document !== 'undefined' && document.createElement('canvas').toDataURL('image/webp').startsWith('data:image/webp'),
-      };
-    };
-
-    private reportError = (error: Error, errorInfo: ErrorInfo, context: any) => {
-      // Example Sentry integration
-      if (typeof window !== 'undefined' && (window as any).Sentry) {
-        (window as any).Sentry.captureException(error, {
-          contexts: {
-            react: {
-              componentStack: errorInfo.componentStack,
-            },
-            browser: {
-              userAgent: context.userAgent,
-              url: context.url,
-            },
-            error: {
-              type: context.errorType,
-              isNetworkError: context.isNetworkError,
-              isChunkError: context.isChunkError,
-            },
-          },
-          tags: {
-            errorBoundary: context.errorBoundaryName,
-            retryCount: String(context.retryCount),
-          },
-          extra: {
-            timestamp: context.timestamp,
-            reactVersion: context.reactVersion,
-            memoryUsage: context.memoryUsage,
-            browserCapabilities: {
-              supportsP3: context.supportsP3,
-              supportsWebP: context.supportsWebP,
-            },
-          },
-          level: context.isChunkError ? 'warning' : 'error',
-        });
-      }
-
-      // Fallback: Log to external service
-      this.logToExternalService(error, errorInfo, context);
-    };
-
-    private logToExternalService = (error: Error, errorInfo: ErrorInfo, context: any) => {
-      // Custom logging endpoint or service
-      try {
-        const logData = {
-          error: {
-            message: error.message,
-            stack: error.stack,
-            name: error.name,
-          },
-          errorInfo: {
-            componentStack: errorInfo.componentStack,
-          },
-          context: {
-            ...context,
-            // Sanitize sensitive data
-            userAgent: context.userAgent?.substring(0, 100),
-            url: context.url?.split('?')[0], // Remove query params
-          },
-          version: process.env.NEXT_PUBLIC_APP_VERSION || 'unknown',
-        };
-
-        // Send to logging service (implement your preferred service)
-        fetch('/api/log-error', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(logData),
-        }).catch(() => {
-          // Silent fail for logging errors to avoid infinite loops
-        });
-      } catch (loggingError) {
-        console.warn('Failed to log error:', loggingError);
-      }
-    };
-    ```
-
----
-
-* [ ] `T-5002` **Add performance monitoring**
-
-  * priority: 5
-  * estimate_m: 45
-  * labels: [enhancement, performance, monitoring]
-  * assignee: @frontend
-  * status: open
-  * deps: []
-  * target_files: []
-  * related_files: [src/app/layout.tsx]
-  * sub-tasks:
-
-    - [ ] Add Web Vitals monitoring in src/app/layout.tsx.
-    - [ ] Track Core Web Vitals (LCP, INP, CLS) in src/app/layout.tsx.
-    - [ ] Send metrics to analytics service.
-    - [ ] Set up performance dashboard alerts.
-    - [ ] Monitor performance trends over time.
-
-    1. Web Vitals monitoring added.
-    2. Core Web Vitals tracked.
-    3. Metrics sent to analytics.
-  * test_steps:
-
-    - Verify metrics collection in development.
-    - Test performance dashboard integration.
-  * notes: Use sample rate for production to avoid excessive data.
-
-  * **Performance Monitoring Pattern:**
-    ```tsx
-    // src/app/layout.tsx (add performance monitoring)
-    import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
-
-    function sendToAnalytics(metric: any) {
-      // Send to your analytics service
-      if (process.env.NODE_ENV === 'production') {
-        // Example: Google Analytics
-        gtag('event', metric.name, {
-          event_category: 'Web Vitals',
-          event_label: metric.id,
-          value: Math.round(metric.value),
-          non_interaction: true,
-        });
-
-        // Example: Custom analytics endpoint
-        fetch('/api/web-vitals', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: metric.name,
-            value: metric.value,
-            id: metric.id,
-            delta: metric.delta,
-            rating: metric.rating,
-            navigationType: performance.navigation?.type,
-            timestamp: Date.now(),
-          }),
-        }).catch(() => {});
-      } else {
-        console.log('Web Vital:', metric);
-      }
-    }
-
-    // Initialize Web Vitals monitoring
-    if (typeof window !== 'undefined') {
-      getCLS(sendToAnalytics);
-      getFID(sendToAnalytics);
-      getFCP(sendToAnalytics);
-      getLCP(sendToAnalytics);
-      getTTFB(sendToAnalytics);
-    }
-    ```
-
----
-
-* [ ] `T-5003` **Add component documentation**
-
-  * priority: 5
-  * estimate_m: 90
-  * labels: [documentation, components]
-  * assignee: @frontend
-  * status: open
-  * deps: []
-  * target_files: [src/components/]
-  * related_files: [docs/]
-  * sub-tasks:
-
-    - [ ] Add comprehensive JSDoc to all components.
-    - [ ] Create component usage examples.
-    - [ ] Document prop interfaces and types.
-    - [ ] Add accessibility notes to documentation.
-    - [ ] Generate component documentation site.
-
-    1. Comprehensive JSDoc added to components.
-    2. Usage examples created.
-    3. Prop interfaces documented.
-  * test_steps:
-
-    - Verify documentation builds correctly.
-    - Check examples render properly.
-  * notes: Use Storybook for interactive documentation.
-
----
-
-* [ ] `T-5004` **Optimize bundle size**
-
-  * priority: 5
-  * estimate_m: 60
-  * labels: [optimization, performance]
-  * assignee: @frontend
-  * status: open
-  * deps: []
-  * target_files: [next.config.ts]
-  * related_files: [package.json]
-  * sub-tasks:
-
-    - [ ] Analyze current bundle size with webpack-bundle-analyzer.
-    - [ ] Implement dynamic imports for large components.
-    - [ ] Optimize image and font loading.
-    - [ ] Configure compression in next.config.ts.
-    - [ ] Set up bundle size monitoring.
-
-    1. Bundle size analyzed.
-    2. Dynamic imports implemented.
-    3. Image and font loading optimized.
-  * test_steps:
-
-    - Run bundle analysis before and after optimization.
-    - Verify performance improvements in Lighthouse.
-  * notes: Monitor bundle size regressions in CI/CD.
-
----
-
-* [ ] `T-5005` **Add internationalization support**
-
-  * priority: 5
-  * estimate_m: 120
-  * labels: [enhancement, i18n]
-  * assignee: @frontend
-  * status: open
-  * deps: []
-  * target_files: []
-  * related_files: [src/data/]
-  * sub-tasks:
-
-    - [ ] Set up next-i18next configuration.
-    - [ ] Create translation files for supported languages.
-    - [ ] Update components to use translation hooks.
-    - [ ] Add language switcher component.
-    - [ ] Test language switching functionality.
-
-    1. i18n configuration set up.
-    2. Translation files created.
-    3. Components updated for translations.
-  * test_steps:
-
-    - Test language switching in development.
-    - Verify SEO tags update correctly.
-  * notes: Start with English and Spanish for Dallas market.
-
----
-
-## Reference Documentation
-
-### Code Pattern Guidelines
-
-This TODO follows established code patterns found throughout the codebase:
-
-#### Image Optimization Pattern
-```tsx
-<Image 
-  src={imageSrc}
-  alt={altText}
-  fill
-  quality={75}
-  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-  className="object-cover group-hover:scale-105 transition-transform duration-300"
-  // Note: Only use placeholder="blur" for raster images, not SVGs
-/>
-```
-
-#### Component Interface Pattern
-```tsx
-interface ComponentProps {
-  children: ReactNode;
-  className?: string;
-  // Required props first, then optional
-  requiredProp: string;
-  optionalProp?: string;
+**Modal — remove ModalContext, use isOpen prop:**
+```typescript
+// Before — Context-based open/close state (over-engineered for a modal)
+// After — isOpen as prop, callbacks as props (standard pattern)
+interface ModalProps {
+  isOpen: boolean
+  onClose: () => void
+  children: React.ReactNode
 }
-```
-
-#### Error Boundary Pattern
-```tsx
-// Preserve retry count across errors
-static getDerivedStateFromError(error: Error, prevState: State): State {
-  return { 
-    hasError: true, 
-    error, 
-    retryCount: prevState.retryCount  // Don't reset retry count
-  };
-}
-```
-
-#### Icon Mapping Pattern
-```tsx
-const iconMap = {
-  IconName1: IconComponent1,
-  IconName2: IconComponent2,
-  // Always provide fallback
-};
-
-// Safe usage with fallback
-const IconComponent = iconMap[iconName] || DefaultIcon;
-```
-
-#### Structured Data Pattern
-```tsx
-// Extract address parts safely
-const addressParts = BUSINESS_INFO.address.split(', ');
-const streetAddress = addressParts[0];
-const postalCode = addressParts[2]?.split(' ')[1] || ''; // Safe extraction
-```
-
-#### Accessibility Pattern
-```tsx
-// Focus management and ARIA
-<div 
-  ref={this.errorRef}
-  role="alertdialog"
-  aria-modal="true"
-  aria-labelledby="error-title"
-  aria-describedby="error-description"
-  tabIndex={-1}
->
-```
-
-#### Performance Pattern
-```tsx
-// Memoization and dynamic imports
-const Component = memo(({ prop }: Props) => {
-  // Component logic
-});
-
-const LazyComponent = dynamic(() => import('./Component'), {
-  loading: () => <div className="animate-pulse" />,
-});
-```
-
-### File Structure Patterns
-
-```
-src/
-├── components/           # Reusable UI components
-│   ├── ComponentName.tsx
-│   ├── ComponentName.stories.tsx
-│   └── __tests__/
-│       └── ComponentName.test.tsx
-├── data/               # Static data and constants
-│   ├── constants.ts
-│   ├── services.ts
-│   └── barbers.ts
-└── app/                # Next.js app router pages
-    ├── layout.tsx
-    └── page.tsx
-```
-
-### Testing Patterns
-
-#### Unit Test Pattern
-```tsx
-import { render, screen } from '@testing-library/react';
-import Component from './Component';
-
-describe('Component', () => {
-  it('renders correctly', () => {
-    render(<Component />);
-    expect(screen.getByRole('heading')).toBeInTheDocument();
-  });
-});
-```
-
-#### Integration Test Pattern
-```tsx
-import { render, screen } from '@testing-library/react';
-import { test, expect } from '@playwright/test';
-
-test('user journey', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'The Barber Cave' })).toBeVisible();
-});
+// Sub-components (Header, Body, Footer) remain for composition flexibility
 ```
 
 ---
 
-*Generated: 2026-03-02*
-*Next Review: 2026-03-09*
+### T-F004 · Add Missing Imports to Form and Modal Compound Components
+**Priority:** 2 | **Severity:** High | **Issues:** #36 | **Batch:** F
 
-  * **Note:** Component already works with React 19 ref-as-prop, but should be converted to traditional forwardRef for consistency.
-* [ ] `T-2006` **Update ErrorFallback.tsx navigation**
+**What:** `Form.tsx` and `Modal.tsx` have missing React imports causing runtime errors in strict mode.
 
-  * priority: 2
-  * estimate_m: 30
-  * labels: [refactor, frontend, components]
-  * assignee: @frontend
-  * status: open
-  * due: 2026-03-08
-  * deps: []
-  * target_files: [src/components/ErrorFallback.tsx]
-  * related_files: [src/components/SafeComponent.tsx, src/components/ErrorFallback.stories.tsx]
-  * sub-tasks:
+```typescript
+// Form.tsx — ensure all hooks and types are imported
+import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
 
-    - [ ] Replace window.location.href with useRouter().push() in src/components/ErrorFallback.tsx.
-    - [ ] Ensure SPA behavior is maintained in src/components/ErrorFallback.tsx.
-    - [ ] Ensure no runtime errors in src/components/ErrorFallback.tsx.
-    - [ ] Trigger error fallback and test navigation using src/components/ErrorFallback.stories.tsx.
-    - [ ] Ensure page transitions work correctly.
-
-    1. Replace window.location.href with useRouter().push().
-    2. Maintains SPA behavior.
-    3. No runtime errors.
-  * test_steps:
-
-    - Trigger error fallback and test navigation.
-    - Ensure page transitions work correctly.
-  * notes: Use Next.js router for client-side navigation instead of window.location.
-
-(All metadata fields preserved and normalized; structure identical to P1 tasks.)
-
----
-
-# 🟡 Medium (P3) — Due: 2026-03-15
-
-* [ ] `T-3001` **Strengthen CSP in next.config.ts**
-
-  * priority: 3
-  * estimate_m: 60
-  * labels: [security, config]
-  * assignee: @security
-  * status: open
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [next.config.ts]
-  * related_files: []
-  * sub-tasks:
-
-    - [ ] Remove 'unsafe-inline' and 'unsafe-eval' where possible in next.config.ts.
-    - [ ] Verify app still functions after changes to next.config.ts.
-    - [ ] Add nonce-based script handling if needed in next.config.ts.
-    - [ ] Run the app and check for CSP violations.
-    - [ ] Test all features work without unsafe directives.
-
-    1. Remove 'unsafe-inline' and 'unsafe-eval' where possible.
-    2. Verify app still functions.
-    3. Add nonce-based script handling if needed.
-  * test_steps:
-
-    - Run the app and check for CSP violations.
-    - Test all features work without unsafe directives.
-  * notes: Update Content Security Policy to be more restrictive.
-* [ ] `T-3002` **Review CSP form-action setting**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [security, config]
-  * assignee: @security
-  * status: open
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [next.config.ts]
-  * related_files: [src/components/Contact.tsx]
-  * sub-tasks:
-
-    - [ ] Confirm 'form-action 'self'' is sufficient for third-party integrations in next.config.ts.
-    - [ ] Document exceptions if needed in next.config.ts.
-    - [ ] Ensure no security vulnerabilities from form actions in next.config.ts.
-    - [ ] Review form submissions in the app using src/components/Contact.tsx.
-    - [ ] Check CSP headers for form-action.
-
-    1. Confirm 'form-action 'self'' is sufficient for third-party integrations.
-    2. Document exceptions if needed.
-    3. No security vulnerabilities from form actions.
-  * test_steps:
-
-    - Review form submissions in the app.
-    - Check CSP headers for form-action.
-  * notes: Ensure CSP form-action is appropriately restrictive.
-* [ ] `T-3003` **Verify next.config.ts route header pattern /(.*)**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [testing, config]
-  * assignee: @infra
-  * status: open
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [next.config.ts]
-  * related_files: []
-  * sub-tasks:
-
-    - [ ] Confirm headers apply to intended routes in next.config.ts.
-    - [ ] Confirm headers do not apply to undesired endpoints in next.config.ts.
-    - [ ] Add unit/integration tests for header application in next.config.ts.
-    - [ ] Check routes that should have headers.
-    - [ ] Verify routes that should not have them.
-    - [ ] Run tests.
-
-    1. Confirm headers apply to intended routes.
-    2. Headers do not apply to undesired endpoints.
-    3. Add unit/integration tests.
-  * test_steps:
-
-    - Check routes that should have headers.
-    - Verify routes that should not have them.
-    - Run tests.
-  * notes: Ensure route pattern /(.*) is correct for header application.
-* [ ] `T-3004` **Fix eslint.config.mjs flat-config spreading**
-
-  * priority: 3
-  * estimate_m: 45
-  * labels: [tools, config]
-  * assignee: @devops
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * sub-tasks:
-
-    - [ ] Ensure eslint.config.mjs uses correct defineConfig with flat config spreading.
-    - [ ] Confirm no changes needed in eslint.config.mjs.
-    - [ ] Run ESLint to verify configuration works.
-
-    1. eslint.config.mjs uses correct defineConfig with flat config spreading.
-    2. No changes needed.
-  * test_steps:
-
-    - Run ESLint to verify configuration works.
-  * notes: Flat config is already properly implemented.
-* [ ] `T-3005` **Review eslint globalIgnores for stories**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [tools, config]
-  * assignee: @devops
-  * status: open
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [eslint.config.mjs]
-  * related_files: [src/components/*.stories.tsx]
-  * sub-tasks:
-
-    - [ ] Decide if hiding story breakage is acceptable in eslint.config.mjs.
-    - [ ] Document the decision in eslint.config.mjs.
-    - [ ] Update configuration accordingly in eslint.config.mjs.
-    - [ ] Run ESLint on story files using src/components/*.stories.tsx.
-    - [ ] Check if errors are ignored.
-
-    1. Decide if hiding story breakage is acceptable.
-    2. Document the decision.
-    3. Update configuration accordingly.
-  * test_steps:
-
-    - Run ESLint on story files.
-    - Check if errors are ignored.
-  * notes: Consider if stories should follow the same linting rules.
-* [x] `T-3006` **Optimize AccessibilityProvider.tsx axe usage**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [performance, accessibility]
-  * assignee: @accessibility
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [src/components/AccessibilityProvider.tsx]
-  * related_files: [src/app/layout.tsx]
-  * sub-tasks:
-
-    - [x] Ensure axe runs only in development (not production) in src/components/AccessibilityProvider.tsx.
-    - [x] Ensure can be toggled via env var in src/components/AccessibilityProvider.tsx.
-    - [x] Ensure no performance impact in production in src/components/AccessibilityProvider.tsx.
-    - [x] Run app in development and check axe runs using src/app/layout.tsx.
-    - [x] Run app in production and check axe does not run.
-    - [x] Test env var toggle.
-
-    1. Axe runs only in development (not production).
-    2. Can be toggled via env var.
-    3. No performance impact in production.
-  * test_steps:
-
-    - [x] Run app in development and check axe runs.
-    - [x] Run app in production and check axe does not run.
-    - [x] Test env var toggle.
-  * notes: Ensure accessibility testing is development-only for performance.
-* [x] `T-3007` **Review Footer.tsx client-side necessity**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [performance, frontend]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [src/components/Footer.tsx]
-  * related_files: [src/app/page.tsx]
-  * sub-tasks:
-
-    - [x] Remove 'use client' if footer is static in src/components/Footer.tsx.
-    - [x] Confirm no client behaviors rely on it in src/components/Footer.tsx.
-    - [x] Ensure footer renders correctly as server component in src/components/Footer.tsx.
-    - [x] Check if footer has any client-side interactions using src/app/page.tsx.
-    - [x] Remove 'use client' and test rendering.
-    - [x] Verify no errors.
-
-    1. Remove 'use client' if footer is static.
-    2. Confirm no client behaviors rely on it.
-    3. Footer renders correctly as server component.
-  * test_steps:
-
-    - [x] Check if footer has any client-side interactions.
-    - [x] Remove 'use client' and test rendering.
-    - [x] Verify no errors.
-  * notes: Optimize by making footer a server component if possible.
-* [x] `T-3008` **Optimize Breadcrumbs.tsx JSON-LD output**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [seo, performance]
-  * assignee: @seo
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [src/components/Breadcrumbs.tsx]
-  * related_files: [src/app/page.tsx]
-  * sub-tasks:
-
-    - [x] Suppress breadcrumbs JSON-LD when items.length < 2 in src/components/Breadcrumbs.tsx.
-    - [x] Avoid unnecessary JSON-LD output in src/components/Breadcrumbs.tsx.
-    - [x] Validate that breadcrumbs still work correctly in src/components/Breadcrumbs.tsx.
-    - [x] Check pages with 0 or 1 breadcrumb item.
-    - [x] Verify no JSON-LD is output.
-    - [x] Check pages with 2+ items have JSON-LD.
-
-    1. Suppress breadcrumbs JSON-LD when items.length < 2.
-    2. Avoid unnecessary JSON-LD output.
-    3. Validate that breadcrumbs still work correctly.
-  * test_steps:
-
-    - Check pages with 0 or 1 breadcrumb item.
-    - Verify no JSON-LD is output.
-    - Check pages with 2+ items have JSON-LD.
-  * notes: Reduce noise in structured data by conditionally rendering breadcrumbs schema.
-
-All normalized to:
-
-* kebab-case labels
-* consistent due field
-* single priority value
-* explicit status
-
----
-
-# 🟢 Low / Backlog (P4–P5) — Due: 2026-03-22
-
-* [x] `T-4001` **Fix businessEngine.ts opening-hours inconsistency**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [data, backend]
-  * assignee: @backend
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/data/businessEngine.ts]
-  * related_files: [src/data/constants.ts]
-  * acceptance_criteria:
-
-    1. Saturday hours align between display and canonical data.
-    2. Fix 08:00 vs 09:00 discrepancy.
-    3. Update tests to prevent future drift.
-  * test_steps:
-
-    - Check businessEngine.ts for Saturday hours.
-    - Compare with display data.
-    - Update and run tests.
-  * notes: Ensure consistent opening hours across the application.
-
-* [x] `T-4002` **Sync constants.ts vs businessEngine.ts hours**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [data, backend]
-  * assignee: @backend
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/data/constants.ts, src/data/businessEngine.ts]
-  * related_files: []
-  * sub-tasks:
-
-    - [x] Establish single source of truth for opening hours in src/data/constants.ts and src/data/businessEngine.ts.
-    - [x] Sync constants.ts and businessEngine.ts.
-    - [x] Add unit test to detect drift in src/data/constants.ts and src/data/businessEngine.ts.
-    - [x] Compare hours in constants.ts and businessEngine.ts.
-    - [x] Update to single source.
-    - [x] Add test to prevent drift.
-
-    1. Single source of truth for opening hours.
-    - [x] Fix 08:00 vs 09:00 discrepancy in src/data/businessEngine.ts and src/data/constants.ts.
-    - [x] Update tests to prevent future drift in src/data/businessEngine.ts and src/data/constants.ts.
-    - [x] Check businessEngine.ts for Saturday hours.
-    - [x] Compare with display data.
-    - [x] Update and run tests.
-
-    1. Single source of truth for opening hours.
-    2. Sync constants.ts and businessEngine.ts.
-    3. Add unit test to detect drift.
-  * test_steps:
-
-    - Compare hours in constants.ts and businessEngine.ts.
-    - Update to single source.
-    - Add test to prevent drift.
-  * notes: Maintain consistency between data files.
-
-* [x] `T-4003` **Improve Navigation.tsx mobile accessibility**
-
-  * priority: 4
-  * estimate_m: 60
-  * labels: [accessibility, frontend, ux]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/components/Navigation.tsx]
-  * related_files: []
-  * sub-tasks:
-
-    - [x] Add Escape-to-close functionality in src/components/Navigation.tsx.
-    - [x] Add outside-click close in src/components/Navigation.tsx.
-    - [x] Implement proper focus trap in src/components/Navigation.tsx.
-    - [x] Verify keyboard navigation in src/components/Navigation.tsx.
-    - [x] Test mobile navigation on device/simulator.
-    - [x] Check Escape key closes menu.
-    - [x] Click outside to close.
-    - [x] Verify focus trap and keyboard nav.
-
-    1. Add Escape-to-close functionality.
-    2. Add outside-click close.
-    3. Implement proper focus trap.
-    4. Verify keyboard navigation.
-  * test_steps:
-
-    - [x] Test mobile navigation on device/simulator.
-    - [x] Check Escape key closes menu.
-    - [x] Click outside to close.
-    - [x] Verify focus trap and keyboard nav.
-  * notes: Enhance accessibility for mobile users.
-
-* [x] `T-4004` **Clean up Barbers.tsx review display**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [ux, frontend]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/components/Barbers.tsx]
-  * related_files: [src/data/barbers.ts]
-  * sub-tasks:
-
-    - [x] Hide or format (0) reviews elegantly in src/components/Barbers.tsx.
-    - [x] Fix spacing issues in src/components/Barbers.tsx.
-    - [x] Improve visual presentation in src/components/Barbers.tsx.
-    - [x] Check Barbers page with barbers having 0 reviews using src/data/barbers.ts.
-    - [x] Verify display is clean.
-    - [x] Adjust spacing and formatting.
-
-    1. Hide or format (0) reviews elegantly.
-    2. Fix spacing issues.
-    3. Improve visual presentation.
-  * test_steps:
-
-    - [x] Check Barbers page with barbers having 0 reviews.
-    - [x] Verify display is clean.
-    - [x] Adjust spacing and formatting.
-  * notes: Enhance user experience for review display.
-
-* [x] `T-4005` **Review Button.tsx dark mode contrast**
-
-  * priority: 4
-  * estimate_m: 45
-  * labels: [design, frontend, accessibility]
-  * assignee: @design
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/components/Button.tsx]
-  * related_files: [src/components/Hero.tsx]
-  * sub-tasks:
-
-    - [x] Ensure secondary variant meets WCAG contrast ratios in src/components/Button.tsx.
-    - [x] Ensure proper contrast on dark hero backgrounds in src/components/Button.tsx using src/components/Hero.tsx.
-    - [x] Test with accessibility tools.
-    - [x] Check Button secondary variant on dark backgrounds.
-    - [x] Use contrast checker.
-    - [x] Adjust colors if needed.
-
-    1. Secondary variant meets WCAG contrast ratios.
-    2. Ensure proper contrast on dark hero backgrounds.
-    3. Test with accessibility tools.
-  * test_steps:
-
-    - [x] Check Button secondary variant on dark backgrounds.
-    - [x] Use contrast checker.
-    - [x] Adjust colors if needed.
-  * notes: Ensure accessibility compliance in dark mode.
-
-* [x] `T-4006` **Replace placeholder business data in constants.ts**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [data, production]
-  * assignee: @product
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/data/constants.ts]
-  * related_files: []
-  * sub-tasks:
-
-    - [x] Replace all fake addresses and phones in src/data/constants.ts.
-    - [x] Ensure production config has real data in src/data/constants.ts.
-    - [x] Validate data accuracy in src/data/constants.ts.
-    - [x] Review constants.ts for placeholder data.
-    - [x] Replace with real business information.
-    - [x] Check for any remaining placeholders.
-
-    1. Replace all fake addresses and phones.
-    2. Ensure production config has real data.
-    3. Validate data accuracy.
-  * test_steps:
-
-    - Review constants.ts for placeholder data.
-    - Replace with real business information.
-    - Check for any remaining placeholders.
-  * notes: Prepare for production deployment with accurate business data.
-
-* [x] `T-4007` **Remove storybook-static from repo**
-
-  * priority: 5
-  * estimate_m: 30
-  * labels: [cleanup, git]
-  * assignee: @devops
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [.gitignore]
-  * related_files: [storybook-static/]
-  * sub-tasks:
-
-    - [x] Add storybook-static to .gitignore.
-    - [x] Remove committed artifacts.
-    - [x] Ensure CI still publishes Storybook.
-    - [x] Check .gitignore for storybook-static using .gitignore.
-    - [x] Remove the directory from repo using storybook-static/.
-    - [x] Verify CI workflow still works.
-
-    1. Add storybook-static to .gitignore.
-    2. Remove committed artifacts.
-    3. Ensure CI still publishes Storybook.
-  * test_steps:
-
-    - Check .gitignore for storybook-static.
-    - Remove the directory from repo.
-    - Verify CI workflow still works.
-  * notes: Keep repo clean by not committing build artifacts.
-
----
-
-# 🔁 Recurring Tasks (P2 default)
-
-Recurring tasks normalized with:
-
-```yaml
-recurring:
-  type: weekly | pre-release
-  next_due: YYYY-MM-DD
+// Modal.tsx — ensure portal and ref imports are present  
+import { createPortal } from 'react-dom'
+import { useEffect, useRef, type ReactNode } from 'react'
 ```
 
-Example:
+---
 
-* [x] `T-5001` Run accessibility audit
+## 🔵 Open Backlog
 
-  * priority: 2
-  * estimate_m: 120
-  * labels: [testing, accessibility]
-  * assignee: @accessibility
-  * status: completed
-  * recurring:
-    type: weekly
-    next_due: 2026-03-29
-  * target_files: [src/components/**/*]
-  * related_files: []
-  * sub-tasks:
+### T-5001 · Visual Regression Testing with Chromatic
+**Priority:** 4 | **Status:** open
 
-    - [x] Run axe accessibility audit on src/components/**/*.
-    - [x] File issues for any failures found.
-    - [x] Validate fixes for reported issues.
-    - [x] Run npm run accessibility.
-    - [x] Review axe results.
-    - [x] Create issues for failures and track fixes.
-
-    1. Run axe accessibility audit.
-    2. File issues for any failures found.
-    3. Validate fixes for reported issues.
-  * test_steps:
-
-    - Run npm run accessibility.
-    - Review axe results.
-    - Create issues for failures and track fixes.
-  * notes: Weekly audit to maintain accessibility standards.
-
-* [x] `T-5002` **Performance testing after image fixes**
-
-  * priority: 2
-  * estimate_m: 90
-  * labels: [testing, performance]
-  * assignee: @performance
-  * status: completed
-  * recurring:
-
-    type: before release
-    next_due: before each release
-  * target_files: [src/components/**/*]
-  * related_files: [performance-budgets.json]
-  * sub-tasks:
-
-    - [x] Run Lighthouse performance audit on src/components/**/*.
-    - [x] Check RUM metrics.
-    - [x] Ensure performance budgets are maintained using performance-budgets.json.
-    - [x] Run npm run test:performance.
-    - [x] Review Lighthouse scores.
-    - [x] Verify budgets in performance-budgets.json.
-
-    1. Run Lighthouse performance audit.
-    2. Check RUM metrics.
-    3. Ensure performance budgets are maintained.
-  * test_steps:
-
-    - Run npm run test:performance.
-    - Review Lighthouse scores.
-    - Verify budgets in performance-budgets.json.
-  * notes: Conduct before each release to ensure image optimizations don't regress performance.
-
-* [x] `T-5003` **Update documentation**
-
-  * priority: 3
-  * estimate_m: 60
-  * labels: [docs, maintenance]
-  * assignee: @docs
-  * status: completed
-  * recurring:
-
-    type: after major changes
-    next_due: after significant updates
-  * target_files: [README.md, docs/**/*]
-  * related_files: []
-  * sub-tasks:
-
-    - [x] Document API changes in README.md and docs/**/*.
-    - [x] Document behavioral changes from fixes in README.md and docs/**/*.
-    - [x] Update README and docs as needed.
-    - [x] Review recent changes for documentation needs.
-    - [x] Update relevant documentation files.
-    - [x] Check docs build.
-
-    1. Document API changes.
-    2. Document behavioral changes from fixes.
-    3. Update README and docs as needed.
-  * test_steps:
-
-    - Review recent changes for documentation needs.
-    - Update relevant documentation files.
-    - Check docs build.
-  * notes: Keep documentation current with code changes.
-
-* [x] `T-5004` **Add regression tests for critical fixes**
-
-  * priority: 2
-  * estimate_m: 180
-  * labels: [testing, quality]
-  * assignee: @qa
-  * status: completed
-  * recurring:
-
-    type: after critical fixes
-    next_due: after fixing critical bugs
-  * sub-tasks:
-
-    - [x] Add tests for all critical bug fixes.
-    - [x] Ensure tests run in CI.
-    - [x] Prevent regressions.
-    - [x] Identify critical fixes without tests.
-    - [x] Write regression tests.
-    - [x] Ensure tests pass in CI.
-    2. Tests run in CI.
-    3. Prevent regressions.
-  * test_steps:
-
-    - Identify critical fixes without tests.
-    - Write regression tests.
-    - Ensure tests pass in CI.
-  * notes: Maintain quality by covering critical paths with tests.
+Integrate Chromatic with Storybook for automated visual regression testing on component changes.
 
 ---
 
-# 🚀 Deployment Preparation — Due: 2026-04-01
+### T-5002 · E2E Booking Flow with Playwright
+**Priority:** 3 | **Status:** open
 
-* [x] `T-6001` **Environment variable audit**
-
-  * priority: 2
-  * estimate_m: 60
-  * labels: [security, production]
-  * assignee: @security
-  * status: completed
-  * due: 2026-04-01
-  * deps: []
-  * target_files: [src/data/constants.ts]
-  * related_files: [.env*]
-  * sub-tasks:
-
-    - [x] Ensure no placeholders in production envs in src/data/constants.ts.
-    - [x] Ensure secrets centralised in vault using .env*.
-    - [x] Ensure all required env vars documented in src/data/constants.ts.
-    - [x] Review environment configurations.
-    - [x] Check for placeholder values.
-    - [x] Verify secrets management.
-
-    1. No placeholders in production envs.
-    2. Secrets centralised in vault.
-    3. All required env vars documented.
-  * test_steps:
-
-    - Review environment configurations.
-    - Check for placeholder values.
-    - Verify secrets management.
-  * notes: Ensure production environment is secure and complete.
-
-* [x] `T-6002` **Production build test**
-
-  * priority: 2
-  * estimate_m: 90
-  * labels: [testing, deployment]
-  * assignee: @infra
-  * status: completed
-  * due: 2026-04-01
-  * deps: []
-  * target_files: [package.json, next.config.ts]
-  * related_files: [src/__tests__/**/*]
-  * sub-tasks:
-
-    - [x] Ensure npm run build succeeds using package.json and next.config.ts.
-    - [x] Ensure smoke tests pass on staging using src/__tests__/**/*.
-    - [x] Ensure no build errors or warnings in package.json and next.config.ts.
-    - [x] Run npm run build.
-    - [x] Deploy to staging.
-    - [x] Run smoke tests.
-
-    1. npm run build succeeds.
-    2. Smoke tests pass on staging.
-    3. No build errors or warnings.
-  * test_steps:
-
-    - Run npm run build.
-    - Deploy to staging.
-    - Run smoke tests.
-  * notes: Verify production build works correctly.
-
-* [x] `T-6003` **Security review**
-
-  * priority: 2
-  * estimate_m: 60
-  * labels: [security, deployment]
-  * assignee: @security
-  * status: completed
-  * due: 2026-04-01
-  * deps: []
-  * target_files: [next.config.ts]
-  * related_files: [src/components/**/*]
-  * sub-tasks:
-
-    - [x] Ensure CSP and other configs verified in next.config.ts.
-    - [x] Ensure findings remediated in next.config.ts.
-    - [x] Ensure security audit passed using src/components/**/*.
-    - [x] Review security configurations.
-    - [x] Run security scans.
-    - [x] Fix any vulnerabilities found.
-
-    1. CSP and other configs verified.
-    2. Findings remediated.
-    3. Security audit passed.
-  * test_steps:
-
-    - Review security configurations.
-    - Run security scans.
-    - Fix any vulnerabilities found.
-  * notes: Ensure deployment is secure.
-
-* [x] `T-6004` **Performance budget validation**
-
-  * priority: 3
-  * estimate_m: 45
-  * labels: [performance, deployment]
-  * assignee: @performance
-  * status: completed
-  * due: 2026-04-01
-  * deps: []
-  * target_files: [performance-budgets.json]
-  * related_files: [next.config.ts, src/components/**/*]
-  * sub-tasks:
-
-    - [x] Ensure changes are within accepted budgets in performance-budgets.json.
-    - [x] Ensure performance metrics validated in performance-budgets.json.
-    - [x] Ensure no budget violations in performance-budgets.json.
-    - [x] Run performance tests using next.config.ts and src/components/**/*.
-    - [x] Compare against budgets.
-    - [x] Ensure compliance.
-
-    1. Changes are within accepted budgets.
-    2. Performance metrics validated.
-    3. No budget violations.
-  * test_steps:
-
-    - Run performance tests.
-    - Compare against budgets.
-    - Ensure compliance.
-  * notes: Validate that deployment meets performance requirements.
+Full booking flow E2E: service selection → barber selection → availability check → form submission → confirmation. Use `page.route()` to mock `/api/bookings` for stable CI runs.
 
 ---
 
-# 🎯 Page Rendering Tasks
+### T-5003 · Performance Monitoring Dashboard
+**Priority:** 4 | **Status:** open
 
-* [x] `T-7001` **Optimize hero image loading**
-
-  * priority: 3
-  * estimate_m: 30
-  * labels: [performance, images, rendering]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-15
-  * deps: []
-  * target_files: [src/components/Hero.tsx]
-  * related_files: [src/app/page.tsx]
-  * sub-tasks:
-
-    - [x] Ensure hero image uses priority loading in src/components/Hero.tsx.
-    - [x] Ensure proper image optimization settings in src/components/Hero.tsx.
-    - [x] Ensure LCP optimization implemented in src/components/Hero.tsx.
-    - [x] Add priority attribute to hero Image component.
-    - [x] Optimize quality settings for hero image.
-    - [x] Test LCP performance impact.
-
-    1. Hero image loads with priority.
-    2. LCP performance improved.
-    3. No layout shift during hero load.
-  * test_steps:
-
-    - Test hero image loading performance.
-    - Verify LCP metrics.
-    - Check for layout shift.
-  * notes: Critical for first impression and Core Web Vitals.
-
-* [x] `T-7002` **Convert gallery SVG placeholders to optimized WebP images**
-
-  * priority: 4
-  * estimate_m: 60
-  * labels: [performance, images, optimization]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-20
-  * deps: []
-  * target_files: [src/components/Gallery.tsx, public/images/gallery/**/*]
-  * related_files: [src/__tests__/image-optimization.test.tsx]
-  * sub-tasks:
-
-    - [x] Ensure real barber work photos created in public/images/gallery/**/*.
-    - [x] Ensure SVG placeholders replaced with WebP images in src/components/Gallery.tsx.
-    - [x] Ensure proper alt texts maintained in src/components/Gallery.tsx.
-    - [x] Create high-quality photos of actual barber work.
-    - [x] Convert images to WebP format with optimization.
-    - [x] Update Gallery component to use real images.
-    - [x] Update image optimization tests.
-
-    1. Real barber work photos implemented.
-    2. WebP format optimized for performance.
-    3. Gallery loading performance improved.
-  * test_steps:
-
-    - Test gallery image loading.
-    - Verify WebP optimization.
-    - Check performance impact.
-  * notes: Replace placeholders with actual work to showcase skills.
-
-* [x] `T-7003` **Implement intersection observer for gallery lazy loading**
-
-  * priority: 4
-  * estimate_m: 45
-  * labels: [performance, lazy-loading, user-experience]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-25
-  * deps: [T-7002]
-  * target_files: [src/components/Gallery.tsx]
-  * related_files: [src/hooks/useIntersectionObserver.ts]
-  * sub-tasks:
-
-    - [x] Ensure intersection observer hook created in src/hooks/useIntersectionObserver.ts.
-    - [x] Ensure gallery uses intersection observer in src/components/Gallery.tsx.
-    - [x] Ensure images load only when visible in src/components/Gallery.tsx.
-    - [x] Create custom intersection observer hook.
-    - [x] Implement lazy loading for gallery images.
-    - [x] Add smooth fade-in animations for loaded images.
-    - [x] Test performance improvements.
-
-    1. Intersection observer implemented.
-    2. Gallery images load only when needed.
-    3. Initial page load performance improved.
-  * test_steps:
-
-    - Test lazy loading functionality.
-    - Verify performance improvements.
-    - Check user experience impact.
-  * notes: Improves initial page load performance.
-
-* [x] `T-7004` **Add resource hints for critical CSS and fonts**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [performance, css, fonts, optimization]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-18
-  * deps: []
-  * target_files: [src/app/layout.tsx]
-  * related_files: [src/app/globals.css]
-  * sub-tasks:
-
-    - [x] Ensure preconnect hints added for fonts in src/app/layout.tsx.
-    - [x] Ensure preload hints added for critical CSS in src/app/layout.tsx.
-    - [x] Ensure DNS prefetch for external resources in src/app/layout.tsx.
-    - [x] Add preconnect for Google Fonts.
-    - [x] Add preload for critical CSS.
-    - [x] Add DNS prefetch for external domains.
-    - [x] Test resource loading performance.
-
-    1. Resource hints implemented.
-    2. Font loading performance improved.
-    3. Critical CSS loads faster.
-  * test_steps:
-
-    - Test font loading performance.
-    - Verify CSS loading optimization.
-    - Check resource timing metrics.
-  * notes: Improves perceived loading performance.
-
-* [x] `T-7005` **Optimize barber profile images**
-
-  * priority: 3
-  * estimate_m: 45
-  * labels: [performance, images, team]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-22
-  * deps: []
-  * target_files: [src/components/Barbers.tsx, public/images/barbers/**/*]
-  * related_files: [src/data/barbers.ts]
-  * sub-tasks:
-
-    - [x] Ensure individual barber photos created in public/images/barbers/**/*.
-    - [x] Ensure proper image optimization in src/components/Barbers.tsx.
-    - [x] Ensure consistent image sizes and formats in src/components/Barbers.tsx.
-    - [x] Create professional headshots for each barber.
-    - [x] Optimize images for web performance.
-    - [x] Update Barbers component with optimized images.
-    - [x] Update barber data with new image paths.
-
-    1. Professional barber photos implemented.
-    2. Image optimization applied.
-    3. Team section performance maintained.
-  * test_steps:
-
-    - Test barber image loading.
-    - Verify optimization settings.
-    - Check team section performance.
-  * notes: Professional appearance is crucial for client trust.
-
-* [x] `T-7006` **Implement speculative prefetching for booking flow**
-
-  * priority: 4
-  * estimate_m: 30
-  * labels: [performance, booking, user-experience]
-  * assignee: @frontend
-  * status: completed
-  * due: 2026-03-28
-  * deps: []
-  * target_files: [src/components/Services.tsx, src/components/Barbers.tsx]
-  * related_files: [src/app/page.tsx]
-  * sub-tasks:
-
-    - [x] Ensure prefetch hints added for booking pages in src/components/Services.tsx.
-    - [x] Ensure prefetch hints added for barber profiles in src/components/Barbers.tsx.
-    - [x] Ensure intelligent prefetching based on user interaction in src/app/page.tsx.
-    - [x] Add prefetch for booking system.
-    - [x] Add prefetch for barber detail pages.
-    - [x] Implement interaction-based prefetching.
-    - [x] Test booking flow performance.
-
-    1. Prefetching implemented for booking flow.
-    2. Booking navigation is instant.
-    3. User experience improved.
-  * test_steps:
-
-    - Test prefetching functionality.
-    - Verify booking flow performance.
-    - Check user experience impact.
-  * notes: Anticipates user behavior for smoother experience.
+Set up Vercel Analytics + Web Vitals reporting. Alert on LCP > 2.5s or CLS > 0.1.
 
 ---
 
-* [x] `T-5003` **Update documentation**
+### T-5004 · Storybook Stories for All New Components
+**Priority:** 4 | **Status:** open
 
-  * priority: 3
-  * estimate_m: 60
-  * labels: [docs, maintenance]
-  * assignee: @docs
-  * status: completed
-  * recurring:
-
-    type: after major changes
-    next_due: after significant updates
-  * target_files: [README.md, docs/**/*]
-  * related_files: []
-  * sub-tasks:
-
-    - [x] Document API changes in README.md and docs/**/*.
-    - [x] Document behavioral changes from fixes in README.md and docs/**/*.
-    - [x] Update README and docs as needed.
-    - [x] Review recent changes for documentation needs.
-    - [x] Update relevant documentation files.
-    - [x] Check docs build.
-
-    1. Document API changes.
-    2. Document behavioral changes from fixes.
-    3. Update README and docs as needed.
-  * test_steps:
-
-* Assign T-ID
-* Assign priority
-* Define acceptance criteria
-* Define estimate
-
-This prevents roadmap/task mixing.
-
----
-
-# Structural Improvements Applied
-
-1. Removed mixed formatting between bullet and structured blocks.
-2. Removed duplicate explanatory prose.
-3. Enforced consistent:
-
-   * Field order
-   * Label casing
-   * Priority model
-   * Status enum
-4. Separated:
-
-   * Active tasks
-   * Recurring tasks
-   * Enhancements
-   * Reference documentation
-5. Reduced narrative instructions to canonical operational rules.
-
----
-
+Add Storybook stories for: `Card`, `Modal`, `Form`, `EventCountdown`, `Gallery`. Include accessibility a11y addon checks in each story.
