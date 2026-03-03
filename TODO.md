@@ -3138,16 +3138,16 @@ const getBusinessInfo = (rawData: unknown) => {
   * estimate_m: 45
   * labels: [bug, frontend, images]
   * assignee: @frontend
-  * status: open
+  * status: blocked
   * due: 2026-03-05
   * target_files: [src/components/Gallery.tsx]
   * related_files: [src/__tests__/image-optimization.test.tsx, src/components/Gallery.stories.tsx, src/components/__tests__/Gallery.test.tsx]
   * sub-tasks:
 
-    - [ ] Provide valid `blurDataURL` or remove `placeholder="blur"` in src/components/Gallery.tsx.
-    - [ ] Ensure no console warnings in src/components/Gallery.tsx.
-    - [ ] Run preview build and check image render and network payload.
-    - [ ] Verify behavior using src/__tests__/image-optimization.test.tsx and src/components/Gallery.stories.tsx.
+    - [x] Provide valid `blurDataURL` or remove `placeholder="blur"` in src/components/Gallery.tsx.
+    - [x] Ensure no console warnings in src/components/Gallery.tsx.
+    - [ ] Run preview build and check image render and network payload. (Blocked: Google Fonts fetch failed in CI environment)
+    - [x] Verify behavior using src/__tests__/image-optimization.test.tsx and src/components/Gallery.stories.tsx.
 
     1. Provide valid `blurDataURL` OR remove `placeholder="blur"`.
     2. No console warnings.
@@ -3201,17 +3201,17 @@ const getBusinessInfo = (rawData: unknown) => {
   * estimate_m: 45
   * labels: [bug, frontend, images]
   * assignee: @frontend
-  * status: open
+  * status: blocked
   * due: 2026-03-05
   * deps: [T-1002]
   * target_files: [src/components/Barbers.tsx]
   * related_files: [src/data/barbers.ts, src/components/Barbers.stories.tsx, src/components/__tests__/Barbers.test.tsx, src/__tests__/image-optimization.test.tsx]
   * sub-tasks:
 
-    - [ ] Apply same fix pattern as T-1002 to barber images in src/components/Barbers.tsx.
-    - [ ] Ensure no image warnings in console for src/components/Barbers.tsx.
-    - [ ] Run preview build and verify no console warnings.
-    - [ ] Verify using src/components/Barbers.stories.tsx and src/__tests__/image-optimization.test.tsx.
+    - [x] Apply same fix pattern as T-1002 to barber images in src/components/Barbers.tsx.
+    - [x] Ensure no image warnings in console for src/components/Barbers.tsx.
+    - [ ] Run preview build and verify no console warnings. (Blocked: Google Fonts fetch failed in CI environment)
+    - [x] Verify using src/components/Barbers.stories.tsx and src/__tests__/image-optimization.test.tsx.
 
     1. Same resolution pattern as T-1002.
     2. No image warnings in console.

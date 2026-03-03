@@ -18,9 +18,17 @@ describe('Gallery', () => {
     const images = screen.getAllByRole('img')
     expect(images).toHaveLength(6)
     
-    // Check alt texts
-    const expectedAlts = ['Classic Fade', 'Beard Trim', 'Modern Cut', 'Pompadour', 'Crew Cut', 'Hot Towel Shave']
-    expectedAlts.forEach(alt => {
+    // Check descriptive alt texts
+    const expectedAlts = [
+      'Side profile view of a classic fade haircut with clean blended lines',
+      'Well-groomed beard with precise edge shaping and neckline definition',
+      'Contemporary textured haircut with volume on top and tapered sides',
+      'Classic pompadour style with high volume swept back and clean sides',
+      'Traditional crew cut with uniform length and neat military-style finish',
+      'Traditional straight razor shave with hot towel treatment preparation',
+    ]
+
+    expectedAlts.forEach((alt) => {
       expect(screen.getByAltText(alt)).toBeInTheDocument()
     })
     
