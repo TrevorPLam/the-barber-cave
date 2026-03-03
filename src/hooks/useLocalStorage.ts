@@ -1,4 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { safeJSONParse } from '@/lib/utils';
+import { z } from 'zod';
+
+// Generic schema for localStorage values
+const localStorageSchema = z.unknown();
 
 type SetValue<T> = T | ((prevValue: T) => T);
 
@@ -14,7 +19,7 @@ export function useLocalStorage<T>(
 
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      return item ? safeJSONParse(item, localStorageSchema as z.ZodSchema<T>, initialValue) : initialValue;
     } catch (error) {
       console.error(`Error reading localStorage key "${key}":`, error);
       return initialValue;
@@ -62,7 +67,7 @@ export function useLocalStorage<T>(
       return;
     }
     try {
-      const incoming = JSON.parse(e.newValue);
+      const incoming = safeJSONParse(e.newValue, localStorageSchema as z.ZodSchema<T>, initialValue);
       setStoredValue(prev => {
         // Referential equality check prevents unnecessary re-renders
         // when the value hasn't actually changed

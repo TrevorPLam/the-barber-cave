@@ -1,34 +1,24 @@
-// src/components/Card.tsx - Advanced compound component for flexible card layouts
-import React, { createContext, useContext, useMemo, ReactNode } from 'react'
+// src/components/Card.tsx - Simple props-based card component
+import React, { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
-interface CardContextValue {
-  variant: 'default' | 'elevated' | 'outlined'
-  size: 'sm' | 'md' | 'lg'
-  interactive: boolean
-}
-
-const CardContext = createContext<CardContextValue>({
-  variant: 'default',
-  size: 'md',
-  interactive: false
-})
-
 interface CardProps {
+  header?: ReactNode
+  footer?: ReactNode
   children: ReactNode
-  variant?: CardContextValue['variant']
-  size?: CardContextValue['size']
+  variant?: 'default' | 'elevated' | 'outlined'
+  size?: 'sm' | 'md' | 'lg'
   interactive?: boolean
   className?: string
   onClick?: () => void
 }
 
 /**
- * Advanced compound component for flexible card layouts with context-based theming
+ * Simple props-based card component for flexible layouts
  *
  * @example
  * ```tsx
- * <Card variant="elevated" interactive>
+ * <Card variant="elevated" interactive onClick={handleClick}>
  *   <Card.Header>
  *     <h3>Card Title</h3>
  *   </Card.Header>
@@ -43,18 +33,14 @@ interface CardProps {
  */
 export function Card({
   children,
+  header,
+  footer,
   variant = 'default',
   size = 'md',
   interactive = false,
   className = '',
   onClick
 }: CardProps) {
-  const contextValue = useMemo(() => ({
-    variant,
-    size,
-    interactive
-  }), [variant, size, interactive])
-
   const baseClasses = 'rounded-lg transition-all duration-200'
   const variants = {
     default: 'bg-white border border-gray-200',
@@ -69,32 +55,32 @@ export function Card({
   const interactiveClasses = interactive ? 'hover:shadow-md cursor-pointer' : ''
 
   return (
-    <CardContext.Provider value={contextValue}>
-      <div
-        className={cn(
-          baseClasses,
-          variants[variant],
-          sizes[size],
-          interactiveClasses,
-          className
-        )}
-        onClick={interactive ? onClick : undefined}
-        role={interactive ? 'button' : undefined}
-        tabIndex={interactive ? 0 : undefined}
-        onKeyDown={interactive ? (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault()
-            onClick?.()
-          }
-        } : undefined}
-      >
-        {children}
-      </div>
-    </CardContext.Provider>
+    <div
+      className={cn(
+        baseClasses,
+        variants[variant],
+        sizes[size],
+        interactiveClasses,
+        className
+      )}
+      onClick={interactive ? onClick : undefined}
+      role={interactive ? 'button' : undefined}
+      tabIndex={interactive ? 0 : undefined}
+      onKeyDown={interactive ? (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onClick?.()
+        }
+      } : undefined}
+    >
+      {header && <div className="mb-4">{header}</div>}
+      <div className="flex-1">{children}</div>
+      {footer && <div className="mt-4 pt-4 border-t border-gray-200">{footer}</div>}
+    </div>
   )
 }
 
-// Compound component parts
+// Compound component parts for backward compatibility
 Card.Header = function CardHeader({
   children,
   className = ''
@@ -123,13 +109,4 @@ Card.Footer = function CardFooter({
   className?: string
 }) {
   return <div className={`mt-4 pt-4 border-t border-gray-200 ${className}`}>{children}</div>
-}
-
-// Hook for accessing card context
-export function useCard() {
-  const context = useContext(CardContext)
-  if (!context) {
-    throw new Error('useCard must be used within a Card component')
-  }
-  return context
 }

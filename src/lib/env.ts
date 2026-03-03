@@ -26,8 +26,14 @@ const envSchema = z.object({
 
   // Analytics (public — safe to expose)
   NEXT_PUBLIC_ANALYTICS_ID: z.string().optional(),
+
+  // Bundle analysis
+  ANALYZE: z.enum(['true', 'false']).optional(),
 })
 
 // Fail loudly at startup if env is misconfigured
 // Never silently fall back to defaults for security-sensitive vars
 export const ENV = envSchema.parse(process.env)
+
+// Type-safe environment access
+export type Env = z.infer<typeof envSchema>

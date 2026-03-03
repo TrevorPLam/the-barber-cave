@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useContext } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 import { useAnnouncement } from '@/hooks/useAnnouncement';
@@ -65,7 +66,7 @@ function ModalContent({ size, className, children }: ModalContentProps) {
     isActive: true,
     onEscape: context.onClose,
     restoreFocus: true
-  });
+  }) as React.RefObject<HTMLDivElement>;
 
   const sizeClasses = {
     sm: 'max-w-md',

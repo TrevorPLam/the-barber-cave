@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, FormEvent } from 'react';
+import { ReactNode, createContext, useContext, FormEvent, useState, useCallback } from 'react';
 import { z } from 'zod';
 
 interface FormContextValue {
@@ -42,7 +42,7 @@ export function Form<T extends z.ZodSchema>({
     } catch (error) {
       if (error instanceof z.ZodError) {
         const fieldErrors: Record<string, string> = {};
-        error.errors.forEach((err) => {
+        error.issues.forEach((err: z.ZodIssue) => {
           if (err.path.length > 0) {
             fieldErrors[err.path[0] as string] = err.message;
           }

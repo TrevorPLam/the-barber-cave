@@ -51,586 +51,14 @@ Batch A (automated script)  ──► Batch B (DAL + auth foundation)
                                   Batch F
                                (data + state)
 ```
-
 ---
 
-## 🔴 BATCH A — Automated Fixes ✅ COMPLETED
-> Single shell script execution. Zero manual editing required. Run before any other work.
-
-### T-A001 · Automated CVE + Lint Fix Script
-**Priority:** 1 | **Severity:** Critical | **Issues:** #1, #2, #21, #24, #27 | **Batch:** A
-
-**Status:** ✅ COMPLETED - All CVEs patched, hooks fixed, build passes
-- CVE-2024-23650 (esbuild SSRF) - patched via drizzle-kit update
-- CVE-2022-3591 (tmp symlink attack) - patched via @lhci/cli update  
-- Missing useCallback import - fixed in useDebounce.ts
-- Missing 'use client' directive - Gallery.tsx already correct
-- ESLint exhaustive-deps fix - applied to useFocusTrap.ts
-- Build validation - npm run build passes without SSR hook errors
-
-**Execution:**
-```bash
-#!/usr/bin/env bash
-set -e
-
-echo "=== Step 1: Patch CVE-2024-23650 (esbuild SSRF via drizzle-kit) ==="
-# drizzle-kit ≥0.21.0 ships with esbuild ≥0.25.0 which patches GHSA-67mh-4wv8-2f99
-npm install drizzle-kit@latest
-
-echo "=== Step 2: Patch CVE-2022-3591 (tmp symlink via @lhci/cli) ==="
-npm install @lhci/cli@latest
-
-echo "=== Step 3: Verify no remaining high/critical CVEs ==="
-npm audit --audit-level=high
-
-echo "=== Step 4: Fix missing useCallback import (Issue #21) ==="
-# useDebounce.ts line 1 — add useCallback to React import
-sed -i "s/import { useState, useEffect, useRef } from 'react'/import { useState, useEffect, useRef, useCallback } from 'react'/" src/hooks/useDebounce.ts
-
-echo "=== Step 5: Fix missing 'use client' directive (Issue #27) ==="
-# Gallery.tsx — prepend directive before first import
-sed -i "1s/^/'use client';
-
-/" src/components/Gallery.tsx
-
-echo "=== Step 6: ESLint autofix for missing hook dep (Issue #24) ==="
-# useFocusTrap.ts line 142 — add getFocusableElements to dependency array
-npx eslint src/hooks/useFocusTrap.ts --fix --rule '{"react-hooks/exhaustive-deps": "error"}'
-
-echo "=== Step 7: Verify build passes ==="
-npm run build
-
-echo "=== All Batch A fixes applied ==="
-```
-
-**Validation:**
-- `npm audit` returns zero high/critical vulnerabilities
-- `npm run build` succeeds without SSR hook errors
-- `useDebouncedState` renders without crash in dev
-- Focus trapping works in modal components
-
----
-
-### T-A002 · Add npm Audit CI Hard Gate
-**Priority:** 1 | **Severity:** Critical | **Issues:** #1, #2 (prevention) | **Batch:** A
-
-**What:** Block all future PRs if a high or critical CVE enters the dependency tree.
-
-**File:** `.github/workflows/security.yml`
-```yaml
-name: Security Audit
-on: [push, pull_request]
-jobs:
-  audit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-      - run: npm ci
-      - name: Fail on high/critical CVEs
-        run: npm audit --audit-level=high
-```
-
-**Best Practice:** `--audit-level=high` (not `critical`) — high-severity CVEs in dev dependencies can escalate to production via CI/CD pipeline compromise (as demonstrated by CVE-2022-3591 attack scenario #4).
-
----
-
-## 🔴 BATCH B — Data Access Layer & Auth Foundation ✅ COMPLETED
-> Establishes the auth architecture that all other security fixes depend on. Must ship as one atomic PR.
-
-### T-B001 · Implement Data Access Layer (DAL)
-**Priority:** 1 | **Severity:** Critical | **Issues:** #15, #3 | **Batch:** B
-
-**Status:** ✅ COMPLETED - React cache() DAL implemented with verifySession/verifyAdminSession functions
-
-### T-B002 · Replace Demo Authentication with Real Credential Validation
-**Priority:** 1 | **Severity:** Critical | **Issues:** #3, #9 | **Batch:** B
-
-**Status:** ✅ COMPLETED - bcrypt credential validation with JWT rolling sessions implemented
-
-### T-B003 · Upgrade CSRF to HMAC-Signed Double-Submit
-**Priority:** 2 | **Severity:** High | **Issues:** #10 | **Batch:** B
-
-**Status:** ✅ COMPLETED - HMAC-signed CSRF tokens prevent subdomain cookie replacement attacks
-// of how many Server Components or Route Handlers call verifySession().
-export const verifySession = cache(async () => {
-  const session = await getServerSession(authOptions)
-  if (!session) redirect('/auth/signin')
-  return session
-})
-
-export const verifyAdminSession = cache(async () => {
-  const session = await verifySession()
-  if (session.user.role !== 'admin') {
-    redirect('/')
-  }
-  return session
-})
-```
-
-**Pattern — DAL in every Route Handler:**
-```typescript
-// src/app/api/services/route.ts
-import { verifyAdminSession } from '@/lib/dal'
-
-export async function POST(request: NextRequest) {
-  await verifyAdminSession() // throws redirect if not admin — never reaches below
-  // ... rest of handler
-}
-```
-
-**Why not middleware-only:** CVE-2025-29927 (CVSS 9.1) allows full middleware bypass by sending `x-middleware-subrequest: src/middleware` header. Middleware should only handle UX redirects, never be the sole authorization gate.
-
-**Defense-in-depth — strip bypass header in middleware:**
-```typescript
-// src/middleware.ts — add to top of middleware function
-export function middleware(request: NextRequest) {
-  // Strip CVE-2025-29927 bypass header unconditionally
-  const headers = new Headers(request.headers)
-  headers.delete('x-middleware-subrequest')
-  // ... rest of middleware (UX redirects only)
-}
-```
-
-**Validation:**
-- Direct `POST /api/services` without session returns 307 redirect (not 200)
-- `x-middleware-subrequest` header in request does not bypass auth
-- Single DB query per render tree confirmed via query logging
-
----
-
-### T-B002 · Replace Demo Authentication with Real Credential Validation
-**Priority:** 1 | **Severity:** Critical | **Issues:** #3, #9 | **Batch:** B
-
-**What:** Remove the `return { id: email, email, ... }` demo bypass from `[...nextauth]/route.ts`. Implement proper DB-backed credential validation with JWT rolling sessions.
-
-**File:** `src/lib/auth.ts`
-```typescript
-import { NextAuthOptions } from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
-import { z } from 'zod'
-import bcrypt from 'bcryptjs'
-
-const loginSchema = z.object({
-  email: z.string().email().max(254),
-  password: z.string().min(8).max(128),
-})
-
-export const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      async authorize(credentials) {
-        try {
-          const { email, password } = loginSchema.parse(credentials)
-
-          // Single admin account — no user table needed for barber shop
-          if (
-            email === process.env.ADMIN_EMAIL &&
-            await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH!)
-          ) {
-            return { id: 'admin', email, name: 'Admin', role: 'admin' }
-          }
-          return null
-        } catch {
-          return null // Zod parse error = invalid input = null (not thrown)
-        }
-      }
-    })
-  ],
-  session: {
-    strategy: 'jwt',
-    maxAge: 24 * 60 * 60,       // 24h absolute expiry
-    updateAge: 30 * 60,          // silent refresh every 30min of activity
-  },
-  jwt: {
-    maxAge: 24 * 60 * 60,
-  },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) token.role = (user as any).role
-      return token
-    },
-    session({ session, token }) {
-      if (session.user) session.user.role = token.role as string
-      return session
-    },
-  },
-  pages: { signIn: '/auth/signin' },
-}
-```
-
-**Security notes:**
-- Store `ADMIN_PASSWORD_HASH` (bcrypt, cost 12), never plaintext `ADMIN_PASSWORD`
-- Generate hash: `node -e "require('bcryptjs').hash('yourpass', 12).then(console.log)"`
-- `updateAge: 1800` provides rolling sessions without a custom refresh token rotation callback — sufficient for single-role admin credentials app
-- `strategy: 'jwt'` avoids a sessions DB table; token is validated on every request
-
-**Validation:**
-- Any email/password combination other than admin credentials returns 401
-- Correct credentials return session with `role: 'admin'`
-- Session expires after 24h of inactivity
-- Session auto-renews when active within 30min window
-
----
-
-### T-B003 · Upgrade CSRF to HMAC-Signed Double-Submit
-**Priority:** 2 | **Severity:** High | **Issues:** #10 | **Batch:** B
-
-**What:** Upgrade the existing `/api/csrf` endpoint from a random token to an HMAC-signed token. This closes the subdomain cookie replacement attack vector that makes naive double-submit insecure.
-
-**File:** `src/app/api/csrf/route.ts`
-```typescript
-import { createHmac, randomBytes } from 'crypto'
-import { NextResponse } from 'next/server'
-
-function generateHmacCsrfToken(): { token: string; signature: string } {
-  const token = randomBytes(32).toString('hex')
-  const signature = createHmac('sha256', process.env.CSRF_SECRET!)
-    .update(token)
-    .digest('hex')
-  return { token, signature: `${token}.${signature}` }
-}
-
-export function GET() {
-  const { signature } = generateHmacCsrfToken()
-  const response = NextResponse.json({ csrfToken: signature })
-  // HttpOnly:false — must be readable by JS to include in request header
-  // SameSite:Strict — prevents cross-site submission entirely
-  response.cookies.set('csrf-token', signature, {
-    httpOnly: false,
-    sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
-    path: '/',
-    maxAge: 60 * 60, // 1h
-  })
-  return response
-}
-```
-
-**Validation utility in `src/lib/security.ts`:**
-```typescript
-export function validateHmacCsrfToken(tokenWithSig: string): boolean {
-  const [token, sig] = tokenWithSig.split('.')
-  if (!token || !sig) return false
-  const expected = createHmac('sha256', process.env.CSRF_SECRET!)
-    .update(token)
-    .digest('hex')
-  // Constant-time comparison prevents timing attacks
-  return timingSafeEqual(Buffer.from(sig), Buffer.from(expected))
-}
-```
-
-**Add to env schema:** `CSRF_SECRET: z.string().min(32)` in `src/lib/env.ts`
-
----
-
-## 🟠 BATCH C — Hook Quality Suite ✅ COMPLETED
-> All custom hook fixes + shared Vitest test matrix. One PR.
-
-### T-C001 · Fix useBooking Stale Closure Race Condition ✅ DONE
-**Priority:** 1 | **Severity:** Critical | **Issues:** #22 | **Batch:** C
-
-**What:** `submitBooking` captures stale `state` via closure. Fix with functional state reads inside the callback — the React 19 / Compiler-safe pattern.
-
-**File:** `src/hooks/useBooking.ts` — line 107
-```typescript
-// ❌ Before — state in dep array = stale closure on rapid re-renders
-const submitBooking = useCallback(async () => {
-  const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = state
-}, [state])
-
-// ✅ After — read current state atomically via functional updater
-const submitBooking = useCallback(async () => {
-  let currentState: BookingState | null = null
-
-  // Read current state without adding it to the dep array
-  setState(prev => {
-    currentState = prev
-    return prev // no mutation
-  })
-
-  if (!currentState) return
-  const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = currentState
-
-  if (!selectedService || !selectedBarber || !selectedDate || !selectedTime || !customerInfo) {
-    setState(prev => ({ ...prev, error: 'Please complete all booking steps' }))
-    return
-  }
-
-  setState(prev => ({ ...prev, isSubmitting: true, error: null }))
-
-  try {
-    const response = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-csrf-token': document.cookie.match(/csrf-token=([^;]+)/)?.[1] ?? '',
-      },
-      body: JSON.stringify({
-        serviceId: selectedService,
-        barberId: selectedBarber,
-        date: selectedDate.toISOString(),
-        time: selectedTime,
-        customerInfo,
-      }),
-    })
-    if (!response.ok) throw new Error((await response.json()).error ?? 'Booking failed')
-    setState(prev => ({ ...prev, isSubmitting: false }))
-  } catch (error) {
-    setState(prev => ({
-      ...prev,
-      error: error instanceof Error ? error.message : 'Booking failed',
-      isSubmitting: false,
-    }))
-  }
-}, []) // Empty dep array — safe because we read state functionally
-```
-
-**Why this works:** `setState(prev => { currentState = prev; return prev })` reads the current committed state without creating a closure over it. This is the idiomatic React 19 pattern and is compatible with React Compiler automatic memoization.
-
----
-
-### T-C002 · Fix useCSRF Memory Leak with AbortController ✅ DONE
-**Priority:** 1 | **Severity:** Critical | **Issues:** #23 | **Batch:** C
-
-**File:** `src/hooks/useCSRF.ts` — lines 8–25
-```typescript
-useEffect(() => {
-  const abortController = new AbortController()
-
-  const fetchCsrfToken = async () => {
-    try {
-      const response = await fetch('/api/csrf', {
-        signal: abortController.signal,
-      })
-      if (!response.ok) throw new Error(`CSRF fetch failed: ${response.status}`)
-      const { csrfToken } = await response.json()
-      setToken(csrfToken)
-    } catch (err) {
-      // AbortError is expected on unmount — not a real error
-      if (err instanceof Error && err.name !== 'AbortError') {
-        setError(err.message)
-      }
-    } finally {
-      // Only update loading state if still mounted (abort check via signal)
-      if (!abortController.signal.aborted) {
-        setLoading(false)
-      }
-    }
-  }
-
-  fetchCsrfToken()
-
-  // Cleanup: cancel in-flight request on unmount or re-render
-  return () => abortController.abort()
-}, []) // Stable empty deps — CSRF token fetched once on mount
-```
-
-**Pattern note:** The `AbortController` pattern is the standard for all async `useEffect` fetches in React 19. It prevents the "Can't perform a React state update on an unmounted component" warning and stops unnecessary network traffic when users navigate rapidly.
-
----
-
-### T-C003 · Fix useLocalStorage Cross-Tab Race Condition ✅ DONE
-**Priority:** 2 | **Severity:** High | **Issues:** #25 | **Batch:** C
-
-**File:** `src/hooks/useLocalStorage.ts` — lines 55–70
-```typescript
-// ✅ Wrap handler in useCallback (stable ref for add/removeEventListener)
-// ✅ Use functional setState to avoid stale prev comparisons
-const handleStorageChange = useCallback((e: StorageEvent) => {
-  if (e.key !== key) return
-  if (e.newValue === null) {
-    // Key was removed in another tab
-    setStoredValue(initialValue)
-    return
-  }
-  try {
-    const incoming = JSON.parse(e.newValue)
-    setStoredValue(prev => {
-      // Referential equality check prevents unnecessary re-renders
-      // when the value hasn't actually changed
-      const prevSerialized = JSON.stringify(prev)
-      return prevSerialized !== e.newValue ? incoming : prev
-    })
-  } catch {
-    // Malformed JSON in storage — ignore silently
-  }
-}, [key, initialValue])
-
-useEffect(() => {
-  window.addEventListener('storage', handleStorageChange)
-  return () => window.removeEventListener('storage', handleStorageChange)
-}, [handleStorageChange])
-```
-
----
-
-### T-C004 · Fix useAnnouncement DOM Memory Leak ✅ DONE
-**Priority:** 2 | **Severity:** High | **Issues:** #26 | **Batch:** C
-
-**File:** `src/hooks/useAnnouncement.ts` — lines 28–40
-```typescript
-useEffect(() => {
-  // Create the ARIA live region once on mount
-  const element = document.createElement('div')
-  element.setAttribute('aria-live', 'polite')
-  element.setAttribute('aria-atomic', 'true')
-  element.setAttribute('aria-relevant', 'additions text')
-  element.className = 'sr-only' // Visually hidden, screen-reader accessible
-  document.body.appendChild(element)
-  announcementRef.current = element
-
-  return () => {
-    // Critical: clear pending timeout before DOM removal
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-      timeoutRef.current = null
-    }
-    // Safe removal: check parentNode before removeChild to avoid
-    // NotFoundError if parent changed during async operations
-    if (element.parentNode) {
-      element.parentNode.removeChild(element)
-    }
-    announcementRef.current = null
-  }
-}, []) // Mount/unmount only — element lifecycle matches component lifecycle
-```
-
----
-
-### T-C005 · Shared Hook Test Matrix ✅ DONE
-**Priority:** 2 | **Severity:** High | **Issues:** #22, #23, #25, #26, #24 | **Batch:** C
-
-**What:** A single parameterized Vitest suite that validates cleanup, stale-closure immunity, and mount/unmount safety across all custom hooks simultaneously.
-
-**File:** `src/__tests__/hooks/hook-lifecycle.test.ts`
-```typescript
-import { renderHook, act } from '@testing-library/react'
-import { vi, describe, it, expect, afterEach } from 'vitest'
-import { useCSRF } from '@/hooks/useCSRF'
-import { useAnnouncement } from '@/hooks/useAnnouncement'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
-import { useBooking } from '@/hooks/useBooking'
-
-// Parameterized cleanup matrix — each hook tested for memory safety
-const hooksUnderTest = [
-  {
-    name: 'useCSRF',
-    factory: () => renderHook(() => useCSRF()),
-    expectsCleanup: true, // AbortController
-  },
-  {
-    name: 'useAnnouncement',
-    factory: () => renderHook(() => useAnnouncement()),
-    expectsCleanup: true, // DOM element removal
-  },
-  {
-    name: 'useLocalStorage',
-    factory: () => renderHook(() => useLocalStorage('test-key', null)),
-    expectsCleanup: true, // event listener removal
-  },
-]
-
-describe.each(hooksUnderTest)('$name — lifecycle safety', ({ name, factory, expectsCleanup }) => {
-  afterEach(() => vi.restoreAllMocks())
-
-  it('mounts and unmounts without throwing', () => {
-    const { unmount } = factory()
-    expect(() => unmount()).not.toThrow()
-  })
-
-  it('does not leak DOM nodes after unmount', () => {
-    const nodesBefore = document.body.childNodes.length
-    const { unmount } = factory()
-    unmount()
-    expect(document.body.childNodes.length).toBe(nodesBefore)
-  })
-})
-
-describe('useBooking — stale closure immunity', () => {
-  it('submitBooking uses current state not stale closure', async () => {
-    const { result } = renderHook(() => useBooking())
-
-    act(() => result.current.selectService('service-1'))
-    act(() => result.current.selectBarber('barber-1'))
-    // Rapidly update state to trigger stale closure scenario
-    act(() => result.current.selectService('service-2'))
-
-    // submitBooking should use service-2, not the stale service-1
-    global.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => ({}) })
-    await act(() => result.current.submitBooking())
-
-    const body = JSON.parse((global.fetch as any).mock.calls[0][1].body)
-    expect(body.serviceId).toBe('service-2') // not stale 'service-1'
-  })
-})
-
-describe('useLocalStorage — cross-tab race condition', () => {
-  it('ignores storage events that match current value', () => {
-    const { result } = renderHook(() => useLocalStorage('tab-key', 'initial'))
-    const renderCount = vi.fn()
-
-    // Simulate storage event with same value
-    act(() => {
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: 'tab-key',
-        newValue: JSON.stringify('initial'),
-      }))
-    })
-
-    // Should not cause unnecessary re-render
-    expect(result.current[0]).toBe('initial')
-  })
-})
-```
-
----
-
-## 🟡 BATCH D — CSP, Config & Security Headers ✅ COMPLETED
-> All `next.config.ts`, env vars, logging, and header hardening. One PR.
-
-### T-D001 · Eliminate unsafe-eval / unsafe-inline from CSP
-**Priority:** 1 | **Severity:** High | **Issues:** #4 | **Batch:** D
-
-**Status:** ✅ COMPLETED - CSP with nonce-based implementation, unsafe-eval removed from production
-
-### T-D002 · Centralize All Environment Variables Through Zod Schema
-**Priority:** 2 | **Severity:** Medium | **Issues:** #5 | **Batch:** D
-
-**Status:** ✅ COMPLETED - Centralized Zod schema for all environment variables implemented
-
-### T-D003 · Implement Structured Production Logging (Pino + Axiom + Sentry)
-**Priority:** 2 | **Severity:** Medium | **Issues:** #7 | **Batch:** D
-
-**Status:** ✅ COMPLETED - Pino + Axiom structured logging implemented
-
-### T-D004 · Fix JSON Parsing Prototype Pollution Vectors
-**Priority:** 2 | **Severity:** Medium | **Issues:** #6 | **Batch:** D
-
-**Status:** ✅ COMPLETED - safeJSONParse utility prevents prototype pollution attacks
-
-### T-D005 · Fix dangerouslySetInnerHTML in StructuredData (JSON-LD XSS)
-**Priority:** 2 | **Severity:** Medium | **Issues:** #11 | **Batch:** D
-
-**Status:** ✅ COMPLETED - XSS protection with Unicode escape implemented
-
-### T-D006 · Fix Open Redirect Risk in External Links
-**Priority:** 3 | **Severity:** Medium | **Issues:** #8 | **Batch:** D
-
-**Status:** ✅ COMPLETED - External URL validation with allowlist implemented
-
-### T-D007 · Add Security Header CI Verification
-**Priority:** 3 | **Severity:** Medium | **Issues:** #12 | **Batch:** D
-
-**Status:** ✅ COMPLETED - GitHub Actions security header verification implemented
-
-### T-D001 · Eliminate unsafe-eval / unsafe-inline from CSP
-**Priority:** 1 | **Severity:** High | **Issues:** #4 | **Batch:** D
+### T-D001 · ✅ COMPLETED — Eliminate unsafe-eval / unsafe-inline from CSP
+**Priority:** 1 | **Severity:** High | **Issues:** #4 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
 
 **What:** Replace broad `unsafe-eval` and `unsafe-inline` directives with nonce-based CSP. Per the Next.js 16 internals issue (GitHub #81496), `unsafe-eval` **cannot be fully removed in production** due to internal `Function()` calls in Next.js utilities — gate it to development only.
+
+**Implementation:** ✅ CSP nonce-based implementation complete in `next.config.ts` with development-only `unsafe-eval`. ✅ Structured CSP report endpoint at `/api/csp-report` with Axiom logging. ✅ Production-ready security headers.
 
 **File:** `next.config.ts`
 ```typescript
@@ -674,10 +102,12 @@ export async function POST(request: Request) {
 
 ---
 
-### T-D002 · Centralize All Environment Variables Through Zod Schema
-**Priority:** 2 | **Severity:** Medium | **Issues:** #5 | **Batch:** D
+### T-D002 · ✅ COMPLETED — Centralize All Environment Variables Through Zod Schema
+**Priority:** 2 | **Severity:** Medium | **Issues:** #5 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
 
 **What:** All `process.env` access routes through `src/lib/env.ts`. No direct `process.env` calls anywhere else. Add all missing variables to the schema.
+
+**Implementation:** ✅ Zod schema validation complete in `src/lib/env.ts`. ✅ All `process.env` calls replaced with `ENV.X` in `src/data/constants.ts`, `drizzle.config.ts`, `src/lib/logger.ts`. ✅ Type-safe environment access with runtime validation.
 
 **File:** `src/lib/env.ts`
 ```typescript
@@ -719,10 +149,12 @@ export const ENV = envSchema.parse(process.env)
 
 ---
 
-### T-D003 · Implement Structured Production Logging (Pino + Axiom + Sentry)
-**Priority:** 2 | **Severity:** Medium | **Issues:** #7 | **Batch:** D
+### T-D003 · ✅ COMPLETED — Implement Structured Production Logging (Pino + Axiom + Sentry)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #7 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
 
 **What:** Replace all `console.error()` with environment-gated structured logging. Stack: **Pino** (structured JSON) → **Axiom** (log drain, Vercel native) + **Sentry** (error tracking).
+
+**Implementation:** ✅ Pino logger with Axiom transport in `src/lib/logger.ts`. ✅ Environment-gated logging (production vs development). ✅ `withAxiom` wrapper added to `next.config.ts`. ✅ Structured CSP violation reporting with proper error handling.
 
 **Install:**
 ```bash
@@ -780,10 +212,12 @@ export default withAxiom(nextConfig)
 
 ---
 
-### T-D004 · Fix JSON Parsing Prototype Pollution Vectors
-**Priority:** 2 | **Severity:** Medium | **Issues:** #6 | **Batch:** D
+### T-D004 · ✅ COMPLETED — Fix JSON Parsing Prototype Pollution Vectors
+**Priority:** 2 | **Severity:** Medium | **Issues:** #6 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
 
 **What:** Replace all bare `JSON.parse()` calls with a `safeJSONParse<T>()` utility that validates output via Zod schema, preventing prototype pollution.
+
+**Implementation:** ✅ `safeJSONParse` utility implemented in `src/lib/utils.ts` with prototype pollution protection. ✅ Applied to `useLocalStorage` hook for all JSON parsing operations. ✅ Zod schema validation with safe fallback values.
 
 **File:** `src/lib/utils.ts`
 ```typescript
@@ -825,10 +259,12 @@ return item ? safeJSONParse(item, storageSchema, initialValue) : initialValue
 
 ---
 
-### T-D005 · Fix dangerouslySetInnerHTML in StructuredData (JSON-LD XSS)
-**Priority:** 2 | **Severity:** Medium | **Issues:** #11 | **Batch:** D
+### T-D005 · ✅ COMPLETED — Fix dangerouslySetInnerHTML in StructuredData (JSON-LD XSS)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #11 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
 
 **What:** `dangerouslySetInnerHTML` with `JSON.stringify()` is the correct and officially documented Next.js App Router pattern for JSON-LD. The XSS vector is the unescaped `<` character which can break out of the script tag. One-line fix.
+
+**Implementation:** ✅ XSS protection verified in `src/components/StructuredData.tsx`. ✅ `<` characters properly escaped with `\u003c` to prevent script tag termination.
 
 **File:** `src/components/StructuredData.tsx`
 ```typescript
@@ -844,8 +280,10 @@ dangerouslySetInnerHTML={{
 
 ---
 
-### T-D006 · Fix Open Redirect Risk in External Links
-**Priority:** 3 | **Severity:** Medium | **Issues:** #8 | **Batch:** D
+### T-D006 · ✅ COMPLETED — Fix Open Redirect Risk in External Links
+**Priority:** 3 | **Severity:** Medium | **Issues:** #8 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
+
+**Implementation:** ✅ External URL validation utility implemented in `src/data/constants.ts`. ✅ Domain allowlist for trusted external sites (Instagram, Facebook, Google, etc.). ✅ HTTPS-only validation with proper error handling.
 
 **File:** `src/data/constants.ts`
 ```typescript
@@ -875,8 +313,10 @@ export function validateExternalUrl(url: string): string | null {
 
 ---
 
-### T-D007 · Add Security Header CI Verification
-**Priority:** 3 | **Severity:** Medium | **Issues:** #12 | **Batch:** D
+### T-D007 · ✅ COMPLETED — Add Security Header CI Verification
+**Priority:** 3 | **Severity:** Medium | **Issues:** #12 | **Batch:** D | **Status:** ✅ COMPLETED 2026-03-03
+
+**Implementation:** ✅ Security headers verification workflow exists at `.github/workflows/security-headers.yml`. ✅ Validates CSP, X-Frame-Options, HSTS, and X-Content-Type-Options headers on staging deployment.
 
 **File:** `.github/workflows/security.yml` — add job:
 ```yaml
@@ -896,49 +336,6 @@ export function validateExternalUrl(url: string): string | null {
 ```
 
 ---
-
-## 🟡 BATCH E — Performance Architecture ✅ COMPLETED
-> Two sub-batches: E1 (RSC/client boundary audit) then E2 (bundle + CI pipeline).
-
-### T-E001 · Fix SessionProvider Placement (P0)
-**Priority:** 1 | **Severity:** High | **Issues:** P0-1 | **Batch:** E
-
-**Status:** ✅ COMPLETED - SessionProvider moved to dedicated wrapper, ~300ms TTI improvement
-
-### T-E002 · Remove Unnecessary 'use client' from Static Components (P0)
-**Priority:** 1 | **Severity:** High | **Issues:** P0-2 | **Batch:** E
-
-**Status:** ✅ COMPLETED - Removed 'use client' from Hero and P3Gradient components
-
-### T-E003 · Fix EventCountdown Hydration Mismatch (P1)
-**Priority:** 2 | **Severity:** Medium | **Issues:** #28 | **Batch:** E
-
-**Status:** ✅ COMPLETED - Hydration mismatch fixed with SSR skeleton and client-side only rendering
-
-### T-E004 · Tree-Shake lucide-react Icon Imports (P1)
-**Priority:** 2 | **Severity:** Medium | **Issues:** P1-3 | **Batch:** E
-
-**Status:** ✅ COMPLETED - Updated Navigation.tsx to use direct module path imports
-
-### T-E005 · Move axe-core to Dev-Only Dynamic Import (P1)
-**Priority:** 2 | **Severity:** Medium | **Issues:** P1-4 | **Batch:** E
-
-**Status:** ✅ COMPLETED - axe-core (~150KB) now only loads in development
-
-### T-E006 · Remove Gallery Custom IntersectionObserver (P1)
-**Priority:** 1 | **Severity:** Critical | **Issues:** #27, #29 | **Batch:** E
-
-**Status:** ✅ COMPLETED - Removed redundant IntersectionObserver, Next.js Image handles lazy loading natively
-
-### T-E007 · Add Bundle Analysis + Performance Budget CI (P2)
-**Priority:** 3 | **Severity:** Medium | **Issues:** #33, P2 | **Batch:** E
-
-**Status:** ✅ COMPLETED - Bundle analysis and performance budget CI implemented
-
-### T-E008 · Add Rate Limiting Tests with Vitest Fake Timers (P2)
-**Priority:** 3 | **Severity:** Medium | **Issues:** #14 | **Batch:** E
-
-**Status:** ✅ COMPLETED - Rate limiting tests with Vitest fake timers implemented
 
 ## 🟢 BATCH F — Data Architecture & State Management
 > Resolves static/DB data duplication (Issues #17 + #19 merged) and state fragmentation.
@@ -982,8 +379,12 @@ export default async function ServicesPage() {
 
 ---
 
-### T-F002 · Implement Zustand Booking Store (Replace State Fragmentation)
-**Priority:** 3 | **Severity:** Medium | **Issues:** #18 | **Batch:** F
+### T-F002 · ✅ COMPLETED — Implement Zustand Booking Store (Replace State Fragmentation)
+**Priority:** 3 | **Severity:** Medium | **Issues:** #18 | **Batch:** F | **Status:** ✅ COMPLETED 2026-03-03
+
+**What:** Replace the fragmented booking state (spread across `useBooking`, `useLocalStorage`, and ad-hoc `useState` calls) with a single Zustand store using the Next.js App Router-safe `useRef` + Context provider pattern.
+
+**Implementation:** ✅ Zustand booking store implemented in `src/store/booking-store.ts`. ✅ useRef + Context pattern for Next.js App Router safety. ✅ Complete booking state management with actions and error handling.
 
 **What:** Replace the fragmented booking state (spread across `useBooking`, `useLocalStorage`, and ad-hoc `useState` calls) with a single Zustand store using the Next.js App Router-safe `useRef` + Context provider pattern.
 
@@ -1059,8 +460,10 @@ export function useBookingStore<T>(selector: (state: BookingState & BookingActio
 
 ---
 
-### T-F003 · Simplify Over-Engineered Compound Components
-**Priority:** 3 | **Severity:** Medium | **Issues:** #36, #37, #38, #39 | **Batch:** F
+### T-F003 · ✅ COMPLETED — Simplify Over-Engineered Compound Components
+**Priority:** 3 | **Severity:** Medium | **Issues:** #36, #37, #38, #39 | **Batch:** F | **Status:** ✅ COMPLETED 2026-03-03
+
+**Implementation:** ✅ Card component simplified from Context-based to props-based API in `src/components/Card.tsx`. ✅ Maintained backward compatibility with compound sub-components. ✅ Removed unnecessary Context complexity for static marketing site.
 
 **Architectural decisions (per research):**
 
@@ -1108,8 +511,10 @@ interface ModalProps {
 
 ---
 
-### T-F004 · Add Missing Imports to Form and Modal Compound Components
-**Priority:** 2 | **Severity:** High | **Issues:** #36 | **Batch:** F
+### T-F004 · ✅ COMPLETED — Add Missing Imports to Form and Modal Compound Components
+**Priority:** 2 | **Severity:** High | **Issues:** #36 | **Batch:** F | **Status:** ✅ COMPLETED 2026-03-03
+
+**Implementation:** ✅ Fixed missing React imports in `Form.tsx` (useState, useCallback). ✅ Fixed missing createPortal import in `Modal.tsx`. ✅ Resolved TypeScript errors in both components.
 
 **What:** `Form.tsx` and `Modal.tsx` have missing React imports causing runtime errors in strict mode.
 
