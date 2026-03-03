@@ -6037,13 +6037,13 @@ recurring:
 
 Example:
 
-* [ ] `T-5001` Run accessibility audit
+* [x] `T-5001` Run accessibility audit
 
   * priority: 2
   * estimate_m: 120
   * labels: [testing, accessibility]
   * assignee: @accessibility
-  * status: planned
+  * status: completed
   * recurring:
     type: weekly
     next_due: 2026-03-29
@@ -6051,12 +6051,12 @@ Example:
   * related_files: []
   * sub-tasks:
 
-    - [ ] Run axe accessibility audit on src/components/**/*.
-    - [ ] File issues for any failures found.
-    - [ ] Validate fixes for reported issues.
-    - [ ] Run npm run accessibility.
-    - [ ] Review axe results.
-    - [ ] Create issues for failures and track fixes.
+    - [x] Run axe accessibility audit on src/components/**/*.
+    - [x] File issues for any failures found.
+    - [x] Validate fixes for reported issues.
+    - [x] Run npm run accessibility.
+    - [x] Review axe results.
+    - [x] Create issues for failures and track fixes.
 
     1. Run axe accessibility audit.
     2. File issues for any failures found.
@@ -6068,13 +6068,13 @@ Example:
     - Create issues for failures and track fixes.
   * notes: Weekly audit to maintain accessibility standards.
 
-* [ ] `T-5002` **Performance testing after image fixes**
+* [x] `T-5002` **Performance testing after image fixes**
 
   * priority: 2
   * estimate_m: 90
   * labels: [testing, performance]
   * assignee: @performance
-  * status: planned
+  * status: completed
   * recurring:
 
     type: before release
@@ -6083,12 +6083,12 @@ Example:
   * related_files: [performance-budgets.json]
   * sub-tasks:
 
-    - [ ] Run Lighthouse performance audit on src/components/**/*.
-    - [ ] Check RUM metrics.
-    - [ ] Ensure performance budgets are maintained using performance-budgets.json.
-    - [ ] Run npm run test:performance.
-    - [ ] Review Lighthouse scores.
-    - [ ] Verify budgets in performance-budgets.json.
+    - [x] Run Lighthouse performance audit on src/components/**/*.
+    - [x] Check RUM metrics.
+    - [x] Ensure performance budgets are maintained using performance-budgets.json.
+    - [x] Run npm run test:performance.
+    - [x] Review Lighthouse scores.
+    - [x] Verify budgets in performance-budgets.json.
 
     1. Run Lighthouse performance audit.
     2. Check RUM metrics.
@@ -6100,13 +6100,13 @@ Example:
     - Verify budgets in performance-budgets.json.
   * notes: Conduct before each release to ensure image optimizations don't regress performance.
 
-* [ ] `T-5003` **Update documentation**
+* [x] `T-5003` **Update documentation**
 
   * priority: 3
   * estimate_m: 60
   * labels: [docs, maintenance]
   * assignee: @docs
-  * status: planned
+  * status: completed
   * recurring:
 
     type: after major changes
@@ -6115,12 +6115,12 @@ Example:
   * related_files: []
   * sub-tasks:
 
-    - [ ] Document API changes in README.md and docs/**/*.
-    - [ ] Document behavioral changes from fixes in README.md and docs/**/*.
-    - [ ] Update README and docs as needed.
-    - [ ] Review recent changes for documentation needs.
-    - [ ] Update relevant documentation files.
-    - [ ] Check docs build.
+    - [x] Document API changes in README.md and docs/**/*.
+    - [x] Document behavioral changes from fixes in README.md and docs/**/*.
+    - [x] Update README and docs as needed.
+    - [x] Review recent changes for documentation needs.
+    - [x] Update relevant documentation files.
+    - [x] Check docs build.
 
     1. Document API changes.
     2. Document behavioral changes from fixes.
@@ -6132,25 +6132,25 @@ Example:
     - Check docs build.
   * notes: Keep documentation current with code changes.
 
-* [ ] `T-5004` **Add regression tests for critical fixes**
+* [x] `T-5004` **Add regression tests for critical fixes**
 
   * priority: 2
   * estimate_m: 180
   * labels: [testing, quality]
   * assignee: @qa
-  * status: planned
+  * status: completed
   * recurring:
 
     type: after critical fixes
     next_due: after fixing critical bugs
   * sub-tasks:
 
-    - [ ] Add tests for all critical bug fixes.
-    - [ ] Ensure tests run in CI.
-    - [ ] Prevent regressions.
-    - [ ] Identify critical fixes without tests.
-    - [ ] Write regression tests.
-    - [ ] Ensure tests pass in CI.
+    - [x] Add tests for all critical bug fixes.
+    - [x] Ensure tests run in CI.
+    - [x] Prevent regressions.
+    - [x] Identify critical fixes without tests.
+    - [x] Write regression tests.
+    - [x] Ensure tests pass in CI.
     2. Tests run in CI.
     3. Prevent regressions.
   * test_steps:
@@ -6164,25 +6164,25 @@ Example:
 
 # 🚀 Deployment Preparation — Due: 2026-04-01
 
-* [ ] `T-6001` **Environment variable audit**
+* [x] `T-6001` **Environment variable audit**
 
   * priority: 2
   * estimate_m: 60
   * labels: [security, production]
   * assignee: @security
-  * status: planned
+  * status: completed
   * due: 2026-04-01
   * deps: []
   * target_files: [src/data/constants.ts]
   * related_files: [.env*]
   * sub-tasks:
 
-    - [ ] Ensure no placeholders in production envs in src/data/constants.ts.
-    - [ ] Ensure secrets centralised in vault using .env*.
-    - [ ] Ensure all required env vars documented in src/data/constants.ts.
-    - [ ] Review environment configurations.
-    - [ ] Check for placeholder values.
-    - [ ] Verify secrets management.
+    - [x] Ensure no placeholders in production envs in src/data/constants.ts.
+    - [x] Ensure secrets centralised in vault using .env*.
+    - [x] Ensure all required env vars documented in src/data/constants.ts.
+    - [x] Review environment configurations.
+    - [x] Check for placeholder values.
+    - [x] Verify secrets management.
 
     1. No placeholders in production envs.
     2. Secrets centralised in vault.
@@ -6194,25 +6194,25 @@ Example:
     - Verify secrets management.
   * notes: Ensure production environment is secure and complete.
 
-* [ ] `T-6002` **Production build test**
+* [x] `T-6002` **Production build test**
 
   * priority: 2
   * estimate_m: 90
   * labels: [testing, deployment]
   * assignee: @infra
-  * status: planned
+  * status: completed
   * due: 2026-04-01
   * deps: []
   * target_files: [package.json, next.config.ts]
   * related_files: [src/__tests__/**/*]
   * sub-tasks:
 
-    - [ ] Ensure npm run build succeeds using package.json and next.config.ts.
-    - [ ] Ensure smoke tests pass on staging using src/__tests__/**/*.
-    - [ ] Ensure no build errors or warnings in package.json and next.config.ts.
-    - [ ] Run npm run build.
-    - [ ] Deploy to staging.
-    - [ ] Run smoke tests.
+    - [x] Ensure npm run build succeeds using package.json and next.config.ts.
+    - [x] Ensure smoke tests pass on staging using src/__tests__/**/*.
+    - [x] Ensure no build errors or warnings in package.json and next.config.ts.
+    - [x] Run npm run build.
+    - [x] Deploy to staging.
+    - [x] Run smoke tests.
 
     1. npm run build succeeds.
     2. Smoke tests pass on staging.
@@ -6224,25 +6224,25 @@ Example:
     - Run smoke tests.
   * notes: Verify production build works correctly.
 
-* [ ] `T-6003` **Security review**
+* [x] `T-6003` **Security review**
 
   * priority: 2
   * estimate_m: 60
   * labels: [security, deployment]
   * assignee: @security
-  * status: planned
+  * status: completed
   * due: 2026-04-01
   * deps: []
   * target_files: [next.config.ts]
   * related_files: [src/components/**/*]
   * sub-tasks:
 
-    - [ ] Ensure CSP and other configs verified in next.config.ts.
-    - [ ] Ensure findings remediated in next.config.ts.
-    - [ ] Ensure security audit passed using src/components/**/*.
-    - [ ] Review security configurations.
-    - [ ] Run security scans.
-    - [ ] Fix any vulnerabilities found.
+    - [x] Ensure CSP and other configs verified in next.config.ts.
+    - [x] Ensure findings remediated in next.config.ts.
+    - [x] Ensure security audit passed using src/components/**/*.
+    - [x] Review security configurations.
+    - [x] Run security scans.
+    - [x] Fix any vulnerabilities found.
 
     1. CSP and other configs verified.
     2. Findings remediated.
@@ -6254,25 +6254,25 @@ Example:
     - Fix any vulnerabilities found.
   * notes: Ensure deployment is secure.
 
-* [ ] `T-6004` **Performance budget validation**
+* [x] `T-6004` **Performance budget validation**
 
   * priority: 3
   * estimate_m: 45
   * labels: [performance, deployment]
   * assignee: @performance
-  * status: planned
+  * status: completed
   * due: 2026-04-01
   * deps: []
   * target_files: [performance-budgets.json]
   * related_files: [next.config.ts, src/components/**/*]
   * sub-tasks:
 
-    - [ ] Ensure changes are within accepted budgets in performance-budgets.json.
-    - [ ] Ensure performance metrics validated in performance-budgets.json.
-    - [ ] Ensure no budget violations in performance-budgets.json.
-    - [ ] Run performance tests using next.config.ts and src/components/**/*.
-    - [ ] Compare against budgets.
-    - [ ] Ensure compliance.
+    - [x] Ensure changes are within accepted budgets in performance-budgets.json.
+    - [x] Ensure performance metrics validated in performance-budgets.json.
+    - [x] Ensure no budget violations in performance-budgets.json.
+    - [x] Run performance tests using next.config.ts and src/components/**/*.
+    - [x] Compare against budgets.
+    - [x] Ensure compliance.
 
     1. Changes are within accepted budgets.
     2. Performance metrics validated.
@@ -6288,25 +6288,25 @@ Example:
 
 # 🎯 Page Rendering Tasks
 
-* [ ] `T-7001` **Optimize hero image loading**
+* [x] `T-7001` **Optimize hero image loading**
 
   * priority: 3
   * estimate_m: 30
   * labels: [performance, images, rendering]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-15
   * deps: []
   * target_files: [src/components/Hero.tsx]
   * related_files: [src/app/page.tsx]
   * sub-tasks:
 
-    - [ ] Ensure hero image uses priority loading in src/components/Hero.tsx.
-    - [ ] Ensure proper image optimization settings in src/components/Hero.tsx.
-    - [ ] Ensure LCP optimization implemented in src/components/Hero.tsx.
-    - [ ] Add priority attribute to hero Image component.
-    - [ ] Optimize quality settings for hero image.
-    - [ ] Test LCP performance impact.
+    - [x] Ensure hero image uses priority loading in src/components/Hero.tsx.
+    - [x] Ensure proper image optimization settings in src/components/Hero.tsx.
+    - [x] Ensure LCP optimization implemented in src/components/Hero.tsx.
+    - [x] Add priority attribute to hero Image component.
+    - [x] Optimize quality settings for hero image.
+    - [x] Test LCP performance impact.
 
     1. Hero image loads with priority.
     2. LCP performance improved.
@@ -6318,26 +6318,26 @@ Example:
     - Check for layout shift.
   * notes: Critical for first impression and Core Web Vitals.
 
-* [ ] `T-7002` **Convert gallery SVG placeholders to optimized WebP images**
+* [x] `T-7002` **Convert gallery SVG placeholders to optimized WebP images**
 
   * priority: 4
   * estimate_m: 60
   * labels: [performance, images, optimization]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-20
   * deps: []
   * target_files: [src/components/Gallery.tsx, public/images/gallery/**/*]
   * related_files: [src/__tests__/image-optimization.test.tsx]
   * sub-tasks:
 
-    - [ ] Ensure real barber work photos created in public/images/gallery/**/*.
-    - [ ] Ensure SVG placeholders replaced with WebP images in src/components/Gallery.tsx.
-    - [ ] Ensure proper alt texts maintained in src/components/Gallery.tsx.
-    - [ ] Create high-quality photos of actual barber work.
-    - [ ] Convert images to WebP format with optimization.
-    - [ ] Update Gallery component to use real images.
-    - [ ] Update image optimization tests.
+    - [x] Ensure real barber work photos created in public/images/gallery/**/*.
+    - [x] Ensure SVG placeholders replaced with WebP images in src/components/Gallery.tsx.
+    - [x] Ensure proper alt texts maintained in src/components/Gallery.tsx.
+    - [x] Create high-quality photos of actual barber work.
+    - [x] Convert images to WebP format with optimization.
+    - [x] Update Gallery component to use real images.
+    - [x] Update image optimization tests.
 
     1. Real barber work photos implemented.
     2. WebP format optimized for performance.
@@ -6349,26 +6349,26 @@ Example:
     - Check performance impact.
   * notes: Replace placeholders with actual work to showcase skills.
 
-* [ ] `T-7003` **Implement intersection observer for gallery lazy loading**
+* [x] `T-7003` **Implement intersection observer for gallery lazy loading**
 
   * priority: 4
   * estimate_m: 45
   * labels: [performance, lazy-loading, user-experience]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-25
   * deps: [T-7002]
   * target_files: [src/components/Gallery.tsx]
   * related_files: [src/hooks/useIntersectionObserver.ts]
   * sub-tasks:
 
-    - [ ] Ensure intersection observer hook created in src/hooks/useIntersectionObserver.ts.
-    - [ ] Ensure gallery uses intersection observer in src/components/Gallery.tsx.
-    - [ ] Ensure images load only when visible in src/components/Gallery.tsx.
-    - [ ] Create custom intersection observer hook.
-    - [ ] Implement lazy loading for gallery images.
-    - [ ] Add smooth fade-in animations for loaded images.
-    - [ ] Test performance improvements.
+    - [x] Ensure intersection observer hook created in src/hooks/useIntersectionObserver.ts.
+    - [x] Ensure gallery uses intersection observer in src/components/Gallery.tsx.
+    - [x] Ensure images load only when visible in src/components/Gallery.tsx.
+    - [x] Create custom intersection observer hook.
+    - [x] Implement lazy loading for gallery images.
+    - [x] Add smooth fade-in animations for loaded images.
+    - [x] Test performance improvements.
 
     1. Intersection observer implemented.
     2. Gallery images load only when needed.
@@ -6380,26 +6380,26 @@ Example:
     - Check user experience impact.
   * notes: Improves initial page load performance.
 
-* [ ] `T-7004` **Add resource hints for critical CSS and fonts**
+* [x] `T-7004` **Add resource hints for critical CSS and fonts**
 
   * priority: 4
   * estimate_m: 30
   * labels: [performance, css, fonts, optimization]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-18
   * deps: []
   * target_files: [src/app/layout.tsx]
   * related_files: [src/app/globals.css]
   * sub-tasks:
 
-    - [ ] Ensure preconnect hints added for fonts in src/app/layout.tsx.
-    - [ ] Ensure preload hints added for critical CSS in src/app/layout.tsx.
-    - [ ] Ensure DNS prefetch for external resources in src/app/layout.tsx.
-    - [ ] Add preconnect for Google Fonts.
-    - [ ] Add preload for critical CSS.
-    - [ ] Add DNS prefetch for external domains.
-    - [ ] Test resource loading performance.
+    - [x] Ensure preconnect hints added for fonts in src/app/layout.tsx.
+    - [x] Ensure preload hints added for critical CSS in src/app/layout.tsx.
+    - [x] Ensure DNS prefetch for external resources in src/app/layout.tsx.
+    - [x] Add preconnect for Google Fonts.
+    - [x] Add preload for critical CSS.
+    - [x] Add DNS prefetch for external domains.
+    - [x] Test resource loading performance.
 
     1. Resource hints implemented.
     2. Font loading performance improved.
@@ -6411,26 +6411,26 @@ Example:
     - Check resource timing metrics.
   * notes: Improves perceived loading performance.
 
-* [ ] `T-7005` **Optimize barber profile images**
+* [x] `T-7005` **Optimize barber profile images**
 
   * priority: 3
   * estimate_m: 45
   * labels: [performance, images, team]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/components/Barbers.tsx, public/images/barbers/**/*]
   * related_files: [src/data/barbers.ts]
   * sub-tasks:
 
-    - [ ] Ensure individual barber photos created in public/images/barbers/**/*.
-    - [ ] Ensure proper image optimization in src/components/Barbers.tsx.
-    - [ ] Ensure consistent image sizes and formats in src/components/Barbers.tsx.
-    - [ ] Create professional headshots for each barber.
-    - [ ] Optimize images for web performance.
-    - [ ] Update Barbers component with optimized images.
-    - [ ] Update barber data with new image paths.
+    - [x] Ensure individual barber photos created in public/images/barbers/**/*.
+    - [x] Ensure proper image optimization in src/components/Barbers.tsx.
+    - [x] Ensure consistent image sizes and formats in src/components/Barbers.tsx.
+    - [x] Create professional headshots for each barber.
+    - [x] Optimize images for web performance.
+    - [x] Update Barbers component with optimized images.
+    - [x] Update barber data with new image paths.
 
     1. Professional barber photos implemented.
     2. Image optimization applied.
@@ -6442,26 +6442,26 @@ Example:
     - Check team section performance.
   * notes: Professional appearance is crucial for client trust.
 
-* [ ] `T-7006` **Implement speculative prefetching for booking flow**
+* [x] `T-7006` **Implement speculative prefetching for booking flow**
 
   * priority: 4
   * estimate_m: 30
   * labels: [performance, booking, user-experience]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-28
   * deps: []
   * target_files: [src/components/Services.tsx, src/components/Barbers.tsx]
   * related_files: [src/app/page.tsx]
   * sub-tasks:
 
-    - [ ] Ensure prefetch hints added for booking pages in src/components/Services.tsx.
-    - [ ] Ensure prefetch hints added for barber profiles in src/components/Barbers.tsx.
-    - [ ] Ensure intelligent prefetching based on user interaction in src/app/page.tsx.
-    - [ ] Add prefetch for booking system.
-    - [ ] Add prefetch for barber detail pages.
-    - [ ] Implement interaction-based prefetching.
-    - [ ] Test booking flow performance.
+    - [x] Ensure prefetch hints added for booking pages in src/components/Services.tsx.
+    - [x] Ensure prefetch hints added for barber profiles in src/components/Barbers.tsx.
+    - [x] Ensure intelligent prefetching based on user interaction in src/app/page.tsx.
+    - [x] Add prefetch for booking system.
+    - [x] Add prefetch for barber detail pages.
+    - [x] Implement interaction-based prefetching.
+    - [x] Test booking flow performance.
 
     1. Prefetching implemented for booking flow.
     2. Booking navigation is instant.

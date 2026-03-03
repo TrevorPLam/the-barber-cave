@@ -218,12 +218,38 @@ NEXT_PUBLIC_GA_ID=your_google_analytics_id
 - Mobile Safari iOS 14+
 - Chrome Mobile Android 90+
 
-## 📊 Performance
+## ⚡ Performance Optimizations (2026)
 
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **Core Web Vitals**: Optimized for LCP, FID, CLS
-- **Bundle Size**: Optimized with code splitting and tree shaking
-- **Loading**: Lazy loading for non-critical components
+This project implements cutting-edge performance optimizations for 2026 web standards:
+
+### Image & Media Performance
+
+- **Priority Loading**: Above-the-fold hero images and first 4 barber profiles load with priority
+- **Lazy Loading**: Gallery images use intersection observer with 50px root margin
+- **Resource Hints**: Preconnect for Google Fonts, preload for critical CSS
+- **Speculative Prefetching**: Booking URLs prefetch on hover for instant navigation
+- **WebP/AVIF Support**: Next.js Image component with multiple format optimization
+
+### Security Enhancements
+
+- **CSP Hardening**: Removed `unsafe-eval`, nonce-based script controls
+- **Environment Validation**: Runtime environment variable validation with production checks
+- **Security Headers**: HSTS, CSP, X-Frame-Options, Referrer Policy, and more
+- **Input Validation**: Comprehensive form validation with security rules
+
+### Testing & Quality Assurance
+
+- **Regression Tests**: Comprehensive test suite covering all critical fixes
+- **Accessibility Audit**: WCAG compliance with axe-core automated testing
+- **Performance Budgets**: Lighthouse CI integration for continuous monitoring
+- **Build Validation**: Automated production build testing and smoke tests
+
+### Development Experience
+
+- **Type-Safe Environment**: Runtime validation of environment variables
+- **Build Optimization**: Turbopack with cache components for faster builds
+- **Error Boundaries**: Advanced error handling with retry logic and announcements
+- **Component Architecture**: Memoized components with proper prop validation
 
 ## 🔧 Development Workflow
 

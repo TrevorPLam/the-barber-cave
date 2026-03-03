@@ -36,6 +36,7 @@
  */
 
 import Link from 'next/link';
+import { usePrefetch } from '@/hooks/usePrefetch';
 
 type Variant = 'primary' | 'secondary' | 'accent';
 
@@ -76,6 +77,10 @@ export default function Button(props: ButtonProps) {
     const { href, target, rel, ref } = props;
     const isExternal = href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:');
     
+    // Use prefetching for booking-related external links
+    const isBookingLink = href.includes('booking') || href.includes('squire');
+    const { prefetch } = usePrefetch(isBookingLink ? href : undefined);
+    
     if (isExternal) {
       return (
         <a
@@ -84,6 +89,7 @@ export default function Button(props: ButtonProps) {
           rel={rel || 'noopener noreferrer'}
           className={classes}
           ref={ref}
+          onMouseEnter={isBookingLink ? prefetch : undefined}
         >
           {children}
         </a>

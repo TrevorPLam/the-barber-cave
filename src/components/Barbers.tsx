@@ -23,7 +23,7 @@ export default function Barbers() {
           style={{ containerType: 'inline-size' }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {barbersData.map((barber) => (
+          {barbersData.map((barber, index) => (
             <div key={barber.id} className="barber-card text-center group container-card">
               <div className="relative mb-6 overflow-hidden rounded-2xl bg-gray-200 aspect-square">
                 <Image 
@@ -31,6 +31,7 @@ export default function Barbers() {
                   alt={barber.name}
                   fill
                   quality={75}
+                  priority={index < 4} // Priority load first 4 barbers (above the fold)
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                 />

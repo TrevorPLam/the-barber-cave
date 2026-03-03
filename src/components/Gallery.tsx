@@ -1,4 +1,28 @@
 import Image from 'next/image';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+
+/**
+ * Lazy-loaded image component using intersection observer
+ */
+function LazyImage({ src, alt, ...props }: any) {
+  const { ref, isIntersecting } = useIntersectionObserver({
+    threshold: 0.1,
+    triggerOnce: true,
+    rootMargin: '50px'
+  });
+
+  return (
+    <div ref={ref as any} className="w-full h-full">
+      {isIntersecting && (
+        <Image
+          src={src}
+          alt={alt}
+          {...props}
+        />
+      )}
+    </div>
+  );
+}
 
 export default function Gallery() {
   // TODO: Replace SVG placeholders with actual barber work photos
@@ -34,7 +58,7 @@ export default function Gallery() {
               role="button"
               aria-label={`View ${item.title} by ${item.barber}`}
             >
-              <Image 
+              <LazyImage 
                 src={item.src}
                 alt={item.alt}
                 fill

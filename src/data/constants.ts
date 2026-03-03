@@ -16,6 +16,65 @@ import { services } from './services';
 import { BusinessEngine, BusinessMetrics } from './businessEngine';
 
 /**
+ * Environment variable schema and validation
+ * Ensures all required environment variables are present and valid for production deployment
+ */
+const envSchema = {
+  // Required environment variables for production
+  SITE_URL: process.env.SITE_URL || 'https://the-barber-cave.vercel.app',
+  NODE_ENV: process.env.NODE_ENV || 'development',
+
+  // Optional analytics and monitoring
+  NEXT_PUBLIC_ANALYTICS_ID: process.env.NEXT_PUBLIC_ANALYTICS_ID,
+
+  // Database and API secrets (for future implementation)
+  // DATABASE_URL: process.env.DATABASE_URL,
+  // API_SECRET_KEY: process.env.API_SECRET_KEY,
+
+  // Email service configuration (for future booking notifications)
+  // SMTP_HOST: process.env.SMTP_HOST,
+  // SMTP_PORT: process.env.SMTP_PORT,
+  // SMTP_USER: process.env.SMTP_USER,
+  // SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+} as const;
+
+/**
+ * Validate environment variables at runtime
+ * Throws error if required variables are missing or invalid
+ */
+function validateEnvironment() {
+  const requiredVars = ['SITE_URL'];
+  const missing = requiredVars.filter(key => !envSchema[key as keyof typeof envSchema]);
+
+  if (missing.length > 0) {
+    throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+
+  // Validate SITE_URL format
+  try {
+    new URL(envSchema.SITE_URL);
+  } catch {
+    throw new Error(`Invalid SITE_URL format: ${envSchema.SITE_URL}`);
+  }
+
+  // Production environment checks
+  if (envSchema.NODE_ENV === 'production') {
+    // Ensure HTTPS in production
+    if (!envSchema.SITE_URL.startsWith('https://')) {
+      console.warn('⚠️  SITE_URL should use HTTPS in production');
+    }
+
+    // Warn about missing analytics in production
+    if (!envSchema.NEXT_PUBLIC_ANALYTICS_ID) {
+      console.warn('⚠️  NEXT_PUBLIC_ANALYTICS_ID not set in production - analytics will be disabled');
+    }
+  }
+}
+
+// Validate environment on module load
+validateEnvironment();
+
+/**
  * @typedef {Object} BusinessInfo
  * @property {string} name - Official business name
  * @property {string} tagline - Marketing tagline
@@ -62,7 +121,7 @@ import { BusinessEngine, BusinessMetrics } from './businessEngine';
  * <link rel="canonical" href={`${SITE_URL}${pathname}`} />
  * ```
  */
-export const SITE_URL = 'https://the-barber-cave.vercel.app';
+export const SITE_URL = envSchema.SITE_URL;
 
 /**
  * @constant {BusinessMetrics} BUSINESS_METRICS

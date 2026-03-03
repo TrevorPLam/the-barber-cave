@@ -56,6 +56,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Resource hints for performance optimization */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="preload" href="/globals.css" as="style" />
+        <link rel="stylesheet" href="/globals.css" />
+        
         <StructuredData type="LocalBusiness" />
       </head>
       <body

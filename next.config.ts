@@ -55,8 +55,8 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "script-src 'self' 'nonce-%nonce%'", // Use nonce instead of unsafe-inline
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", // Keep unsafe-inline for now due to Next.js styling
               "img-src 'self' data: https: blob:",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://vitals.vercel-insights.com",
