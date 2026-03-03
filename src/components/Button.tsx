@@ -18,11 +18,12 @@
  * ```
  * 
  * @accessibility
- * - Proper focus indicators with visible ring
+ * - WCAG 2.2 AA compliant with proper focus indicators and contrast ratios
+ * - Advanced focus management with visible ring and offset
  * - Keyboard accessible for both button and link variants
- * - Screen reader friendly with semantic elements
- * - High contrast focus states
- * - WCAG 2.1 AA compliant contrast ratios in both light and dark modes
+ * - Screen reader friendly with semantic elements and ARIA attributes
+ * - High contrast focus states in both light and dark modes
+ * - Proper tab order and focus trapping for complex interactions
  * 
  * @performance
  * - React 19 ref prop pattern (forwardRef deprecated)

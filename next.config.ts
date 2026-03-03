@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60,
   },
 
-  // Security headers (Issue #1 - CSP implementation)
+  // Advanced security headers with nonce support for CSP (Issue #1 - CSP implementation)
   async headers() {
     return [
       {
@@ -55,8 +55,8 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'nonce-%nonce%'", // Use nonce instead of unsafe-inline
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", // Keep unsafe-inline for now due to Next.js styling
+              "script-src 'self' 'unsafe-eval' 'nonce-%nonce%'", // Remove unsafe-eval when possible
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com", // Consider nonce-based styles
               "img-src 'self' data: https: blob:",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://vitals.vercel-insights.com",

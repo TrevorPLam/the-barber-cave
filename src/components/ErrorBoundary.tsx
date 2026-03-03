@@ -15,6 +15,8 @@ interface State {
   error?: Error;
   errorInfo?: ErrorInfo;
   retryCount: number;
+  maxRetries: number;
+  retryTimeoutId: number | null;
 }
 
 class ErrorBoundary extends Component<Props, State> {
