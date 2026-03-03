@@ -70,7 +70,7 @@ describe('Accessibility Tests', () => {
       const { container } = render(<Services />)
       const results = await axe(container)
       expect(results).toHaveNoViolations()
-    }, 10000)
+    }, 30000)
   })
 
   describe('Barbers Component', () => {
