@@ -79,4 +79,64 @@ describe('Gallery', () => {
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
+
+  it('has keyboard accessible gallery items with proper ARIA attributes', () => {
+    render(<Gallery />)
+    
+    const galleryItems = screen.getAllByRole('button')
+    expect(galleryItems).toHaveLength(6)
+    
+    // Check each item is focusable
+    galleryItems.forEach((item, index) => {
+      expect(item).toHaveAttribute('tabIndex', '0')
+      expect(item).toHaveClass('cursor-pointer', 'focus-within:ring-2')
+    })
+    
+    // Check aria-labels provide context
+    expect(galleryItems[0]).toHaveAttribute('aria-label', 'View Classic Fade by Master Barber')
+  })
+
+  it('supports motion-safe and motion-reduce preferences', () => {
+    const { container } = render(<Gallery />)
+    
+    const galleryItems = container.querySelectorAll('[role="button"]')
+    
+    galleryItems.forEach(item => {
+      // Check for motion-safe classes (animations only apply when user prefers motion)
+      const image = item.querySelector('img')
+      expect(image).toHaveClass('motion-safe:group-hover:scale-110')
+      expect(image).toHaveClass('motion-safe:group-focus:scale-110')
+    })
+  })
+
+  it('has enhanced hover effects with gradient overlay', () => {
+    const { container } = render(<Gallery />)
+    
+    const galleryItems = container.querySelectorAll('[role="button"]')
+    
+    galleryItems.forEach(item => {
+      // Check gradient overlay exists
+      const gradientOverlay = item.querySelector('.bg-gradient-to-t')
+      expect(gradientOverlay).toBeInTheDocument()
+      expect(gradientOverlay).toHaveClass('from-black/70', 'via-black/30', 'to-transparent')
+      
+      // Check border highlight exists
+      const borderHighlight = item.querySelector('.border-2')
+      expect(borderHighlight).toBeInTheDocument()
+      expect(borderHighlight).toHaveClass('motion-safe:group-hover:border-amber-500/60')
+    })
+  })
+
+  it('displays content with slide-up animation on hover/focus', () => {
+    render(<Gallery />)
+    
+    // Content should be present in the DOM even if visually hidden initially
+    const titles = ['Classic Fade', 'Beard Trim', 'Modern Cut', 'Pompadour', 'Crew Cut', 'Hot Towel Shave']
+    
+    titles.forEach(title => {
+      const titleElement = screen.getByText(title)
+      expect(titleElement).toBeInTheDocument()
+      expect(titleElement.parentElement).toHaveClass('motion-safe:translate-y-4', 'motion-safe:group-hover:translate-y-0')
+    })
+  })
 })

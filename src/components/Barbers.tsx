@@ -42,14 +42,19 @@ export default function Barbers() {
               <h3 className="text-xl font-bold text-black mb-1">{barber.name}</h3>
               <p className="text-gray-600 mb-2">{barber.title}</p>
               
-              <div className="flex items-center justify-center space-x-1 mb-3">
-                <Star className="h-4 w-4 text-amber-500 fill-current" />
-                <span className="text-sm font-semibold">
-                  {barber.rating === null ? 'New' : barber.rating}
-                </span>
-                <span className="text-sm text-gray-500">
-                  {barber.reviews === '0' ? '' : `(${barber.reviews})`}
-                </span>
+              {/* Rating and Reviews Display */}
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <div className="flex items-center space-x-1">
+                  <Star className="h-4 w-4 text-amber-500 fill-current" />
+                  <span className="text-sm font-semibold text-gray-900">
+                    {barber.rating === null ? 'New' : barber.rating}
+                  </span>
+                </div>
+                {barber.reviews !== '0' && (
+                  <span className="text-sm text-gray-500 font-medium">
+                    ({barber.reviews})
+                  </span>
+                )}
               </div>
               
               {/* Enhanced Details */}

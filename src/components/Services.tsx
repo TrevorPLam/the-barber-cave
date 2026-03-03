@@ -22,7 +22,12 @@
 /**
  * @typedef {Object} ServiceCardProps
  * @property {Service} service - Service data object to display
+ * @property {boolean} [loading] - Whether to show skeleton loading state
  */
+interface ServiceCardProps {
+  service: typeof services[0];
+  loading?: boolean;
+}
 
 import { ChevronRight } from 'lucide-react';
 import { memo } from 'react';
@@ -66,10 +71,11 @@ const iconMap = {
 };
 
 /**
- * Individual service card component with booking integration.
+ * Individual service card component with booking integration and loading state support.
  * 
  * Displays a single service with icon, title, description, price, and booking button.
- * Features special styling for promotional services and responsive design.
+ * Features special styling for promotional services, responsive design, and skeleton
+ * loading states for improved perceived performance.
  * 
  * @example
  * ```tsx
@@ -84,10 +90,47 @@ const iconMap = {
  * 
  * <ServiceCard service={haircutService} />
  * ```
+ * 
+ * @example
+ * ```tsx
+ * // Loading skeleton state
+ * <ServiceCard service={haircutService} loading={true} />
+ * ```
  */
-const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
+const ServiceCard = memo(({ service, loading = false }: ServiceCardProps) => {
   const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Star;
   const isSpecial = service.id === 'new-client-special';
+  
+  if (loading) {
+    return (
+      <div 
+        className="service-card container-card relative p-8 rounded-2xl border-2 bg-white border-gray-200"
+        aria-busy="true"
+        aria-label="Loading service information"
+      >
+        {/* Skeleton header */}
+        <div className="flex items-center mb-4">
+          <div className="w-12 h-12 bg-gray-200 rounded-xl animate-pulse" />
+          <div className="ml-4 space-y-2">
+            <div className="h-6 w-32 bg-gray-200 rounded animate-pulse" />
+            <div className="h-4 w-20 bg-gray-200 rounded animate-pulse" />
+          </div>
+        </div>
+        
+        {/* Skeleton description */}
+        <div className="space-y-2 mb-6">
+          <div className="h-4 bg-gray-200 rounded animate-pulse" />
+          <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4" />
+        </div>
+        
+        {/* Skeleton price and button */}
+        <div className="flex items-center justify-between">
+          <div className="h-8 w-16 bg-gray-200 rounded animate-pulse" />
+          <div className="h-12 w-32 bg-gray-200 rounded-full animate-pulse" />
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className={`service-card container-card relative p-8 rounded-2xl border-2 transition-all duration-300 hover:scale-105 ${

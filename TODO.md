@@ -37,7 +37,7 @@ tech_stack:
 timezone: America/Chicago
 review_cycle_days: 7
 last_reviewed: 2026-03-03
-next_review: 2026-03-09
+next_review: 2026-03-10
 ```
 
 ---
@@ -4801,24 +4801,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
 
 # 🟢 Low (P4) — Due: 2026-03-15
 
-* [ ] `T-4001` **Add loading states to ServiceCard**
+* [x] `T-4001` **Add loading states to ServiceCard**
 
   * priority: 4
   * estimate_m: 30
   * labels: [enhancement, ux, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-15
   * deps: []
   * target_files: [src/components/Services.tsx]
   * related_files: [src/components/Button.tsx]
   * sub-tasks:
 
-    - [ ] Add loading prop to ServiceCard component in src/components/Services.tsx.
-    - [ ] Show skeleton loader during booking action in src/components/Services.tsx.
-    - [ ] Maintain button dimensions during loading state in src/components/Services.tsx.
-    - [ ] Test loading state behavior and animations.
-    - [ ] Ensure accessibility during loading state.
+    - [x] Add loading prop to ServiceCard component in src/components/Services.tsx.
+    - [x] Show skeleton loader during booking action in src/components/Services.tsx.
+    - [x] Maintain button dimensions during loading state in src/components/Services.tsx.
+    - [x] Test loading state behavior and animations.
+    - [x] Ensure accessibility during loading state.
 
     1. Loading prop added to ServiceCard.
     2. Skeleton loader shows during booking.
@@ -4828,6 +4828,7 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
     - Test loading state behavior and animations.
     - Ensure accessibility during loading state.
   * notes: Use consistent loading patterns with other components.
+  * **Implementation:** Added `loading?: boolean` prop with skeleton UI using `animate-pulse`. Includes accessibility attributes (`aria-busy`, `aria-label`) and matches content dimensions to prevent layout shift.
 
   * **Existing Code Pattern:**
     ```tsx
@@ -4954,24 +4955,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
 
 ---
 
-* [ ] `T-4002` **Add hover animations to Gallery items**
+* [x] `T-4002` **Add hover animations to Gallery items**
 
   * priority: 4
   * estimate_m: 30
   * labels: [enhancement, ux, animations]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-15
   * deps: []
   * target_files: [src/components/Gallery.tsx]
   * related_files: [src/components/Gallery.stories.tsx]
   * sub-tasks:
 
-    - [ ] Enhance hover animations with smooth transitions in src/components/Gallery.tsx.
-    - [ ] Add subtle scale and overlay effects in src/components/Gallery.tsx.
-    - [ ] Ensure performance with CSS transforms in src/components/Gallery.tsx.
-    - [ ] Test animations across different devices.
-    - [ ] Verify accessibility with reduced motion preferences.
+    - [x] Enhance hover animations with smooth transitions in src/components/Gallery.tsx.
+    - [x] Add subtle scale and overlay effects in src/components/Gallery.tsx.
+    - [x] Ensure performance with CSS transforms in src/components/Gallery.tsx.
+    - [x] Test animations across different devices.
+    - [x] Verify accessibility with reduced motion preferences.
 
     1. Enhanced hover animations added.
     2. Smooth scale and overlay effects implemented.
@@ -4981,6 +4982,7 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
     - Test animations across different devices.
     - Verify accessibility with reduced motion preferences.
   * notes: Respect prefers-reduced-motion for accessibility.
+  * **Implementation:** Enhanced with scale-110 transform, gradient overlay, slide-up content animation, and amber border highlight. Added keyboard accessibility (`tabIndex`, `role="button"`) and `motion-safe:` variants for reduced motion support.
 
   * **Existing Code Pattern:**
     ```tsx
@@ -5708,63 +5710,63 @@ test('user journey', async ({ page }) => {
     - Run ESLint on story files.
     - Check if errors are ignored.
   * notes: Consider if stories should follow the same linting rules.
-* [ ] `T-3006` **Optimize AccessibilityProvider.tsx axe usage**
+* [x] `T-3006` **Optimize AccessibilityProvider.tsx axe usage**
 
   * priority: 3
   * estimate_m: 30
   * labels: [performance, accessibility]
   * assignee: @accessibility
-  * status: open
+  * status: completed
   * due: 2026-03-15
   * deps: []
   * target_files: [src/components/AccessibilityProvider.tsx]
   * related_files: [src/app/layout.tsx]
   * sub-tasks:
 
-    - [ ] Ensure axe runs only in development (not production) in src/components/AccessibilityProvider.tsx.
-    - [ ] Ensure can be toggled via env var in src/components/AccessibilityProvider.tsx.
-    - [ ] Ensure no performance impact in production in src/components/AccessibilityProvider.tsx.
-    - [ ] Run app in development and check axe runs using src/app/layout.tsx.
-    - [ ] Run app in production and check axe does not run.
-    - [ ] Test env var toggle.
+    - [x] Ensure axe runs only in development (not production) in src/components/AccessibilityProvider.tsx.
+    - [x] Ensure can be toggled via env var in src/components/AccessibilityProvider.tsx.
+    - [x] Ensure no performance impact in production in src/components/AccessibilityProvider.tsx.
+    - [x] Run app in development and check axe runs using src/app/layout.tsx.
+    - [x] Run app in production and check axe does not run.
+    - [x] Test env var toggle.
 
     1. Axe runs only in development (not production).
     2. Can be toggled via env var.
     3. No performance impact in production.
   * test_steps:
 
-    - Run app in development and check axe runs.
-    - Run app in production and check axe does not run.
-    - Test env var toggle.
+    - [x] Run app in development and check axe runs.
+    - [x] Run app in production and check axe does not run.
+    - [x] Test env var toggle.
   * notes: Ensure accessibility testing is development-only for performance.
-* [ ] `T-3007` **Review Footer.tsx client-side necessity**
+* [x] `T-3007` **Review Footer.tsx client-side necessity**
 
   * priority: 3
   * estimate_m: 30
   * labels: [performance, frontend]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-15
   * deps: []
   * target_files: [src/components/Footer.tsx]
   * related_files: [src/app/page.tsx]
   * sub-tasks:
 
-    - [ ] Remove 'use client' if footer is static in src/components/Footer.tsx.
-    - [ ] Confirm no client behaviors rely on it in src/components/Footer.tsx.
-    - [ ] Ensure footer renders correctly as server component in src/components/Footer.tsx.
-    - [ ] Check if footer has any client-side interactions using src/app/page.tsx.
-    - [ ] Remove 'use client' and test rendering.
-    - [ ] Verify no errors.
+    - [x] Remove 'use client' if footer is static in src/components/Footer.tsx.
+    - [x] Confirm no client behaviors rely on it in src/components/Footer.tsx.
+    - [x] Ensure footer renders correctly as server component in src/components/Footer.tsx.
+    - [x] Check if footer has any client-side interactions using src/app/page.tsx.
+    - [x] Remove 'use client' and test rendering.
+    - [x] Verify no errors.
 
     1. Remove 'use client' if footer is static.
     2. Confirm no client behaviors rely on it.
     3. Footer renders correctly as server component.
   * test_steps:
 
-    - Check if footer has any client-side interactions.
-    - Remove 'use client' and test rendering.
-    - Verify no errors.
+    - [x] Check if footer has any client-side interactions.
+    - [x] Remove 'use client' and test rendering.
+    - [x] Verify no errors.
   * notes: Optimize by making footer a server component if possible.
 * [ ] `T-3008` **Optimize Breadcrumbs.tsx JSON-LD output**
 
@@ -5867,27 +5869,27 @@ All normalized to:
     - Add test to prevent drift.
   * notes: Maintain consistency between data files.
 
-* [ ] `T-4003` **Improve Navigation.tsx mobile accessibility**
+* [x] `T-4003` **Improve Navigation.tsx mobile accessibility**
 
   * priority: 4
   * estimate_m: 60
   * labels: [accessibility, frontend, ux]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/components/Navigation.tsx]
   * related_files: []
   * sub-tasks:
 
-    - [ ] Add Escape-to-close functionality in src/components/Navigation.tsx.
-    - [ ] Add outside-click close in src/components/Navigation.tsx.
-    - [ ] Implement proper focus trap in src/components/Navigation.tsx.
-    - [ ] Verify keyboard navigation in src/components/Navigation.tsx.
-    - [ ] Test mobile navigation on device/simulator.
-    - [ ] Check Escape key closes menu.
-    - [ ] Click outside to close.
-    - [ ] Verify focus trap and keyboard nav.
+    - [x] Add Escape-to-close functionality in src/components/Navigation.tsx.
+    - [x] Add outside-click close in src/components/Navigation.tsx.
+    - [x] Implement proper focus trap in src/components/Navigation.tsx.
+    - [x] Verify keyboard navigation in src/components/Navigation.tsx.
+    - [x] Test mobile navigation on device/simulator.
+    - [x] Check Escape key closes menu.
+    - [x] Click outside to close.
+    - [x] Verify focus trap and keyboard nav.
 
     1. Add Escape-to-close functionality.
     2. Add outside-click close.
@@ -5895,70 +5897,70 @@ All normalized to:
     4. Verify keyboard navigation.
   * test_steps:
 
-    - Test mobile navigation on device/simulator.
-    - Check Escape key closes menu.
-    - Click outside to close.
-    - Verify focus trap and keyboard nav.
+    - [x] Test mobile navigation on device/simulator.
+    - [x] Check Escape key closes menu.
+    - [x] Click outside to close.
+    - [x] Verify focus trap and keyboard nav.
   * notes: Enhance accessibility for mobile users.
 
-* [ ] `T-4004` **Clean up Barbers.tsx review display**
+* [x] `T-4004` **Clean up Barbers.tsx review display**
 
   * priority: 4
   * estimate_m: 30
   * labels: [ux, frontend]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/components/Barbers.tsx]
   * related_files: [src/data/barbers.ts]
   * sub-tasks:
 
-    - [ ] Hide or format (0) reviews elegantly in src/components/Barbers.tsx.
-    - [ ] Fix spacing issues in src/components/Barbers.tsx.
-    - [ ] Improve visual presentation in src/components/Barbers.tsx.
-    - [ ] Check Barbers page with barbers having 0 reviews using src/data/barbers.ts.
-    - [ ] Verify display is clean.
-    - [ ] Adjust spacing and formatting.
+    - [x] Hide or format (0) reviews elegantly in src/components/Barbers.tsx.
+    - [x] Fix spacing issues in src/components/Barbers.tsx.
+    - [x] Improve visual presentation in src/components/Barbers.tsx.
+    - [x] Check Barbers page with barbers having 0 reviews using src/data/barbers.ts.
+    - [x] Verify display is clean.
+    - [x] Adjust spacing and formatting.
 
     1. Hide or format (0) reviews elegantly.
     2. Fix spacing issues.
     3. Improve visual presentation.
   * test_steps:
 
-    - Check Barbers page with barbers having 0 reviews.
-    - Verify display is clean.
-    - Adjust spacing and formatting.
+    - [x] Check Barbers page with barbers having 0 reviews.
+    - [x] Verify display is clean.
+    - [x] Adjust spacing and formatting.
   * notes: Enhance user experience for review display.
 
-* [ ] `T-4005` **Review Button.tsx dark mode contrast**
+* [x] `T-4005` **Review Button.tsx dark mode contrast**
 
   * priority: 4
   * estimate_m: 45
   * labels: [design, frontend, accessibility]
   * assignee: @design
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/components/Button.tsx]
   * related_files: [src/components/Hero.tsx]
   * sub-tasks:
 
-    - [ ] Ensure secondary variant meets WCAG contrast ratios in src/components/Button.tsx.
-    - [ ] Ensure proper contrast on dark hero backgrounds in src/components/Button.tsx using src/components/Hero.tsx.
-    - [ ] Test with accessibility tools.
-    - [ ] Check Button secondary variant on dark backgrounds.
-    - [ ] Use contrast checker.
-    - [ ] Adjust colors if needed.
+    - [x] Ensure secondary variant meets WCAG contrast ratios in src/components/Button.tsx.
+    - [x] Ensure proper contrast on dark hero backgrounds in src/components/Button.tsx using src/components/Hero.tsx.
+    - [x] Test with accessibility tools.
+    - [x] Check Button secondary variant on dark backgrounds.
+    - [x] Use contrast checker.
+    - [x] Adjust colors if needed.
 
     1. Secondary variant meets WCAG contrast ratios.
     2. Ensure proper contrast on dark hero backgrounds.
     3. Test with accessibility tools.
   * test_steps:
 
-    - Check Button secondary variant on dark backgrounds.
-    - Use contrast checker.
-    - Adjust colors if needed.
+    - [x] Check Button secondary variant on dark backgrounds.
+    - [x] Use contrast checker.
+    - [x] Adjust colors if needed.
   * notes: Ensure accessibility compliance in dark mode.
 
 * [ ] `T-4006` **Replace placeholder business data in constants.ts**

@@ -18,17 +18,21 @@
  * - Semantic nav element with proper ARIA attributes
  * - Keyboard accessible menu toggle button
  * - Screen reader friendly navigation structure
- * - Focus management for mobile menu
+ * - Focus management for mobile menu with focus trap
+ * - Escape key closes mobile menu
+ * - Outside-click closes mobile menu
+ * - WCAG 2.1 AA compliant keyboard navigation
  * 
  * @performance
  * - Fixed positioning prevents layout shifts
  * - Backdrop blur for premium visual effect
  * - Memoized components prevent unnecessary re-renders
+ * - Efficient event listeners with proper cleanup
  */
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Scissors } from 'lucide-react';
 import { memo } from 'react';
 import { NAVIGATION_ITEMS, EXTERNAL_LINKS, BUSINESS_INFO } from '@/data/constants';
@@ -67,10 +71,86 @@ NavigationItem.displayName = 'NavigationItem';
 
 export default memo(function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
+  };
+
+  // Focus trap implementation for mobile menu
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Escape key closes menu
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        handleMenuClose();
+        mobileMenuButtonRef.current?.focus();
+        return;
+      }
+
+      // Tab navigation within menu
+      if (event.key === 'Tab' && mobileMenuRef.current) {
+        const focusableElements = mobileMenuRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        ) as NodeListOf<HTMLElement>;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (event.shiftKey) {
+          // Shift + Tab (backward)
+          if (document.activeElement === firstElement) {
+            event.preventDefault();
+            lastElement?.focus();
+          }
+        } else {
+          // Tab (forward)
+          if (document.activeElement === lastElement) {
+            event.preventDefault();
+            firstElement?.focus();
+          }
+        }
+      }
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        mobileMenuButtonRef.current &&
+        !mobileMenuButtonRef.current.contains(event.target as Node)
+      ) {
+        handleMenuClose();
+      }
+    };
+
+    // Add event listeners
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('click', handleClickOutside);
+
+    // Focus first menu item when menu opens
+    const firstFocusableElement = mobileMenuRef.current?.querySelector(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    ) as HTMLElement;
+
+    if (firstFocusableElement) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => firstFocusableElement.focus(), 10);
+    }
+
+    // Cleanup function
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100" role="banner">
@@ -102,6 +182,7 @@ export default memo(function Navigation() {
 
           {/* Mobile Menu Button */}
           <button 
+            ref={mobileMenuButtonRef}
             onClick={handleMenuToggle}
             className="lg:hidden"
             aria-label="Toggle menu"
@@ -115,10 +196,17 @@ export default memo(function Navigation() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-100" id="mobile-menu">
+        <div
+          ref={mobileMenuRef}
+          className="lg:hidden bg-white border-b border-gray-100"
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="mobile-menu-button"
+        >
           <div className="px-6 py-4 space-y-3">
             {NAVIGATION_ITEMS.map((item) => (
-              <NavigationItem key={item.href} item={item} onClick={handleMenuToggle} />
+              <NavigationItem key={item.href} item={item} onClick={handleMenuClose} />
             ))}
             <a 
               href={EXTERNAL_LINKS.booking}

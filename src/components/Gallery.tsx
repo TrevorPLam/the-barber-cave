@@ -27,21 +27,35 @@ export default function Gallery() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {galleryItems.map((item) => (
-            <div key={item.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square">
+            <div 
+              key={item.id} 
+              className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square cursor-pointer focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2"
+              tabIndex={0}
+              role="button"
+              aria-label={`View ${item.title} by ${item.barber}`}
+            >
               <Image 
                 src={item.src}
                 alt={item.alt}
                 fill
                 quality={75}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                className="object-cover transition-all duration-500 ease-out motion-safe:group-hover:scale-110 motion-safe:group-focus:scale-110 group-hover:brightness-90 group-focus:brightness-90"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
-                  <p className="text-white font-semibold">{item.title}</p>
-                  <p className="text-gray-300 text-sm">by {item.barber}</p>
+              
+              {/* Enhanced gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-0 motion-safe:group-hover:opacity-100 motion-safe:group-focus:opacity-100 transition-opacity duration-500 ease-out" />
+              
+              {/* Content overlay with slide-up animation */}
+              <div className="absolute inset-0 flex items-end justify-center p-6">
+                <div className="text-center transform motion-safe:translate-y-4 motion-safe:group-hover:translate-y-0 motion-safe:group-focus:translate-y-0 opacity-0 motion-safe:group-hover:opacity-100 motion-safe:group-focus:opacity-100 transition-all duration-500 ease-out delay-100">
+                  <p className="text-white font-bold text-lg mb-1 drop-shadow-lg">{item.title}</p>
+                  <p className="text-gray-200 text-sm drop-shadow-md">by {item.barber}</p>
                 </div>
               </div>
+
+              {/* Subtle border highlight on hover */}
+              <div className="absolute inset-0 border-2 border-amber-500/0 motion-safe:group-hover:border-amber-500/60 motion-safe:group-focus:border-amber-500/60 rounded-2xl transition-all duration-300 ease-out pointer-events-none" />
             </div>
           ))}
         </div>
