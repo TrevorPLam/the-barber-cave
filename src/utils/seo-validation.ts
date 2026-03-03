@@ -1,6 +1,9 @@
 // SEO Validation Utility
 // This script helps validate SEO implementation
 
+import { safeJSONParse } from '@/lib/utils'
+import { z } from 'zod'
+
 export interface SEOValidationResult {
   passed: boolean;
   issues: string[];
@@ -25,7 +28,11 @@ export function validateStructuredData(): SEOValidationResult {
       if (scripts.length > 0) {
         scripts.forEach(script => {
           try {
-            const data = JSON.parse(script.textContent || '{}');
+            const SeoDataSchema = z.object({
+              '@type': z.string().optional(),
+              '@graph': z.array(z.object({ '@type': z.string().optional() })).optional()
+            })
+            const data = safeJSONParse(script.textContent ?? '{}', SeoDataSchema, {})
             if (data['@type']) {
               foundSchemas.push(data['@type']);
             }
@@ -125,7 +132,10 @@ export function validateBreadcrumbs(): SEOValidationResult {
     const breadcrumbSchema = document.querySelector('script[type="application/ld+json"]');
     if (breadcrumbSchema) {
       try {
-        const data = JSON.parse(breadcrumbSchema.textContent || '{}');
+        const BreadcrumbSchema = z.object({
+          '@type': z.string().optional()
+        })
+        const data = safeJSONParse(breadcrumbSchema.textContent ?? '{}', BreadcrumbSchema, {})
         if (data['@type'] === 'BreadcrumbList') {
           recommendations.push('Breadcrumb structured data found');
         }

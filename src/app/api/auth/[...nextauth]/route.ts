@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { z } from 'zod';
 
@@ -7,7 +7,7 @@ const loginSchema = z.object({
   password: z.string().min(6),
 });
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
@@ -69,4 +69,4 @@ export default NextAuth({
     error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};

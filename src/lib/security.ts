@@ -1,6 +1,7 @@
 // src/lib/security.ts - Comprehensive security utilities
 import DOMPurify from 'dompurify'
 import { z } from 'zod'
+import { createHmac, timingSafeEqual } from 'crypto'
 
 // Advanced validation schemas with security rules
 const SecureEmailSchema = z.string()
@@ -147,4 +148,14 @@ export function validateCSRFToken(token: string, sessionToken: string): boolean 
   }
 
   return result === 0
+}
+
+export function validateHmacCsrfToken(tokenWithSig: string): boolean {
+  const [token, sig] = tokenWithSig.split('.')
+  if (!token || !sig) return false
+  const expected = createHmac('sha256', process.env.CSRF_SECRET!)
+    .update(token)
+    .digest('hex')
+  // Constant-time comparison prevents timing attacks
+  return timingSafeEqual(Buffer.from(sig), Buffer.from(expected))
 }

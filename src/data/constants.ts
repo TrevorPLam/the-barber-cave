@@ -221,10 +221,34 @@ export const BUSINESS_INFO = {
     facebook: 'TrillBarberCave',
     bringWhaChaGot: '@bringwhachagot'
   },
-} as const;
+// Allowlist of trusted external domains for the barber shop
+const ALLOWED_EXTERNAL_DOMAINS = [
+  'instagram.com',
+  'www.instagram.com',
+  'facebook.com',
+  'www.facebook.com',
+  'google.com',
+  'maps.google.com',
+  'youtube.com',
+  'www.youtube.com',
+  'tiktok.com',
+  'www.tiktok.com',
+  'linktr.ee',
+  'getsquire.com'
+] as const
 
-/**
- * @constant {ExternalLinks} EXTERNAL_LINKS
+export function validateExternalUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url)
+    // Must be https and on the allowlist
+    if (parsed.protocol !== 'https:') return null
+    const domain = parsed.hostname.toLowerCase()
+    if (ALLOWED_EXTERNAL_DOMAINS.some(d => domain === d)) return url
+    return null
+  } catch {
+    return null
+  }
+}
  * @description External service URLs and social media links
  *
  * Centralized external links used for booking, services, and social media integration.

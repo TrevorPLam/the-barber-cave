@@ -1,27 +1,20 @@
 import Image from 'next/image';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 
 /**
- * Lazy-loaded image component using intersection observer
+ * Gallery image component using Next.js Image with native lazy loading
  */
-function LazyImage({ src, alt, ...props }: any) {
-  const { ref, isIntersecting } = useIntersectionObserver({
-    threshold: 0.1,
-    triggerOnce: true,
-    rootMargin: '50px'
-  });
-
+function GalleryImage({ src, alt, priority = false, ...props }: any) {
   return (
-    <div ref={ref as any} className="w-full h-full">
-      {isIntersecting && (
-        <Image
-          src={src}
-          alt={alt}
-          {...props}
-        />
-      )}
-    </div>
-  );
+    <Image
+      src={src}
+      alt={alt}
+      priority={priority}     // true only for above-fold images
+      // loading="lazy" is implicit when priority={false}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      quality={85}
+      {...props}
+    />
+  )
 }
 
 export default function Gallery() {
@@ -58,7 +51,7 @@ export default function Gallery() {
               role="button"
               aria-label={`View ${item.title} by ${item.barber}`}
             >
-              <LazyImage 
+              <GalleryImage 
                 src={item.src}
                 alt={item.alt}
                 fill

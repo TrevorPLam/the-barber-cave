@@ -2,37 +2,32 @@
 import { z } from 'zod'
 
 const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']),
+  // Runtime
+  NODE_ENV: z.enum(['development', 'test', 'production']),
+
+  // App
   NEXT_PUBLIC_APP_URL: z.string().url(),
+
+  // Auth
+  NEXTAUTH_SECRET: z.string().min(32),
+  NEXTAUTH_URL: z.string().url(),
+  ADMIN_EMAIL: z.string().email(),
+  ADMIN_PASSWORD_HASH: z.string().min(60), // bcrypt hash
+
+  // CSRF
+  CSRF_SECRET: z.string().min(32),
+
+  // Database
+  DATABASE_URL: z.string().url(),
+
+  // Logging (optional in dev)
+  AXIOM_DATASET: z.string().optional(),
+  AXIOM_TOKEN: z.string().optional(),
+
+  // Analytics (public — safe to expose)
   NEXT_PUBLIC_ANALYTICS_ID: z.string().optional(),
-  API_SECRET_KEY: z.string().min(32), // Server-side only
-  DATABASE_URL: z.string().url(), // Server-side only
-  SMTP_PASSWORD: z.string().min(16) // Server-side only
 })
 
-// Validate environment variables at runtime
-let validatedEnv: any
-
-try {
-  validatedEnv = envSchema.parse(process.env)
-} catch (error) {
-  console.error('❌ Invalid environment variables:', error)
-  process.exit(1)
-}
-
-// Export validated environment
-export const ENV = {
-  NODE_ENV: validatedEnv.NODE_ENV,
-  NEXT_PUBLIC_APP_URL: validatedEnv.NEXT_PUBLIC_APP_URL,
-  NEXT_PUBLIC_ANALYTICS_ID: validatedEnv.NEXT_PUBLIC_ANALYTICS_ID,
-  // Server-only variables
-  API_SECRET_KEY: validatedEnv.API_SECRET_KEY,
-  DATABASE_URL: validatedEnv.DATABASE_URL,
-  SMTP_PASSWORD: validatedEnv.SMTP_PASSWORD
-}
-
-// Development-only checks
-if (ENV.NODE_ENV === 'development') {
-  console.log('🔧 Development mode detected')
-  console.log('📊 Analytics:', ENV.NEXT_PUBLIC_ANALYTICS_ID ? 'enabled' : 'disabled')
-}
+// Fail loudly at startup if env is misconfigured
+// Never silently fall back to defaults for security-sensitive vars
+export const ENV = envSchema.parse(process.env)

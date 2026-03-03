@@ -1,72 +1,51 @@
-import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { z } from 'zod';
+import { NextAuthOptions } from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
+import { z } from 'zod'
+import bcrypt from 'bcryptjs'
 
 const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+  email: z.string().email().max(254),
+  password: z.string().min(8).max(128),
+})
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' }
-      },
       async authorize(credentials) {
         try {
-          const { email, password } = loginSchema.parse(credentials);
+          const { email, password } = loginSchema.parse(credentials)
 
-          // For demo purposes - in production, validate against database
-          if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            return {
-              id: 'admin',
-              email: process.env.ADMIN_EMAIL,
-              name: 'Admin User',
-              role: 'admin'
-            };
+          // Single admin account — no user table needed for barber shop
+          if (
+            email === process.env.ADMIN_EMAIL &&
+            await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH!)
+          ) {
+            return { id: 'admin', email, name: 'Admin', role: 'admin' }
           }
-
-          // Allow any email/password for demo (remove in production)
-          return {
-            id: email,
-            email,
-            name: email.split('@')[0],
-            role: 'user'
-          };
-        } catch (error) {
-          return null;
+          return null
+        } catch {
+          return null // Zod parse error = invalid input = null (not thrown)
         }
       }
     })
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 24 * 60 * 60,       // 24h absolute expiry
+    updateAge: 30 * 60,          // silent refresh every 30min of activity
   },
   jwt: {
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 24 * 60 * 60,
   },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
-      }
-      return token;
+    jwt({ token, user }) {
+      if (user) token.role = (user as any).role
+      return token
     },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.sub!;
-        session.user.role = token.role as string;
-      }
-      return session;
+    session({ session, token }) {
+      if (session.user) session.user.role = token.role as string
+      return session
     },
   },
-  pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-};
+  pages: { signIn: '/auth/signin' },
+}

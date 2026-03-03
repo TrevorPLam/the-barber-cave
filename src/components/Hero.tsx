@@ -54,7 +54,6 @@
  * - WebP/AVIF format support via Next.js Image
  * - Efficient CSS gradients with P3 color space
  */
-'use client';
 
 import { BUSINESS_INFO, EXTERNAL_LINKS } from '@/data/constants';
 import { P3Gradient } from './P3Color';

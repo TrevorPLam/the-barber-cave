@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { serviceRepository } from '@/lib/repositories/service-repository'
 import { validateBookingForm, RateLimiter } from '@/lib/security'
+import { verifyAdminSession } from '@/lib/dal'
 import { z } from 'zod'
 
 // Initialize rate limiter for services endpoint
@@ -63,6 +64,9 @@ export async function POST(request: NextRequest) {
     //     { status: 403 }
     //   )
     // }
+
+    // DAL authentication gate - throws redirect if not admin
+    await verifyAdminSession()
 
     // Parse and validate request body
     const body = await request.json()

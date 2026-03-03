@@ -5,7 +5,8 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import AccessibilityProvider from "@/components/AccessibilityProvider";
 import StructuredData from "@/components/StructuredData";
 import { SITE_URL, BUSINESS_INFO } from "@/data/constants";
-import { SessionProvider } from "next-auth/react";
+import { SessionWrapper } from "@/components/providers/SessionWrapper";
+import AxeLoader from "@/components/AxeLoader";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -70,9 +71,10 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <AccessibilityProvider />
-          <SessionProvider>
+          <AxeLoader />
+          <SessionWrapper>
             {children}
-          </SessionProvider>
+          </SessionWrapper>
         </ErrorBoundary>
       </body>
     </html>

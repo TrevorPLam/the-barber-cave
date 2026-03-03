@@ -1,0 +1,15 @@
+name: Security Headers
+on: [push]
+jobs:
+  verify-security-headers:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Check security headers on staging
+        run: |
+          HEADERS=$(curl -s -I ${{ secrets.STAGING_URL }})
+          echo "$HEADERS" | grep -q "Content-Security-Policy" || (echo "Missing CSP header" && exit 1)
+          echo "$HEADERS" | grep -q "X-Frame-Options" || (echo "Missing X-Frame-Options" && exit 1)
+          echo "$HEADERS" | grep -q "Strict-Transport-Security" || (echo "Missing HSTS header" && exit 1)
+          echo "$HEADERS" | grep -q "X-Content-Type-Options" || (echo "Missing X-Content-Type-Options" && exit 1)
+          echo "All required security headers present"
