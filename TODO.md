@@ -3094,7 +3094,7 @@ const getBusinessInfo = (rawData: unknown) => {
     - [x] Ensure no TypeScript or ESLint errors in src/components/Hero.tsx.
     - [x] Verify no Lighthouse FCP regression using src/__tests__/image-optimization.test.tsx.
     - [x] Run `npm run dev` locally and inspect browser network tab for image loading behavior.
-    - [ ] Run Lighthouse audit and verify FCP score with src/components/Hero.stories.tsx.
+    - [ ] Run Lighthouse audit and verify FCP score with src/components/Hero.stories.tsx. (Blocked: local Chrome/Chromium executable unavailable for LHCI in CI environment; Playwright browser download returned 403)
 
     1. Replace invalid `preload` prop with `priority` in src/components/Hero.tsx.
     2. No TypeScript or ESLint errors.
@@ -3102,7 +3102,7 @@ const getBusinessInfo = (rawData: unknown) => {
   * test_steps:
     - [x] Run `npm run dev` locally.
     - [x] Inspect browser network tab for image loading behavior.
-    - [ ] Run Lighthouse audit and verify FCP score.
+    - [ ] Run Lighthouse audit and verify FCP score. (Blocked: local Chrome/Chromium executable unavailable for LHCI in CI environment; Playwright browser download returned 403)
 
   * **Existing Code Pattern:**
     ```tsx
@@ -3111,7 +3111,7 @@ const getBusinessInfo = (rawData: unknown) => {
       alt=""
       fill
       preload  // Invalid prop - should be 'priority'
-      quality={90}
+      quality={75}
       sizes="100vw"
       className="object-cover"
     />
@@ -3124,7 +3124,7 @@ const getBusinessInfo = (rawData: unknown) => {
       alt=""
       fill
       priority  // Correct prop for preloading hero images
-      quality={90}
+      quality={75}
       sizes="100vw"
       className="object-cover"
     />

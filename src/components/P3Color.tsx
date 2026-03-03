@@ -12,17 +12,10 @@ interface P3GradientProps {
   fallbackTo?: string;
 }
 
-const supportsP3Color = () => {
-  if (typeof CSS === 'undefined' || typeof CSS.supports !== 'function') {
-    return false;
-  }
-
-  return CSS.supports('color', 'color(display-p3 1 1 1 / 1)');
-};
-
 /**
- * P3 Gradient wrapper component for Display P3 color space support
- * Provides enhanced color gradients on supported displays
+ * P3 Gradient wrapper component for Display P3 color space support.
+ * Uses CSS progressive enhancement by declaring an sRGB fallback background,
+ * then a Display-P3 background-image that compatible browsers apply.
  * @returns Wrapper element with a gradient background and rendered children.
  */
 export function P3Gradient({
@@ -36,15 +29,13 @@ export function P3Gradient({
 }: P3GradientProps) {
   const resolvedFallbackFrom = fallbackFrom ?? from;
   const resolvedFallbackTo = fallbackTo ?? to;
-  const useP3Gradient = supportsP3Color();
 
   return (
     <div
       className={className}
       style={{
-        background: useP3Gradient
-          ? `linear-gradient(${angle}, ${from}, ${to})`
-          : `linear-gradient(${angle}, ${resolvedFallbackFrom}, ${resolvedFallbackTo})`,
+        background: `linear-gradient(${angle}, ${resolvedFallbackFrom}, ${resolvedFallbackTo})`,
+        backgroundImage: `linear-gradient(${angle}, ${from}, ${to})`,
       }}
     >
       {children}
