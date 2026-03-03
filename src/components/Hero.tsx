@@ -76,7 +76,6 @@ export default function Hero() {
           src="/images/hero/hero-bg.svg"
           alt=""
           fill
-          preload
           quality={90}
           sizes="100vw"
           className="object-cover"
