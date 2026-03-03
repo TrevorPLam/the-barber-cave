@@ -3981,24 +3981,24 @@ export default function StructuredDataManager() {
 
 Tasks normalized for consistency. All P2 tasks follow same structure.
 
-* [ ] `T-2001` **Fix ErrorBoundary.tsx resetKeys logic**
+* [x] `T-2001` **Fix ErrorBoundary.tsx resetKeys logic**
 
   * priority: 2
   * estimate_m: 45
   * labels: [bug, frontend, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-08
   * deps: []
   * target_files: [src/components/ErrorBoundary.tsx]
   * related_files: [src/components/ErrorBoundary.stories.tsx, src/components/__tests__/ErrorBoundary.test.tsx]
   * sub-tasks:
 
-    - [ ] Implement `resetKeys` to trigger reset when array length changes in src/components/ErrorBoundary.tsx.
-    - [ ] Implement `resetKeys` to trigger reset when values change in src/components/ErrorBoundary.tsx.
-    - [ ] Add unit tests for resetKeys logic in src/components/__tests__/ErrorBoundary.test.tsx.
-    - [ ] Run unit tests for ErrorBoundary component.
-    - [ ] Manually test error reset scenarios in development using src/components/ErrorBoundary.stories.tsx.
+    - [x] Implement `resetKeys` to trigger reset when array length changes in src/components/ErrorBoundary.tsx.
+    - [x] Implement `resetKeys` to trigger reset when values change in src/components/ErrorBoundary.tsx.
+    - [x] Add unit tests for resetKeys logic in src/components/__tests__/ErrorBoundary.test.tsx.
+    - [x] Run unit tests for ErrorBoundary component.
+    - [x] Manually test error reset scenarios in development using src/components/ErrorBoundary.stories.tsx.
 
     1. `resetKeys` triggers reset when its array length changes.
     2. `resetKeys` triggers reset when its values change.
@@ -4053,24 +4053,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
       }
     }
     ```
-* [ ] `T-2002` **Fix ErrorBoundary.tsx retry bypass**
+* [x] `T-2002` **Fix ErrorBoundary.tsx retry bypass**
 
   * priority: 2
   * estimate_m: 30
   * labels: [bug, frontend, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-08
   * deps: []
   * target_files: [src/components/ErrorBoundary.tsx]
   * related_files: [src/components/ErrorBoundary.stories.tsx, src/components/__tests__/ErrorBoundary.test.tsx]
   * sub-tasks:
 
-    - [ ] Ensure retry count is preserved when error occurs in src/components/ErrorBoundary.tsx.
-    - [ ] Ensure retry count is not reset in getDerivedStateFromError in src/components/ErrorBoundary.tsx.
-    - [ ] Add unit tests to verify retry logic in src/components/__tests__/ErrorBoundary.test.tsx.
-    - [ ] Run unit tests for ErrorBoundary retry functionality.
-    - [ ] Simulate errors and check retry behavior using src/components/ErrorBoundary.stories.tsx.
+    - [x] Ensure retry count is preserved when error occurs in src/components/ErrorBoundary.tsx.
+    - [x] Ensure retry count is not reset in getDerivedStateFromError in src/components/ErrorBoundary.tsx.
+    - [x] Add unit tests to verify retry logic in src/components/__tests__/ErrorBoundary.test.tsx.
+    - [x] Run unit tests for ErrorBoundary retry functionality.
+    - [x] Simulate errors and check retry behavior using src/components/ErrorBoundary.stories.tsx.
 
     1. Retry count is preserved when error occurs.
     2. Retry count is not reset in getDerivedStateFromError.
@@ -4269,24 +4269,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
     ```
 
   * **Note:** Current implementation (`> 1`) is functionally equivalent to `>= 2`, but should be updated for consistency with task specification.
-* [ ] `T-2005` **Convert LinkWithIcon.tsx to forwardRef**
+* [x] `T-2005` **Convert LinkWithIcon.tsx to forwardRef**
 
   * priority: 2
   * estimate_m: 30
   * labels: [refactor, frontend, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-08
   * deps: []
   * target_files: [src/components/LinkWithIcon.tsx]
   * related_files: [src/components/Barbers.tsx, src/components/Services.tsx]
   * sub-tasks:
 
-    - [ ] Convert component to use forwardRef pattern in src/components/LinkWithIcon.tsx.
-    - [ ] Ensure existing consumers (src/components/Barbers.tsx, src/components/Services.tsx) update without runtime warnings.
-    - [ ] Ensure TypeScript types are correct in src/components/LinkWithIcon.tsx.
-    - [ ] Check that ref is properly forwarded.
-    - [ ] Run tests and ensure no warnings.
+    - [x] Convert component to use forwardRef pattern in src/components/LinkWithIcon.tsx.
+    - [x] Ensure existing consumers (src/components/Barbers.tsx, src/components/Services.tsx) update without runtime warnings.
+    - [x] Ensure TypeScript types are correct in src/components/LinkWithIcon.tsx.
+    - [x] Check that ref is properly forwarded.
+    - [x] Run tests and ensure no warnings.
 
     1. Component uses forwardRef pattern.
     2. Existing consumers update without runtime warnings.
@@ -4410,24 +4410,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
 
 # 🟡 Medium (P3) — Due: 2026-03-12
 
-* [ ] `T-3001` **Add angle prop support to P3Color.tsx**
+* [x] `T-3001` **Add angle prop support to P3Color.tsx**
 
   * priority: 3
   * estimate_m: 45
   * labels: [enhancement, frontend, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-12
   * deps: []
   * target_files: [src/components/P3Color.tsx]
   * related_files: [src/components/Hero.tsx, src/components/P3Color.stories.tsx]
   * sub-tasks:
 
-    - [ ] Add optional `angle` prop to P3Gradient interface in src/components/P3Color.tsx.
-    - [ ] Update gradient CSS to use angle parameter when provided in src/components/P3Color.tsx.
-    - [ ] Ensure backward compatibility with existing usage in src/components/Hero.tsx.
-    - [ ] Add Storybook stories for different angle values.
-    - [ ] Test gradient rendering at various angles.
+    - [x] Add optional `angle` prop to P3Gradient interface in src/components/P3Color.tsx.
+    - [x] Update gradient CSS to use angle parameter when provided in src/components/P3Color.tsx.
+    - [x] Ensure backward compatibility with existing usage in src/components/Hero.tsx.
+    - [x] Add Storybook stories for different angle values.
+    - [x] Test gradient rendering at various angles.
 
     1. Optional `angle` prop added to interface.
     2. Gradient CSS uses angle parameter when provided.

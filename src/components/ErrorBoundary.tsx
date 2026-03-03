@@ -33,8 +33,10 @@ class ErrorBoundary extends Component<Props, State> {
     return Math.min(delay + jitter, maxDelay);
   }
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error, retryCount: 0 };
+  static getDerivedStateFromError(error: Error): Partial<State> {
+    // Intentionally omit retryCount so React merges this with existing state,
+    // preserving the retry counter across errors (prevents infinite retry bypass).
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -60,10 +62,11 @@ class ErrorBoundary extends Component<Props, State> {
     const { resetKeys } = this.props;
     const { resetKeys: prevResetKeys } = prevProps;
 
-    // Reset error boundary if resetKeys have changed
-    if (resetKeys && prevResetKeys && resetKeys.length === prevResetKeys.length) {
-      const hasChanged = resetKeys.some((key, index) => key !== prevResetKeys[index]);
-      if (hasChanged) {
+    // Reset error boundary if resetKeys have changed (length OR values)
+    if (resetKeys && prevResetKeys) {
+      const lengthChanged = resetKeys.length !== prevResetKeys.length;
+      const valuesChanged = !lengthChanged && resetKeys.some((key, index) => key !== prevResetKeys[index]);
+      if (lengthChanged || valuesChanged) {
         this.setState({ hasError: false, error: undefined, errorInfo: undefined });
       }
     }
