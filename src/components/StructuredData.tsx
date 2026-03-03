@@ -40,7 +40,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             "streetAddress": BUSINESS_INFO.address.split(',')[0],
             "addressLocality": "Dallas",
             "addressRegion": "TX",
-            "postalCode": BUSINESS_INFO.address.split(', ')[2],
+            "postalCode": BUSINESS_INFO.address.split(', ').at(-1)!.split(' ').at(-1)!,
             "addressCountry": "US"
           },
           "geo": {
@@ -77,7 +77,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             "streetAddress": BUSINESS_INFO.address.split(',')[0],
             "addressLocality": "Dallas",
             "addressRegion": "TX",
-            "postalCode": BUSINESS_INFO.address.split(', ')[2],
+            "postalCode": BUSINESS_INFO.address.split(', ').at(-1)!.split(' ').at(-1)!,
             "addressCountry": "US"
           },
           "geo": {

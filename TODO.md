@@ -3335,22 +3335,22 @@ const getBusinessInfo = (rawData: unknown) => {
 
 ---
 
-* [ ] `T-1005` **Fix StructuredData.tsx postalCode extraction**
+* [x] `T-1005` **Fix StructuredData.tsx postalCode extraction**
 
   * priority: 1
   * estimate_m: 30
   * labels: [bug, seo, data]
   * assignee: @seo
-  * status: open
+  * status: completed
   * due: 2026-03-05
   * target_files: [src/components/StructuredData.tsx]
   * related_files: [src/data/constants.ts]
   * sub-tasks:
 
-    - [ ] Ensure postalCode = '75201' in src/components/StructuredData.tsx.
-    - [ ] Ensure JSON-LD validates for PostalAddress in src/components/StructuredData.tsx.
-    - [ ] Validate JSON-LD output using a schema validator.
-    - [ ] Check that postalCode is extracted as '75201' not 'TX 75201' using src/data/constants.ts.
+    - [x] Ensure postalCode = '75201' in src/components/StructuredData.tsx.
+    - [x] Ensure JSON-LD validates for PostalAddress in src/components/StructuredData.tsx.
+    - [x] Validate JSON-LD output using a schema validator.
+    - [x] Check that postalCode is extracted as '75201' not 'TX 75201' using src/data/constants.ts.
 
     1. postalCode = `75201`
     2. JSON-LD validates for PostalAddress.

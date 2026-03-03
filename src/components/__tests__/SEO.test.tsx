@@ -128,6 +128,17 @@ describe('SEO Components', () => {
       expect(content).toContain('"maxPrice":60');
     });
 
+    it('extracts postalCode correctly from address string', () => {
+      const { container } = render(<StructuredData type="Organization" />);
+
+      const script = container.querySelector('script[type="application/ld+json"]');
+      expect(script).toBeInTheDocument();
+
+      const data = JSON.parse(script!.innerHTML);
+      expect(data.address.postalCode).toBe('75201');
+      expect(data.address.postalCode).not.toContain('TX');
+    });
+
     it('renders BreadcrumbList structured data', () => {
       const breadcrumbData: BreadcrumbData = {
         breadcrumbs: [
