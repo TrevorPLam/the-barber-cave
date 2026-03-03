@@ -33,8 +33,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Scissors } from 'lucide-react';
+import { Menu, X, Scissors, User, LogOut } from 'lucide-react';
 import { memo } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { NAVIGATION_ITEMS, EXTERNAL_LINKS, BUSINESS_INFO } from '@/data/constants';
 
 interface NavigationItemProps {
@@ -73,6 +74,7 @@ export default memo(function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const { data: session, status } = useSession();
 
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -80,6 +82,10 @@ export default memo(function Navigation() {
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' });
   };
 
   // Focus trap implementation for mobile menu
@@ -170,6 +176,36 @@ export default memo(function Navigation() {
             {NAVIGATION_ITEMS.map((item) => (
               <NavigationItem key={item.href} item={item} />
             ))}
+            
+            {/* Authentication Buttons */}
+            {status === 'loading' ? (
+              <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />
+            ) : session ? (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <User className="h-4 w-4" />
+                  <span className="font-medium">{session.user?.name || session.user?.email}</span>
+                </div>
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center space-x-1 text-gray-700 hover:text-black transition-colors"
+                  aria-label="Sign out"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign out</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => signIn()}
+                className="flex items-center space-x-1 text-gray-700 hover:text-black transition-colors"
+                aria-label="Sign in"
+              >
+                <User className="h-4 w-4" />
+                <span>Sign in</span>
+              </button>
+            )}
+            
             <a 
               href={EXTERNAL_LINKS.booking}
               target="_blank"
@@ -208,6 +244,44 @@ export default memo(function Navigation() {
             {NAVIGATION_ITEMS.map((item) => (
               <NavigationItem key={item.href} item={item} onClick={handleMenuClose} />
             ))}
+            
+            {/* Mobile Authentication */}
+            <div className="border-t border-gray-200 pt-3">
+              {status === 'loading' ? (
+                <div className="w-full h-8 bg-gray-200 rounded animate-pulse" />
+              ) : session ? (
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2 text-sm text-gray-700">
+                    <User className="h-4 w-4" />
+                    <span className="font-medium">{session.user?.name || session.user?.email}</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      handleMenuClose();
+                    }}
+                    className="flex items-center space-x-2 w-full text-left text-gray-700 hover:text-black transition-colors py-2"
+                    aria-label="Sign out"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sign out</span>
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    signIn();
+                    handleMenuClose();
+                  }}
+                  className="flex items-center space-x-2 w-full text-left text-gray-700 hover:text-black transition-colors py-2"
+                  aria-label="Sign in"
+                >
+                  <User className="h-4 w-4" />
+                  <span>Sign in</span>
+                </button>
+              )}
+            </div>
+            
             <a 
               href={EXTERNAL_LINKS.booking}
               target="_blank"

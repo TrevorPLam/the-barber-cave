@@ -7,13 +7,20 @@ interface StatCardProps {
 
 export default function StatCard({ value, label, className, ref }: StatCardProps) {
   return (
-    <div ref={ref} className={`text-center ${className || ''}`.trim()}>
+    <div
+      ref={ref}
+      className={`text-center ${className || ''}`.trim()}
+      role="region"
+      aria-labelledby={`stat-${value.replace(/\s+/g, '-').toLowerCase()}`}
+    >
       <div
+        id={`stat-${value.replace(/\s+/g, '-').toLowerCase()}`}
         className="text-3xl font-bold"
         style={{
           color: 'var(--accent-bright)',
           textShadow: '0 2px 4px color(display-p3 0 0 0 / 0.3)',
         }}
+        aria-label={`${value} ${label}`}
       >
         {value}
       </div>
@@ -22,6 +29,7 @@ export default function StatCard({ value, label, className, ref }: StatCardProps
         style={{
           color: 'color(display-p3 0.878 0.878 0.878)',
         }}
+        aria-hidden="true"
       >
         {label}
       </div>

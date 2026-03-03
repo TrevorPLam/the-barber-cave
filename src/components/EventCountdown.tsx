@@ -10,7 +10,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { EXTERNAL_LINKS } from '@/data/constants';
 
 interface TimeLeft {
@@ -28,25 +28,25 @@ export default function EventCountdown() {
     seconds: 0
   });
 
-  const targetDate = new Date('March 29, 2026 19:00:00 CST').getTime();
+  const targetDate = useMemo(() => new Date('March 29, 2026 19:00:00 CST').getTime(), []);
+
+  const calculateTimeLeft = useCallback(() => {
+    const now = new Date().getTime();
+    const difference = targetDate - now;
+
+    if (difference > 0) {
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000)
+      };
+    }
+
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  }, [targetDate]);
 
   useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
-
-      if (difference > 0) {
-        return {
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        };
-      }
-
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    };
-
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
@@ -54,7 +54,7 @@ export default function EventCountdown() {
     setTimeLeft(calculateTimeLeft());
 
     return () => clearInterval(timer);
-  }, [targetDate]);
+  }, [calculateTimeLeft]);
 
   return (
     <section id="event-countdown" className="py-20 bg-gradient-to-br from-red-600 to-black text-white">

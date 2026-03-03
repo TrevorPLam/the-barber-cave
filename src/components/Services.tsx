@@ -232,26 +232,38 @@ ServiceCard.displayName = 'ServiceCard';
  * - Booking links redirect to external booking platform
  * - Responsive grid adapts from 1 column to 3 columns
  */
-export default memo(function Services() {
+interface ServicesProps {
+  renderService?: (service: typeof services[0]) => React.ReactNode;
+  className?: string;
+}
+
+export default memo(function Services({
+  renderService,
+  className = ''
+}: ServicesProps) {
   const servicesData = services; // Using static data directly
-  
+
   return (
-    <section id="services" className="py-20 bg-white">
+    <section id="services" className={`py-20 bg-white ${className}`}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <SectionHeader
             title="Services"
             description="Premium grooming services tailored to your style"
           />
-          
-          <div 
+
+          <div
             style={{ containerType: 'inline-size' }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {servicesData.map((service) => (
-              <ServiceCard key={service.id} service={service} />
+              renderService ? (
+                renderService(service)
+              ) : (
+                <ServiceCard key={service.id} service={service} />
+              )
             ))}
           </div>
-          
+
           <div className="text-center mt-12">
             <LinkWithIcon
               href={EXTERNAL_LINKS.services}
