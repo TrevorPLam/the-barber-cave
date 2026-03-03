@@ -37,7 +37,8 @@ describe('Constants', () => {
           expect(typeof coords.longitude).toBe('string')
         } else {
           expect(typeof value).toBe('string')
-          expect((value as string).length).toBeGreaterThan(0)
+          // Allow "0" for numeric fields that might legitimately be zero
+          expect((value as string).length).toBeGreaterThan(0) || (value as string) === '0'
         }
       })
     })

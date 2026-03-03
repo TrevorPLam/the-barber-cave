@@ -2,6 +2,7 @@ import '@testing-library/jest-dom'
 import 'vitest-axe' // Import types for vitest-axe matchers
 import { expect, vi } from 'vitest'
 import * as matchers from 'vitest-axe/matchers'
+import 'canvas' // Polyfill for HTMLCanvasElement in tests
 
 expect.extend(matchers)
 

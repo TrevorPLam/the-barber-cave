@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   // Image optimization configuration for Next.js 16
   images: {
     formats: ['image/webp', 'image/avif'],
+    qualities: [75, 90],
     remotePatterns: [
       {
         protocol: 'https',

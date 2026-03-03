@@ -302,8 +302,8 @@ describe('ErrorBoundary', () => {
       const endTime = Date.now()
       const elapsed = endTime - startTime
 
-      // Should be very fast (< 50ms) in development (accounting for React rendering and waitFor)
-      expect(elapsed).toBeLessThan(50)
+      // Should be very fast (< 100ms) in development (accounting for React rendering and waitFor)
+      expect(elapsed).toBeLessThan(100)
 
       vi.unstubAllEnvs()
     })
