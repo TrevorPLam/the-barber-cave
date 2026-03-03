@@ -30,14 +30,16 @@ interface State {
   retryCount: number;
   maxRetries: number;
   retryTimeoutId: number | null;
+  retryCountdown: number | null;
 }
 
 class ErrorBoundaryCore extends Component<InnerProps, State> {
   private errorRef = React.createRef<HTMLHeadingElement>();
+  private countdownIntervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor(props: InnerProps) {
     super(props);
-    this.state = { hasError: false, retryCount: 0 };
+    this.state = { hasError: false, retryCount: 0, retryCountdown: null };
   }
 
   componentDidMount() {
@@ -47,6 +49,9 @@ class ErrorBoundaryCore extends Component<InnerProps, State> {
 
   componentWillUnmount() {
     this.props.setEscapeResetFn(null);
+    if (this.countdownIntervalId !== null) {
+      clearInterval(this.countdownIntervalId);
+    }
   }
 
   // Calculate exponential backoff delay with jitter
@@ -144,13 +149,34 @@ class ErrorBoundaryCore extends Component<InnerProps, State> {
       : 0; // No delay in development for faster testing
 
     const doReset = () => {
-      this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+      if (this.countdownIntervalId !== null) {
+        clearInterval(this.countdownIntervalId);
+        this.countdownIntervalId = null;
+      }
+      this.setState({ hasError: false, error: undefined, errorInfo: undefined, retryCountdown: null });
       this.props.onResetComplete();
     };
 
     if (delay === 0) {
       doReset();
     } else {
+      const totalSeconds = Math.ceil(delay / 1000);
+      this.setState({ retryCountdown: totalSeconds });
+      this.props.announce(`Retrying in ${totalSeconds} seconds.`, { politeness: 'polite' });
+
+      // Decrement countdown every second
+      this.countdownIntervalId = setInterval(() => {
+        this.setState((prev) => {
+          const next = (prev.retryCountdown ?? 1) - 1;
+          if (next <= 0) {
+            clearInterval(this.countdownIntervalId!);
+            this.countdownIntervalId = null;
+            return { retryCountdown: null };
+          }
+          return { retryCountdown: next };
+        });
+      }, 1000);
+
       setTimeout(doReset, delay);
     }
   };
@@ -216,10 +242,29 @@ class ErrorBoundaryCore extends Component<InnerProps, State> {
             )}
 
             <div className="space-y-3" role="group" aria-label="Error recovery options">
+              {this.state.retryCountdown !== null && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  className="mb-2"
+                >
+                  <p className="text-sm text-gray-500 mb-1">
+                    Retrying in {this.state.retryCountdown} second{this.state.retryCountdown !== 1 ? 's' : ''}…
+                  </p>
+                  <div className="w-full bg-gray-200 rounded-full h-1.5" aria-hidden="true">
+                    <div
+                      className="bg-black h-1.5 rounded-full transition-all duration-1000 ease-linear"
+                      style={{ width: '100%', animationDuration: `${this.state.retryCountdown}s` }}
+                    />
+                  </div>
+                </div>
+              )}
               {this.state.retryCount < 3 ? (
                 <button
                   onClick={this.handleReset}
-                  className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                  disabled={this.state.retryCountdown !== null}
+                  className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
                   Try Again
