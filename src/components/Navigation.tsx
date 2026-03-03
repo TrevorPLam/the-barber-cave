@@ -33,11 +33,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Menu from 'lucide-react/dist/esm/icons/menu';
-import X from 'lucide-react/dist/esm/icons/x';
-import Scissors from 'lucide-react/dist/esm/icons/scissors';
-import User from 'lucide-react/dist/esm/icons/user';
-import LogOut from 'lucide-react/dist/esm/icons/log-out';
+import { Menu, X, Scissors, User, LogOut } from 'lucide-react';
 import { memo } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { NAVIGATION_ITEMS, EXTERNAL_LINKS, BUSINESS_INFO } from '@/data/constants';

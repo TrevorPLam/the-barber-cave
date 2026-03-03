@@ -1,5 +1,8 @@
 // src/components/DataFetcher.tsx - Advanced render props component for data fetching
+'use client'
+
 import React, { useState, useEffect, useCallback, ReactNode } from 'react'
+import { useAnnouncement } from '@/hooks/useAnnouncement'
 
 interface DataFetcherProps<T> {
   url: string
@@ -66,6 +69,7 @@ export function DataFetcher<T>({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [currentRetry, setCurrentRetry] = useState(0)
+  const { announce } = useAnnouncement()
 
   const calculateRetryDelay = useCallback((attempt: number) => {
     return retryDelay * Math.pow(2, attempt) // Exponential backoff
@@ -90,6 +94,9 @@ export function DataFetcher<T>({
       const result = await response.json()
       setData(result)
       setCurrentRetry(0)
+      if (isRetry) {
+        announce('Data loaded successfully after retry.', { politeness: 'polite' })
+      }
       onSuccess?.(result)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error'
@@ -97,18 +104,21 @@ export function DataFetcher<T>({
       if (currentRetry < retryCount) {
         // Schedule retry with exponential backoff
         const delay = calculateRetryDelay(currentRetry)
+        const nextAttempt = currentRetry + 1
+        announce(`Failed to load data. Retrying… attempt ${nextAttempt} of ${retryCount}.`, { politeness: 'polite' })
         setTimeout(() => {
           setCurrentRetry(prev => prev + 1)
           fetchData(true)
         }, delay)
       } else {
         setError(errorMessage)
+        announce('Failed to load data. Please try again.', { politeness: 'assertive' })
         onError?.(errorMessage)
       }
     } finally {
       setLoading(false)
     }
-  }, [url, enabled, retryCount, currentRetry, calculateRetryDelay, onSuccess, onError])
+  }, [url, enabled, retryCount, currentRetry, calculateRetryDelay, onSuccess, onError, announce])
 
   const refetch = useCallback(() => {
     fetchData(false)

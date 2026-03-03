@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import StructuredData from "@/components/StructuredData";
+import SafeComponent from "@/components/SafeComponent";
 import { services } from '@/data/services';
 
 // Lazy load components that are not immediately visible with Suspense boundaries
@@ -67,31 +68,49 @@ export default function Home() {
         )}
         <Hero />
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <EventCountdown />
+          <SafeComponent componentName="EventCountdown">
+            <EventCountdown />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <Gallery />
+          <SafeComponent componentName="Gallery">
+            <Gallery />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <Services />
+          <SafeComponent componentName="Services">
+            <Services />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <Barbers />
+          <SafeComponent componentName="Barbers">
+            <Barbers />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <Community />
+          <SafeComponent componentName="Community">
+            <Community />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
-          <About />
+          <SafeComponent componentName="About">
+            <About />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-64 bg-gray-100 animate-pulse" />}>
-          <Contact />
+          <SafeComponent componentName="Contact">
+            <Contact />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse" />}>
-          <Social />
+          <SafeComponent componentName="Social">
+            <Social />
+          </SafeComponent>
         </Suspense>
         <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse" />}>
-          <Footer />
+          <SafeComponent componentName="Footer">
+            <Footer />
+          </SafeComponent>
         </Suspense>
       </div>
     </>
