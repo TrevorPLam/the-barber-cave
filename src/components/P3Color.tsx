@@ -29,13 +29,12 @@ export function P3Gradient({
 }: P3GradientProps) {
   const resolvedFallbackFrom = fallbackFrom ?? from;
   const resolvedFallbackTo = fallbackTo ?? to;
-
-  return (
     <div
       className={className}
       style={{
-        background: `linear-gradient(${angle}, ${resolvedFallbackFrom}, ${resolvedFallbackTo})`,
-        backgroundImage: `linear-gradient(${angle}, ${from}, ${to})`,
+        backgroundImage: useP3Gradient
+          ? `linear-gradient(${angle}, ${from}, ${to})`
+          : `linear-gradient(${angle}, ${resolvedFallbackFrom}, ${resolvedFallbackTo})`,
       }}
     >
       {children}
