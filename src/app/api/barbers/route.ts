@@ -2,10 +2,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { barberRepository } from '@/lib/repositories/barber-repository'
 import { RateLimiter } from '@/lib/security'
+import { getCachedData, appCache } from '@/lib/cache'
+import { handleAPIError } from '@/lib/error-handler'
 import { z } from 'zod'
 
 // Initialize rate limiter for barbers endpoint
 const barbersRateLimiter = new RateLimiter(100, 60000) // 100 requests per minute
+
+const BARBERS_CACHE_KEY = 'api:barbers:all'
+const BARBERS_CACHE_TTL = 3600 // 1 hour
 
 // GET /api/barbers - Get all active barbers
 export async function GET(request: NextRequest) {
@@ -17,26 +22,33 @@ export async function GET(request: NextRequest) {
 
     if (!barbersRateLimiter.isAllowed(clientIP)) {
       return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
+        { error: 'Too many requests. Please try again later.', code: 'RATE_LIMITED' },
         { status: 429 }
       )
     }
 
-    // Fetch all active barbers
-    const barbers = await barberRepository.findAll()
+    // Fetch all active barbers (cached for 1 hour)
+    const barbers = await getCachedData(
+      BARBERS_CACHE_KEY,
+      () => barberRepository.findAll(),
+      BARBERS_CACHE_TTL,
+    )
 
-    return NextResponse.json({
-      barbers,
-      count: barbers.length,
-      timestamp: new Date().toISOString()
-    })
+    return NextResponse.json(
+      {
+        barbers,
+        count: barbers.length,
+        timestamp: new Date().toISOString()
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        },
+      }
+    )
 
   } catch (error) {
-    console.error('Barbers API error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleAPIError(error)
   }
 }
 
@@ -50,19 +62,10 @@ export async function POST(request: NextRequest) {
 
     if (!barbersRateLimiter.isAllowed(clientIP)) {
       return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
+        { error: 'Too many requests. Please try again later.', code: 'RATE_LIMITED' },
         { status: 429 }
       )
     }
-
-    // TODO: Add authentication check for admin role
-    // const session = await getServerSession(authOptions)
-    // if (!session || session.user.role !== 'admin') {
-    //   return NextResponse.json(
-    //     { error: 'Unauthorized' },
-    //     { status: 403 }
-    //   )
-    // }
 
     // Parse and validate request body
     const body = await request.json()
@@ -81,7 +84,7 @@ export async function POST(request: NextRequest) {
     const existingBarber = await barberRepository.findByEmail(validatedData.email)
     if (existingBarber) {
       return NextResponse.json(
-        { error: 'Barber with this email already exists' },
+        { error: 'Barber with this email already exists', code: 'CONFLICT' },
         { status: 409 }
       )
     }
@@ -89,24 +92,15 @@ export async function POST(request: NextRequest) {
     // Create barber
     const barber = await barberRepository.create(validatedData)
 
+    // Invalidate the barbers cache so the next GET reflects the new data
+    appCache.delete(BARBERS_CACHE_KEY)
+
     return NextResponse.json({
       barber,
       message: 'Barber created successfully'
     }, { status: 201 })
 
   } catch (error) {
-    console.error('Create barber API error:', error)
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid barber data', details: error.errors },
-        { status: 400 }
-      )
-    }
-
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleAPIError(error)
   }
 }
