@@ -42,6 +42,7 @@ interface LinkWithIconProps {
 }
 
 function isExternalUrl(href: string): boolean {
+  if (!href) return false;
   return (
     href.startsWith('http') ||
     href.startsWith('mailto:') ||

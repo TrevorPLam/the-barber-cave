@@ -4,6 +4,13 @@ import { describe, it, expect, vi } from 'vitest'
 import { axe } from 'vitest-axe'
 import Navigation from '../Navigation'
 
+// Mock next-auth/react to avoid SessionProvider requirement
+vi.mock('next-auth/react', () => ({
+  useSession: () => ({ data: null, status: 'unauthenticated' }),
+  signIn: vi.fn(),
+  signOut: vi.fn(),
+}))
+
 // Mock the constants
 vi.mock('@/data/constants', () => ({
   NAVIGATION_ITEMS: [
@@ -89,7 +96,7 @@ describe('Navigation', () => {
     const nav = screen.getByRole('navigation', { name: 'Main navigation' })
     expect(nav).toHaveAttribute('aria-label', 'Main navigation')
 
-    const menuButton = screen.getByRole('button')
+    const menuButton = screen.getByRole('button', { name: /toggle menu/i })
     expect(menuButton).toHaveAttribute('aria-label', 'Toggle menu')
     expect(menuButton).toHaveAttribute('aria-expanded', 'false')
     expect(menuButton).toHaveAttribute('aria-controls', 'mobile-menu')

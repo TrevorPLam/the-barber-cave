@@ -16,16 +16,22 @@ export default function ErrorFallback({
   showHomeButton = true 
 }: ErrorFallbackProps) {
   return (
-    <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+    <div
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+      className="bg-red-50 border border-red-200 rounded-lg p-6 text-center"
+    >
       <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <AlertTriangle className="w-6 h-6 text-red-600" />
+        <AlertTriangle className="w-6 h-6 text-red-600" aria-hidden="true" />
       </div>
       
-      <h3 className="text-lg font-semibold text-red-900 mb-2">
+      <h3 id="error-fallback-title" className="text-lg font-semibold text-red-900 mb-2">
+        <span className="sr-only">Component Error: </span>
         Component Error
       </h3>
       
-      <p className="text-red-700 mb-4">
+      <p id="error-fallback-description" className="text-red-700 mb-4">
         {message}
       </p>
 

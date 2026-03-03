@@ -37,6 +37,15 @@ class ErrorBoundary extends Component<Props, State> {
     return Math.min(delay + jitter, maxDelay);
   }
 
+  // Sanitize error messages for safe display in production
+  private sanitizeError(message: string): string {
+    return message
+      .replace(/[\w\-./]+\.(ts|tsx|js|jsx|mjs|cjs):\d+:\d+/g, '') // Remove file paths with line numbers
+      .replace(/^\s*at\s.*$/gm, '') // Remove stack trace "at ..." lines
+      .trim()
+      .slice(0, 200); // Limit message length
+  }
+
   static getDerivedStateFromError(error: Error): Partial<State> {
     // Intentionally omit retryCount so React merges this with existing state,
     // preserving the retry counter across errors (prevents infinite retry bypass).
@@ -169,6 +178,11 @@ class ErrorBoundary extends Component<Props, State> {
                   )}
                 </div>
               </details>
+            )}
+            {process.env.NODE_ENV === 'production' && this.state.error && (
+              <p className="sr-only">
+                {this.sanitizeError(this.state.error.message)}
+              </p>
             )}
             
             <div className="space-y-3" role="group" aria-label="Error recovery options">
