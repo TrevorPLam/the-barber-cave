@@ -5,7 +5,7 @@
  * - Internal: Uses Next.js Link (SPA navigation, prefetching)
  * - External: Uses native <a> (proper security attributes)
  * 
- * Uses React 19 ref-as-prop pattern.
+ * Uses React.forwardRef to allow ref access to the underlying anchor element.
  * 
  * @example
  * ```tsx
@@ -23,6 +23,7 @@
  * ```
  */
 
+import { forwardRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
@@ -38,7 +39,6 @@ interface LinkWithIconProps {
   rel?: string;
   /** Force external link behavior (bypass auto-detection) */
   external?: boolean;
-  ref?: React.Ref<HTMLAnchorElement>;
 }
 
 function isExternalUrl(href: string): boolean {
@@ -51,7 +51,7 @@ function isExternalUrl(href: string): boolean {
   );
 }
 
-export default function LinkWithIcon({
+const LinkWithIcon = forwardRef<HTMLAnchorElement, LinkWithIconProps>(function LinkWithIcon({
   href,
   children,
   icon: Icon = ChevronRight,
@@ -60,8 +60,7 @@ export default function LinkWithIcon({
   target,
   rel,
   external,
-  ref,
-}: LinkWithIconProps) {
+}, ref) {
   const baseClasses = 'inline-flex items-center font-semibold transition-colors';
 
   const variantClasses = {
@@ -102,4 +101,8 @@ export default function LinkWithIcon({
       <Icon className="h-5 w-5 ml-2" />
     </Link>
   );
-}
+});
+
+LinkWithIcon.displayName = 'LinkWithIcon';
+
+export default LinkWithIcon;
