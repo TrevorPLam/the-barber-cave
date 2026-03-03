@@ -22,7 +22,12 @@
     "docs:serve": "npx serve docs/api",
     "docs:watch": "typedoc --watch",
     "docs:clean": "rm -rf docs/api",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/data/seed.ts"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
@@ -31,10 +36,13 @@
     ]
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
     "@testing-library/dom": "^10.4.1",
     "@types/dompurify": "^3.0.5",
     "clsx": "^2.1.1",
     "dompurify": "^3.3.1",
+    "drizzle-kit": "^0.31.9",
+    "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.576.0",
     "next": "16.1.6",
     "next-auth": "^4.24.13",

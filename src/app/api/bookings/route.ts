@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { validateBookingForm, RateLimiter } from '@/lib/security';
+import { bookingRepository } from '@/lib/repositories/booking-repository';
+import { serviceRepository } from '@/lib/repositories/service-repository';
+import { barberRepository } from '@/lib/repositories/barber-repository';
 import { z } from 'zod';
 
 // Initialize rate limiter for booking endpoint
@@ -42,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     // Parse and validate request body
     const body = await request.json();
-    const validatedData = createBookingSchema.parse(body);
+    const validatedData = validateBookingForm(body);
 
     // Additional business logic validation
     const bookingDate = new Date(validatedData.date);
@@ -55,11 +58,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if time slot is available (mock implementation)
-    const isAvailable = await checkTimeSlotAvailability(
-      validatedData.barberId,
-      validatedData.date,
-      validatedData.time
+    // Check if service exists and is active
+    const service = await serviceRepository.findById(parseInt(validatedData.serviceId));
+    if (!service) {
+      return NextResponse.json(
+        { error: 'Selected service is not available' },
+        { status: 400 }
+      );
+    }
+
+    // Check if barber exists and is active
+    const barber = await barberRepository.findById(parseInt(validatedData.barberId));
+    if (!barber) {
+      return NextResponse.json(
+        { error: 'Selected barber is not available' },
+        { status: 400 }
+      );
+    }
+
+    // Check availability for this time slot
+    const isAvailable = await bookingRepository.checkAvailability(
+      parseInt(validatedData.barberId),
+      bookingDate,
+      validatedData.time,
+      service.duration
     );
 
     if (!isAvailable) {
@@ -79,9 +101,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Process booking
-    const booking = await createBooking({
-      ...validatedData,
-      userId: session?.user?.id
+    const booking = await bookingRepository.create({
+      customerName: validatedData.customerInfo.name,
+      customerEmail: validatedData.customerInfo.email,
+      customerPhone: validatedData.customerInfo.phone || '',
+      serviceId: parseInt(validatedData.serviceId),
+      barberId: parseInt(validatedData.barberId),
+      date: bookingDate,
+      time: validatedData.time,
+      duration: service.duration,
+      price: service.price,
+      notes: validatedData.customerInfo.notes,
     });
 
     // Return success response (without sensitive data)
@@ -114,22 +144,49 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET endpoint to retrieve bookings (requires authentication)
+// GET endpoint to retrieve bookings
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    // Rate limiting
+    const clientIP = request.ip ||
+      request.headers.get('x-forwarded-for')?.split(',')[0] ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
 
-    if (!session) {
+    if (!bookingRateLimiter.isAllowed(clientIP)) {
       return NextResponse.json(
-        { error: 'Authentication required' },
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+
+    const session = await getServerSession(authOptions);
+    const { searchParams } = new URL(request.url);
+    const customerEmail = searchParams.get('customerEmail');
+    const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100);
+    const offset = Math.max(parseInt(searchParams.get('offset') || '0'), 0);
+
+    let bookings;
+
+    if (customerEmail) {
+      // Allow customers to view their own bookings by email
+      bookings = await bookingRepository.findByCustomerEmail(customerEmail);
+    } else if (session) {
+      // TODO: Add role-based access control
+      // For now, authenticated users can see all bookings (admin functionality)
+      bookings = await bookingRepository.findAll(limit, offset);
+    } else {
+      return NextResponse.json(
+        { error: 'Authentication required or provide customer email' },
         { status: 401 }
       );
     }
 
-    // Get user's bookings
-    const bookings = await getUserBookings(session.user.id);
-
-    return NextResponse.json({ bookings });
+    return NextResponse.json({
+      bookings,
+      count: bookings.length,
+      timestamp: new Date().toISOString()
+    });
 
   } catch (error) {
     console.error('Get bookings error:', error);
@@ -138,35 +195,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-// Mock functions - replace with actual database operations
-async function checkTimeSlotAvailability(barberId: string, date: string, time: string): Promise<boolean> {
-  // Mock availability check - in production, query database
-  const bookedSlots = ['10:00', '14:30']; // Example booked slots
-  return !bookedSlots.includes(time);
-}
-
-async function createBooking(data: any): Promise<{ id: string }> {
-  // Mock booking creation - in production, save to database
-  const bookingId = `booking-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
-  // Simulate async operation
-  await new Promise(resolve => setTimeout(resolve, 100));
-
-  return { id: bookingId };
-}
-
-async function getUserBookings(userId: string): Promise<any[]> {
-  // Mock user bookings retrieval - in production, query database
-  return [
-    {
-      id: 'booking-123',
-      date: '2026-03-29',
-      time: '14:00',
-      serviceId: 'service-1',
-      barberId: 'barber-1',
-      status: 'confirmed'
-    }
-  ];
 }

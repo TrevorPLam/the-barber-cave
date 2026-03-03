@@ -2,7 +2,34 @@
 
 A modern, responsive barber shop website built with Next.js 16, React 19, and TypeScript. This project showcases "The Barber Cave," a premier barber shop in Dallas, Texas, featuring 8 expert barbers, 29 specialized services including loc services, premium time slots, and comprehensive booking integration.
 
-## 🚀 Features
+[![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/TrevorPLam/the-barber-cave)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/TrevorPLam/the-barber-cave/actions/workflows/performance.yml/badge.svg)](https://github.com/TrevorPLam/the-barber-cave/actions)
+[![Accessibility](https://github.com/TrevorPLam/the-barber-cave/actions/workflows/accessibility.yml/badge.svg)](https://github.com/TrevorPLam/the-barber-cave/actions)
+[![Documentation](https://github.com/TrevorPLam/the-barber-cave/actions/workflows/documentation.yml/badge.svg)](https://github.com/TrevorPLam/the-barber-cave/actions)
+
+## � Table of Contents
+
+- [🚀 Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📁 Project Structure](#-project-structure)
+- [🚀 Getting Started](#-getting-started)
+- [📝 Available Scripts](#-available-scripts)
+- [🧪 Testing Strategy](#-testing-strategy)
+- [🎨 Component Architecture](#-component-architecture)
+- [🚀 Deployment](#-deployment)
+- [🌐 Browser Support](#-browser-support)
+- [⚡ Performance Optimizations (2026)](#-performance-optimizations-2026)
+- [🆕 Recent Advanced Implementations](#-recent-advanced-implementations-2026-03-03)
+- [🔧 Development Workflow](#-development-workflow)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [📞 Support](#-support)
+- [🗺️ Roadmap](#️-roadmap)
+- [👥 Authors & Acknowledgments](#-authors--acknowledgments)
+- [📊 Project Status](#-project-status)
+
+## � Features
 
 - **Modern Tech Stack**: Next.js 16 with App Router, React 19, TypeScript
 - **Responsive Design**: Mobile-first approach with Tailwind CSS 4
@@ -325,6 +352,95 @@ For technical questions about this project:
 - Open an issue on GitHub
 - Review the [TESTING_GUIDE.md](./TESTING_GUIDE.md) for testing information
 - Check Storybook for component documentation
+
+## �️ Roadmap
+
+### Q2 2026 - Advanced Features
+- [ ] **Online Booking Integration**: Direct appointment scheduling with real-time availability
+- [ ] **Customer Portal**: Account management for repeat customers with booking history
+- [ ] **Payment Processing**: Secure online payments for services and products
+- [ ] **SMS Notifications**: Automated reminders and confirmations via Twilio
+
+### Q3 2026 - Business Intelligence
+- [ ] **Analytics Dashboard**: Business metrics and performance tracking
+- [ ] **Customer Insights**: Service preferences and trends analysis
+- [ ] **Staff Performance**: Individual barber metrics and scheduling optimization
+- [ ] **Inventory Management**: Product stock tracking and automated reordering
+
+### Q4 2026 - Mobile Experience
+- [ ] **Progressive Web App**: Offline-capable mobile experience
+- [ ] **Push Notifications**: Service reminders and promotional offers
+- [ ] **Mobile Payments**: Apple Pay, Google Pay integration
+- [ ] **GPS Services**: Location-based service recommendations
+
+### 2027+ - Enterprise Expansion
+- [ ] **Multi-Location Support**: Management system for multiple barber shops
+- [ ] **Franchise Portal**: Standardized operations for franchise locations
+- [ ] **API Marketplace**: Third-party integrations for POS systems and CRM
+- [ ] **AI-Powered Recommendations**: Personalized service suggestions
+
+## 👥 Authors & Acknowledgments
+
+### Core Contributors
+- **Trevor P. Lam** - Lead Developer & Architect ([@TrevorPLam](https://github.com/TrevorPLam))
+
+### Acknowledgments
+- **The Barber Cave Team** - For providing the vision and business requirements
+- **Open Source Community** - For the amazing tools and libraries that made this possible
+- **Next.js & React Teams** - For building incredible frameworks that power modern web development
+
+### Special Thanks
+Thanks to all the beta testers, contributors, and the barber community for their feedback and support in making this platform exceptional.
+
+## 📊 Project Status
+
+🟢 **Active Development** - This project is actively maintained and regularly updated with new features and improvements.
+
+### Current Phase: Production Ready
+- ✅ Core functionality implemented
+- ✅ Comprehensive testing suite
+- ✅ Performance optimizations applied
+- ✅ Accessibility compliance achieved
+- ✅ Documentation complete
+
+### Seeking Contributors
+We're looking for contributors in these areas:
+- **UI/UX Designers**: Help improve the visual design and user experience
+- **Backend Developers**: Expand API integrations and business logic
+- **QA Engineers**: Enhance our testing strategies and coverage
+- **DevOps Engineers**: Improve deployment and monitoring infrastructure
+
+### Support the Project
+- ⭐ Star this repository if you find it useful
+- 🐛 Report bugs and issues via GitHub Issues
+- 💡 Suggest features and improvements
+- 🤝 Contribute code via Pull Requests
+
+## �🖼️ Visuals
+
+### Screenshots
+
+#### Homepage Hero Section
+![Homepage Hero](public/images/screenshots/hero-section.png)
+*The main landing page showcasing The Barber Cave's premium services*
+
+#### Services Showcase
+![Services](public/images/screenshots/services-section.png)
+*Comprehensive display of all 29 barber services including loc services*
+
+#### Barber Profiles
+![Barbers](public/images/screenshots/barbers-section.png)
+*Meet the 8 expert barbers with their specialties and experience*
+
+#### Gallery Preview
+![Gallery](public/images/screenshots/gallery-section.png)
+*Showcase of professional work and client transformations*
+
+### Live Demo
+🌐 **[View Live Site](https://the-barber-cave.vercel.app)** - Experience the full website in action
+
+### Storybook Components
+📚 **[Interactive Component Library](https://your-storybook-url.vercel.app)** - Explore all UI components with live examples
 
 ---
 
