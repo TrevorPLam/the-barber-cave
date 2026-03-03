@@ -60,7 +60,7 @@ Batch A (automated script)  ──► Batch B (DAL + auth foundation)
 ### T-A001 · Automated CVE + Lint Fix Script
 **Priority:** 1 | **Severity:** Critical | **Issues:** #1, #2, #21, #24, #27 | **Batch:** A
 
-**What:** One script resolves five issues — two CVEs via `npm audit`, one missing import via `sed`, one missing `'use client'` via `sed`, one missing hook dependency via ESLint autofix.
+**Status:** Issue #21 (missing `useCallback` import in `useDebounce.ts`) ✅ DONE. Issues #1, #2, #24, #27 remain.
 
 **Execution:**
 ```bash
@@ -320,10 +320,10 @@ export function validateHmacCsrfToken(tokenWithSig: string): boolean {
 
 ---
 
-## 🟠 BATCH C — Hook Quality Suite
+## 🟠 BATCH C — Hook Quality Suite ✅ COMPLETED
 > All custom hook fixes + shared Vitest test matrix. One PR.
 
-### T-C001 · Fix useBooking Stale Closure Race Condition
+### T-C001 · Fix useBooking Stale Closure Race Condition ✅ DONE
 **Priority:** 1 | **Severity:** Critical | **Issues:** #22 | **Batch:** C
 
 **What:** `submitBooking` captures stale `state` via closure. Fix with functional state reads inside the callback — the React 19 / Compiler-safe pattern.
@@ -386,7 +386,7 @@ const submitBooking = useCallback(async () => {
 
 ---
 
-### T-C002 · Fix useCSRF Memory Leak with AbortController
+### T-C002 · Fix useCSRF Memory Leak with AbortController ✅ DONE
 **Priority:** 1 | **Severity:** Critical | **Issues:** #23 | **Batch:** C
 
 **File:** `src/hooks/useCSRF.ts` — lines 8–25
@@ -426,7 +426,7 @@ useEffect(() => {
 
 ---
 
-### T-C003 · Fix useLocalStorage Cross-Tab Race Condition
+### T-C003 · Fix useLocalStorage Cross-Tab Race Condition ✅ DONE
 **Priority:** 2 | **Severity:** High | **Issues:** #25 | **Batch:** C
 
 **File:** `src/hooks/useLocalStorage.ts` — lines 55–70
@@ -461,7 +461,7 @@ useEffect(() => {
 
 ---
 
-### T-C004 · Fix useAnnouncement DOM Memory Leak
+### T-C004 · Fix useAnnouncement DOM Memory Leak ✅ DONE
 **Priority:** 2 | **Severity:** High | **Issues:** #26 | **Batch:** C
 
 **File:** `src/hooks/useAnnouncement.ts` — lines 28–40
@@ -494,7 +494,7 @@ useEffect(() => {
 
 ---
 
-### T-C005 · Shared Hook Test Matrix
+### T-C005 · Shared Hook Test Matrix ✅ DONE
 **Priority:** 2 | **Severity:** High | **Issues:** #22, #23, #25, #26, #24 | **Batch:** C
 
 **What:** A single parameterized Vitest suite that validates cleanup, stale-closure immunity, and mount/unmount safety across all custom hooks simultaneously.

@@ -1,5 +1,5 @@
 // src/hooks/useBooking.ts - Advanced custom hook for booking state management
-import { useState, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 
 interface BookingState {
   selectedService: string | null
@@ -47,6 +47,11 @@ export function useBooking(): BookingState & BookingActions {
     error: null
   })
 
+  // Track latest state in a ref so submitBooking always reads current values
+  // without needing state in its dependency array (avoids stale closure)
+  const stateRef = useRef(state)
+  stateRef.current = state
+
   const selectService = useCallback((serviceId: string) => {
     setState(prev => ({ ...prev, selectedService: serviceId, error: null }))
   }, [])
@@ -68,7 +73,8 @@ export function useBooking(): BookingState & BookingActions {
   }, [])
 
   const submitBooking = useCallback(async () => {
-    const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = state
+    // Read latest state from ref — avoids stale closure on rapid re-renders
+    const { selectedService, selectedBarber, selectedDate, selectedTime, customerInfo } = stateRef.current
 
     if (!selectedService || !selectedBarber || !selectedDate || !selectedTime || !customerInfo) {
       setState(prev => ({ ...prev, error: 'Please complete all booking steps' }))
@@ -104,7 +110,7 @@ export function useBooking(): BookingState & BookingActions {
         isSubmitting: false
       }))
     }
-  }, [state])
+  }, []) // stateRef is always current — no state dep needed
 
   const resetBooking = useCallback(() => {
     setState({

@@ -52,22 +52,33 @@ export function useLocalStorage<T>(
   }, [key, initialValue]);
 
   // Listen for changes to this key in other tabs/windows
+  // Wrap handler in useCallback (stable ref for add/removeEventListener)
+  // Use functional setState to avoid stale prev comparisons
+  const handleStorageChange = useCallback((e: StorageEvent) => {
+    if (e.key !== key) return;
+    if (e.newValue === null) {
+      // Key was removed in another tab
+      setStoredValue(initialValue);
+      return;
+    }
+    try {
+      const incoming = JSON.parse(e.newValue);
+      setStoredValue(prev => {
+        // Referential equality check prevents unnecessary re-renders
+        // when the value hasn't actually changed
+        const prevSerialized = JSON.stringify(prev);
+        return prevSerialized !== e.newValue ? incoming : prev;
+      });
+    } catch {
+      // Malformed JSON in storage — ignore silently
+    }
+  }, [key, initialValue]);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === key && e.newValue !== null) {
-        try {
-          setStoredValue(JSON.parse(e.newValue));
-        } catch (error) {
-          console.error(`Error parsing localStorage value for key "${key}":`, error);
-        }
-      }
-    };
-
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [key]);
+  }, [handleStorageChange]);
 
   return [storedValue, setValue, removeValue];
 }
