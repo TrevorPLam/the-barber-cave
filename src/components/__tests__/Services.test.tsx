@@ -1,12 +1,14 @@
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import Services from '../Services'
+import * as servicesData from '@/data/services'
 
 // Mock the constants
 vi.mock('@/data/constants', () => ({
   EXTERNAL_LINKS: {
-    services: 'https://example.com/services'
+    services: 'https://example.com/services',
+    booking: 'https://example.com/booking'
   }
 }))
 
@@ -53,6 +55,9 @@ vi.mock('../ContainerQueries', () => ({
 }))
 
 describe('Services', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
   it('renders services section with correct heading', () => {
     render(<Services />)
     
@@ -96,5 +101,25 @@ describe('Services', () => {
     expect(link).toHaveAttribute('href', 'https://example.com/services')
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('falls back to Star icon when service icon is not found in iconMap', () => {
+    // Temporarily inject a service with an unknown icon
+    vi.spyOn(servicesData, 'services', 'get').mockReturnValue([
+      {
+        id: 'unknown-icon-service',
+        title: 'Unknown Icon Service',
+        description: 'A service with an icon not in iconMap',
+        price: '$50',
+        duration: '30 min',
+        icon: 'NonExistentIcon'
+      }
+    ])
+
+    render(<Services />)
+
+    // Should render without crashing and show the Star fallback icon
+    expect(screen.getByText('Unknown Icon Service')).toBeInTheDocument()
+    expect(screen.getByTestId('star')).toBeInTheDocument()
   })
 })
