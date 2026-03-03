@@ -4,7 +4,7 @@ import "./globals.css";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import AccessibilityProvider from "@/components/AccessibilityProvider";
 import StructuredData from "@/components/StructuredData";
-import { SITE_URL } from "@/data/constants";
+import { SITE_URL, BUSINESS_INFO } from "@/data/constants";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     template: '%s | The Barber Cave - Premier Barber Shop in Dallas',
     default: 'The Barber Cave - Premier Barber Shop in Dallas'
   },
-  description: "Experience the best barber services in Dallas at The Barber Cave. 8 expert barbers, 29 specialized services including loc services, premium grooming, and flexible scheduling.",
+  description: `Experience the best barber services in Dallas at The Barber Cave. ${BUSINESS_INFO.totalBarbers} expert barbers, ${BUSINESS_INFO.totalServices} specialized services including loc services, premium grooming, and flexible scheduling.`,
   keywords: "barber shop Dallas, The Barber Cave, luxury grooming, expert barber, fade specialist, loc services, beard grooming, hot towel shave, Dallas haircut, men's grooming Texas, early bird appointments, after hours grooming",
   openGraph: {
     title: "The Barber Cave - Premier Barber Shop in Dallas",
-    description: "Experience the best barber services in Dallas at The Barber Cave. 8 expert barbers, 28 specialized services including loc services, premium grooming, and flexible scheduling.",
+    description: `Experience the best barber services in Dallas at The Barber Cave. ${BUSINESS_INFO.totalBarbers} expert barbers, ${BUSINESS_INFO.totalServices} specialized services including loc services, premium grooming, and flexible scheduling.`,
     type: "website",
     locale: "en_US",
     url: SITE_URL,
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "The Barber Cave - Dallas' Premier Barber Shop",
-    description: "Where style meets excellence. Experience luxury grooming with 8 master barbers and 28 specialized services including loc services, premium time slots, and flexible scheduling in Dallas.",
+    description: `Where style meets excellence. Experience luxury grooming with ${BUSINESS_INFO.totalBarbers} master barbers and ${BUSINESS_INFO.totalServices} specialized services including loc services, premium time slots, and flexible scheduling in Dallas.`,
   },
   robots: {
     index: true,

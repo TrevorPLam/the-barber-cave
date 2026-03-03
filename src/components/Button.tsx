@@ -2,8 +2,7 @@
  * Flexible button component with link support and multiple variants.
  * 
  * Renders as either a button or anchor element based on href prop presence.
- * Includes hover effects, focus states, and consistent styling across variants.
- * Supports all standard button attributes and accessibility features.
+ * Uses React 19 ref-as-prop pattern with discriminated union for type safety.
  * 
  * @example
  * ```tsx
@@ -18,19 +17,6 @@
  * </Button>
  * ```
  * 
- * @example
- * ```tsx
- * // External link with proper attributes
- * <Button
- *   variant="primary"
- *   href="https://booking.example.com"
- *   target="_blank"
- *   rel="noopener noreferrer"
- * >
- *   Book Appointment
- * </Button>
- * ```
- * 
  * @accessibility
  * - Proper focus indicators with visible ring
  * - Keyboard accessible for both button and link variants
@@ -38,59 +24,83 @@
  * - High contrast focus states
  * 
  * @performance
- * - Forwarded refs for optimal performance
+ * - React 19 ref prop pattern (forwardRef deprecated)
  * - Minimal re-renders with stable prop handling
- * - Efficient CSS class concatenation
  */
-import { forwardRef } from 'react';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Visual style variant */
-  variant?: 'primary' | 'secondary' | 'accent';
-  /** URL for link variant (makes component render as anchor) */
-  href?: string;
-  /** Link target attribute for anchor variant */
-  target?: string;
-  /** Link rel attribute for anchor variant */
-  rel?: string;
+import Link from 'next/link';
+
+type Variant = 'primary' | 'secondary' | 'accent';
+
+interface BaseButtonProps {
+  variant?: Variant;
+  className?: string;
+  children: React.ReactNode;
 }
 
-const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  ({ className, variant = 'primary', href, target, rel, ...props }, ref) => {
-    const baseClasses = 'px-8 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
+interface ButtonElementProps extends BaseButtonProps, Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'variant'> {
+  ref?: React.Ref<HTMLButtonElement>;
+}
 
-    const variantClasses = {
-      primary: 'bg-black text-white hover:bg-gray-900 focus-visible:ring-black',
-      secondary: 'border-2 border-black text-black hover:bg-black hover:text-white focus-visible:ring-black',
-      accent: 'bg-accent text-foreground hover:bg-amber-600 focus-visible:ring-amber-500',
-    };
+interface AnchorElementProps extends BaseButtonProps {
+  href: string;
+  target?: string;
+  rel?: string;
+  ref?: React.Ref<HTMLAnchorElement>;
+}
 
-    const classes = `${baseClasses} ${variantClasses[variant]} ${className || ''}`.trim();
+type ButtonProps = ButtonElementProps | AnchorElementProps;
 
-    if (href) {
+export default function Button(props: ButtonProps) {
+  const { className, variant = 'primary', children } = props;
+  
+  const baseClasses = 'px-8 py-4 rounded-full text-lg font-semibold transition-all hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2';
+
+  const variantClasses = {
+    primary: 'bg-black text-white hover:bg-gray-900 focus-visible:ring-black',
+    secondary: 'border-2 border-black text-black hover:bg-black hover:text-white focus-visible:ring-black',
+    accent: 'bg-accent text-foreground hover:bg-amber-600 focus-visible:ring-amber-500',
+  };
+
+  const classes = `${baseClasses} ${variantClasses[variant]} ${className || ''}`.trim();
+
+  // Anchor variant (href present)
+  if ('href' in props && props.href) {
+    const { href, target, rel, ref } = props;
+    const isExternal = href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:');
+    
+    if (isExternal) {
       return (
         <a
           href={href}
           target={target}
-          rel={rel}
+          rel={rel || 'noopener noreferrer'}
           className={classes}
-          ref={ref as React.Ref<HTMLAnchorElement>}
+          ref={ref}
         >
-          {props.children}
+          {children}
         </a>
       );
     }
-
+    
     return (
-      <button
+      <Link
+        href={href}
         className={classes}
-        ref={ref as React.Ref<HTMLButtonElement>}
-        {...props}
-      />
+        ref={ref}
+      >
+        {children}
+      </Link>
     );
   }
-);
 
-Button.displayName = 'Button';
-
-export default Button;
+  // Button variant
+  const { ref, ...buttonProps } = props;
+  return (
+    <button
+      className={classes}
+      ref={ref}
+      {...buttonProps}
+    />
+  );
+}

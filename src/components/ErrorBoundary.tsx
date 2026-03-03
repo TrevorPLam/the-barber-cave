@@ -7,18 +7,30 @@ interface Props {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
+  resetKeys?: Array<string | number>;
 }
 
 interface State {
   hasError: boolean;
   error?: Error;
   errorInfo?: ErrorInfo;
+  retryCount: number;
 }
 
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, retryCount: 0 };
+  }
+
+  // Calculate exponential backoff delay with jitter
+  private calculateBackoffDelay(attemptNumber: number): number {
+    const baseDelay = 1000; // 1 second base
+    const maxDelay = 30000; // 30 second max
+    const delay = baseDelay * Math.pow(2, attemptNumber);
+    // Add jitter (±25%) to prevent thundering herd
+    const jitter = delay * 0.25 * (Math.random() * 2 - 1);
+    return Math.min(delay + jitter, maxDelay);
   }
 
   static getDerivedStateFromError(error: Error): State {
@@ -44,8 +56,53 @@ class ErrorBoundary extends Component<Props, State> {
     // Example: Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
   }
 
+  componentDidUpdate(prevProps: Props) {
+    const { resetKeys } = this.props;
+    const { resetKeys: prevResetKeys } = prevProps;
+
+    // Reset error boundary if resetKeys have changed
+    if (resetKeys && prevResetKeys && resetKeys.length === prevResetKeys.length) {
+      const hasChanged = resetKeys.some((key, index) => key !== prevResetKeys[index]);
+      if (hasChanged) {
+        this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+      }
+    }
+  }
+
   handleReset = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+    const newRetryCount = this.state.retryCount + 1;
+
+    // Always update retry count for UI state management
+    this.setState({ retryCount: newRetryCount });
+
+    // Prevent infinite retries - show permanent error after 3 attempts
+    if (newRetryCount >= 3) {
+      // Don't reset error state, just update retry count so UI shows permanent error
+      return;
+    }
+
+    // Calculate backoff delay for production environments
+    const delay = process.env.NODE_ENV === 'production'
+      ? this.calculateBackoffDelay(newRetryCount - 1) // -1 because we want delay for this attempt
+      : 0; // No delay in development for faster testing
+
+    if (delay === 0) {
+      // Instant reset in development
+      this.setState({
+        hasError: false,
+        error: undefined,
+        errorInfo: undefined
+      });
+    } else {
+      // Apply backoff delay in production
+      setTimeout(() => {
+        this.setState({
+          hasError: false,
+          error: undefined,
+          errorInfo: undefined
+        });
+      }, delay);
+    }
   };
 
   render() {
@@ -72,7 +129,10 @@ class ErrorBoundary extends Component<Props, State> {
             </h1>
             
             <p className="text-gray-700 mb-6">
-              We're sorry, but something unexpected happened. Our team has been notified and is working on a fix.
+              {this.state.retryCount >= 3
+                ? "We're experiencing technical difficulties. Please refresh the page to try again."
+                : "We're sorry, but something unexpected happened. Our team has been notified and is working on a fix."
+              }
             </p>
 
             {process.env.NODE_ENV === 'development' && this.state.error && (
@@ -97,13 +157,23 @@ class ErrorBoundary extends Component<Props, State> {
             )}
             
             <div className="space-y-3">
-              <button
-                onClick={this.handleReset}
-                className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
-              >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Try Again
-              </button>
+              {this.state.retryCount < 3 ? (
+                <button
+                  onClick={this.handleReset}
+                  className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Try Again
+                </button>
+              ) : (
+                <button
+                  onClick={() => window.location.reload()}
+                  className="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refresh Page
+                </button>
+              )}
               
               <button
                 onClick={() => window.location.href = '/'}

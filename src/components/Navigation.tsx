@@ -73,7 +73,7 @@ export default memo(function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
+    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">
@@ -103,6 +103,9 @@ export default memo(function Navigation() {
             onClick={handleMenuToggle}
             className="lg:hidden"
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            id="mobile-menu-button"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -111,7 +114,7 @@ export default memo(function Navigation() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-gray-100">
+        <div className="lg:hidden bg-white border-b border-gray-100" id="mobile-menu">
           <div className="px-6 py-4 space-y-3">
             {NAVIGATION_ITEMS.map((item) => (
               <NavigationItem key={item.href} item={item} onClick={handleMenuToggle} />

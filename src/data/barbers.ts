@@ -134,7 +134,7 @@ export const barbers: Barber[] = [
     rating: '4.8',
     reviews: '82',
     available: 'Available Friday',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/trill-l.svg'
   },
   {
     id: 'charlo-f',
@@ -143,7 +143,7 @@ export const barbers: Barber[] = [
     rating: '5.0',
     reviews: '28',
     available: 'Tomorrow',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/charlo-f.svg'
   },
   {
     id: 'daplug-jcox',
@@ -152,7 +152,7 @@ export const barbers: Barber[] = [
     rating: '5.0',
     reviews: '39',
     available: 'Tomorrow',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/daplug-jcox.svg'
   },
   {
     id: 'tru-b',
@@ -161,7 +161,7 @@ export const barbers: Barber[] = [
     rating: 'No ratings',
     reviews: '0',
     available: 'Today',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/tru-b.svg'
   },
   {
     id: 'shay-25',
@@ -170,7 +170,7 @@ export const barbers: Barber[] = [
     rating: '5.0',
     reviews: '16',
     available: 'Tomorrow',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/shay-25.svg'
   },
   {
     id: 'rob-pro_edge_cutz',
@@ -179,7 +179,7 @@ export const barbers: Barber[] = [
     rating: '5.0',
     reviews: '0',
     available: 'Today',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/rob-pro_edge_cutz.svg'
   },
   {
     id: 'lee-thebarber',
@@ -188,7 +188,7 @@ export const barbers: Barber[] = [
     rating: '5.0',
     reviews: '13',
     available: 'Tomorrow',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/lee-thebarber.svg'
   },
   {
     id: 'larro-cuts',
@@ -197,6 +197,6 @@ export const barbers: Barber[] = [
     rating: '5.0',
     reviews: '14',
     available: 'Tomorrow',
-    image: '/images/barbers/barber-1.svg'
+    image: '/images/barbers/larro-cuts.svg'
   }
 ];

@@ -75,8 +75,14 @@ describe('Navigation', () => {
   it('has proper accessibility attributes', () => {
     render(<Navigation />)
     
+    const nav = screen.getByRole('navigation')
+    expect(nav).toHaveAttribute('aria-label', 'Main navigation')
+    
     const menuButton = screen.getByRole('button')
     expect(menuButton).toHaveAttribute('aria-label', 'Toggle menu')
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false')
+    expect(menuButton).toHaveAttribute('aria-controls', 'mobile-menu')
+    expect(menuButton).toHaveAttribute('id', 'mobile-menu-button')
   })
 
   it('should have no accessibility violations', async () => {
@@ -93,6 +99,13 @@ describe('Navigation', () => {
     // Open mobile menu
     const toggleButton = screen.getByRole('button', { name: /toggle menu/i })
     fireEvent.click(toggleButton)
+    
+    // Verify aria-expanded changed to true
+    expect(toggleButton).toHaveAttribute('aria-expanded', 'true')
+    
+    // Verify mobile menu has correct id
+    const mobileMenu = document.getElementById('mobile-menu')
+    expect(mobileMenu).toHaveAttribute('id', 'mobile-menu')
     
     const nav = screen.getByRole('navigation')
     const results = await axe(nav)

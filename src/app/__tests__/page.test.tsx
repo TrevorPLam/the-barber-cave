@@ -5,10 +5,10 @@ import Home from '../page'
 
 // Mock all components
 vi.mock('@/components/Navigation', () => ({
-  default: ({ isMenuOpen, onMenuToggle }: { isMenuOpen: boolean; onMenuToggle: () => void }) => (
+  default: () => (
     <nav data-testid="navigation">
-      <button onClick={onMenuToggle}>Toggle Menu</button>
-      <div>Menu Open: {isMenuOpen.toString()}</div>
+      <button>Toggle Menu</button>
+      <div>Menu Open: internal state</div>
     </nav>
   )
 }))
@@ -56,19 +56,6 @@ describe('Home Page', () => {
     expect(screen.getByTestId('navigation')).toBeInTheDocument()
     expect(screen.getByTestId('hero')).toBeInTheDocument()
     // Note: Dynamic components will show loading states initially
-  })
-
-  it('handles menu toggle correctly', () => {
-    render(<Home />)
-    
-    const toggleButton = screen.getByText('Toggle Menu')
-    expect(screen.getByText('Menu Open: false')).toBeInTheDocument()
-    
-    fireEvent.click(toggleButton)
-    expect(screen.getByText('Menu Open: true')).toBeInTheDocument()
-    
-    fireEvent.click(toggleButton)
-    expect(screen.getByText('Menu Open: false')).toBeInTheDocument()
   })
 
   it('has correct page structure', async () => {

@@ -7,7 +7,13 @@
  * Contains all static business information, external links, and navigation structure
  * used throughout the application. Centralizes business data for maintainability
  * and provides type-safe constants with comprehensive JSDoc documentation.
+ * 
+ * Updated for 2026 SSOT patterns with dynamic business metrics integration.
  */
+
+import { barbers } from './barbers';
+import { services } from './services';
+import { BusinessEngine, BusinessMetrics } from './businessEngine';
 
 /**
  * @typedef {Object} BusinessInfo
@@ -59,34 +65,58 @@
 export const SITE_URL = 'https://the-barber-cave.vercel.app';
 
 /**
- * @constant {BusinessInfo} BUSINESS_INFO
- * @description Complete business profile information
+ * @constant {BusinessMetrics} BUSINESS_METRICS
+ * @description Dynamic business metrics computed from source data
  *
- * Contains all essential business data used throughout the application.
- * Centralized here to ensure consistency across components and easy maintenance.
- * Used for contact information, about sections, structured data, and marketing content.
+ * Enterprise-grade metrics engine providing real-time business intelligence.
+ * All values are computed from source arrays ensuring single source of truth.
+ * Used throughout the application for consistent business data.
  *
  * @example
  * ```typescript
- * import { BUSINESS_INFO } from '@/data/constants';
- *
- * // Display business name
- * <h1>{BUSINESS_INFO.name}</h1>
- *
- * // Use in structured data
- * const structuredData = {
- *   "@type": "LocalBusiness",
- *   "name": BUSINESS_INFO.name,
- *   "address": BUSINESS_INFO.address,
- *   "telephone": BUSINESS_INFO.phone
- * };
+ * import { BUSINESS_METRICS } from '@/data/constants';
+ * 
+ * // Display dynamic metrics
+ * console.log(`Total barbers: ${BUSINESS_METRICS.totalBarbers}`);
+ * console.log(`Average rating: ${BUSINESS_METRICS.averageRating}`);
+ * 
+ * // Use in components
+ * const metrics = BUSINESS_METRICS;
  * ```
  *
  * @business-logic
- * - Rating and review data updated quarterly from customer feedback systems
- * - Total barbers/services counts maintained manually with HR coordination
- * - Address and phone verified quarterly for accuracy
- * - Coordinates used for Google Maps integration and local SEO
+ * - Metrics computed dynamically from barbers and services arrays
+ * - Average rating excludes "No ratings" entries for accuracy
+ * - Services categorized automatically for better organization
+ * - Opening hours available in multiple formats (display + Schema.org)
+ * - Validation ensures data consistency across the application
+ */
+export const BUSINESS_METRICS: BusinessMetrics = BusinessEngine.getMetrics(barbers, services);
+
+/**
+ * @constant {BusinessInfo} BUSINESS_INFO
+ * @description Core business information with dynamic metrics integration
+ *
+ * Legacy business constants maintained for backward compatibility.
+ * Dynamic metrics available through BUSINESS_METRICS for new implementations.
+ * Combines static business data with computed metrics for flexibility.
+ *
+ * @example
+ * ```typescript
+ * import { BUSINESS_INFO, BUSINESS_METRICS } from '@/data/constants';
+ * 
+ * // Static business info
+ * <h1>{BUSINESS_INFO.name}</h1>
+ * 
+ * // Dynamic metrics
+ * <span>{BUSINESS_METRICS.totalBarbers} Barbers</span>
+ * ```
+ *
+ * @business-logic
+ * - Static info: name, address, phone, coordinates (unchanging)
+ * - Dynamic metrics: computed from source arrays (auto-updated)
+ * - Supports migration path from static to dynamic patterns
+ * - Maintains backward compatibility with existing components
  */
 export const BUSINESS_INFO = {
   name: 'The Barber Cave',
@@ -96,15 +126,20 @@ export const BUSINESS_INFO = {
   fullLocation: 'Dallas, Texas\nDFW Metro Area',
   address: '1234 Real Street, Dallas, TX 75201',
   phone: '(214) 555-0123',
-  rating: '4.9',
+  rating: String(BUSINESS_METRICS.averageRating),
   totalReviews: '178',
-  totalBarbers: '8',
-  totalServices: '28',
+  totalBarbers: String(BUSINESS_METRICS.totalBarbers),
+  totalServices: String(BUSINESS_METRICS.totalServices),
   newClientDiscount: '$10',
   coordinates: {
     latitude: '32.7767',
     longitude: '-96.7970'
-  }
+  },
+  openingHours: [
+    { days: 'Mon-Fri', hours: '9am–7pm' },
+    { days: 'Sat', hours: '9am–6pm' },
+    { days: 'Sun', hours: '10am–6pm' }
+  ]
 } as const;
 
 /**

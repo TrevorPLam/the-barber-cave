@@ -29,7 +29,6 @@ import { memo } from 'react';
 import { services } from '@/data/services';
 import { EXTERNAL_LINKS } from '@/data/constants';
 import { Crown, Scissors, Star, Users, Award, Zap, Sparkles, Gem, Heart, Target, Move, Smile, Flower, Diamond, Sun, Moon, RefreshCw, Wind, Droplet, Link, Plus, RotateCcw } from 'lucide-react';
-import ContainerQueries from './ContainerQueries';
 import SectionHeader from './SectionHeader';
 import IconContainer from './IconContainer';
 import Button from './Button';
@@ -174,14 +173,13 @@ ServiceCard.displayName = 'ServiceCard';
  *
  * @performance
  * - Memoized components to prevent unnecessary re-renders
- * - Container queries for efficient responsive behavior
+ * - Native CSS container queries for efficient responsive behavior
  * - Optimized icon loading and rendering
  * - Efficient data mapping without additional processing
  *
  * @dependencies
  * - @/data/services - Static service data
  * - @/data/constants - External links for booking
- * - ContainerQueries - Responsive grid layout
  * - SectionHeader - Consistent section styling
  * - ServiceCard - Individual service display
  *
@@ -202,14 +200,14 @@ export default memo(function Services() {
             description="Premium grooming services tailored to your style"
           />
           
-          <ContainerQueries 
-            containerName="services-grid" 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 container-queries-fallback"
+          <div 
+            style={{ containerType: 'inline-size' }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {servicesData.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
-          </ContainerQueries>
+          </div>
           
           <div className="text-center mt-12">
             <LinkWithIcon

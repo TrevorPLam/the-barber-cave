@@ -51,7 +51,7 @@
  * - Screen reader friendly content
  *
  * @performance
- * - Optimized background image loading with priority
+ * - Optimized background image loading with preload
  * - WebP/AVIF format support via Next.js Image
  * - Efficient CSS gradients with P3 color space
  */
@@ -74,9 +74,10 @@ export default function Hero() {
       >
         <Image 
           src="/images/hero/hero-bg.svg"
-          alt="The Barber Cave Interior"
+          alt=""
           fill
-          priority
+          preload
+          placeholder="blur"
           quality={90}
           sizes="100vw"
           className="object-cover"

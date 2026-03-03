@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
-import StructuredData from '../StructuredData';
+import StructuredData, { BreadcrumbData } from '../StructuredData';
 import Breadcrumbs from '../Breadcrumbs';
 
 // Mock the constants
@@ -16,7 +16,19 @@ vi.mock('@/data/constants', () => ({
     coordinates: {
       latitude: '32.7767',
       longitude: '-96.7970'
-    }
+    },
+    openingHours: [
+      { days: 'Mon-Fri', hours: '9am–7pm' },
+      { days: 'Sat', hours: '9am–6pm' },
+      { days: 'Sun', hours: '10am–6pm' }
+    ]
+  },
+  BUSINESS_METRICS: {
+    structuredDataHours: [
+      { days: 'Mo-Fr', open: '09:00', close: '19:00' },
+      { days: 'Sa', open: '08:00', close: '20:00' },
+      { days: 'Su', open: '10:00', close: '18:00' }
+    ]
   },
   SITE_URL: 'https://the-barber-cave.vercel.app',
   EXTERNAL_LINKS: {
@@ -54,15 +66,26 @@ describe('SEO Components', () => {
       }
     });
 
-    it('renders LocalBusiness structured data', () => {
-      const { container } = render(<StructuredData type="LocalBusiness" />);
+    it('renders HairSalon structured data', () => {
+      const { container } = render(<StructuredData type="HairSalon" />);
       
       const script = container.querySelector('script[type="application/ld+json"]');
       expect(script).toBeInTheDocument();
       
       const content = script?.innerHTML;
       expect(content).toBeTruthy();
-      expect(content).toContain('LocalBusiness');
+      expect(content).toContain('HairSalon');
+    });
+
+    it('HairSalon schema does not contain servesCuisine', () => {
+      const { container } = render(<StructuredData type="HairSalon" />);
+      
+      const script = container.querySelector('script[type="application/ld+json"]');
+      expect(script).toBeInTheDocument();
+      
+      const content = script?.innerHTML;
+      expect(content).toBeTruthy();
+      expect(content).not.toContain('servesCuisine');
     });
 
     it('renders Service structured data with custom data', () => {
@@ -70,7 +93,7 @@ describe('SEO Components', () => {
         name: 'Haircut Service',
         description: 'Professional haircut service',
         services: [
-          { title: 'Basic Cut', description: 'Simple haircut', price: '$25' }
+          { id: 'basic-cut', title: 'Basic Cut', description: 'Simple haircut', price: '$25', priceMin: 25, priceMax: 25, duration: '30 min', icon: 'Scissors' }
         ]
       };
       
@@ -84,10 +107,31 @@ describe('SEO Components', () => {
       expect(content).toContain('Service');
     });
 
+    it('renders Service structured data with PriceSpecification for ranges', () => {
+      const serviceData = {
+        name: 'Haircut Service',
+        description: 'Professional haircut service',
+        services: [
+          { id: 'range-cut', title: 'Range Cut', description: 'Variable price haircut', price: '$40-$60', priceMin: 40, priceMax: 60, duration: '45 min', icon: 'Star' }
+        ]
+      };
+      
+      const { container } = render(<StructuredData type="Service" data={serviceData} />);
+      
+      const script = container.querySelector('script[type="application/ld+json"]');
+      expect(script).toBeInTheDocument();
+      
+      const content = script?.innerHTML;
+      expect(content).toBeTruthy();
+      expect(content).toContain('PriceSpecification');
+      expect(content).toContain('"minPrice":40');
+      expect(content).toContain('"maxPrice":60');
+    });
+
     it('renders BreadcrumbList structured data', () => {
-      const breadcrumbData = {
+      const breadcrumbData: BreadcrumbData = {
         breadcrumbs: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://example.com' }
+          { "@type": "ListItem", position: 1, name: 'Home', item: 'https://example.com' }
         ]
       };
       

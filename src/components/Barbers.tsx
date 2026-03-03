@@ -1,7 +1,6 @@
 import { ChevronRight, Star } from 'lucide-react';
 import { barbers } from '@/data/barbers';
 import { EXTERNAL_LINKS } from '@/data/constants';
-import ContainerQueries from './ContainerQueries';
 import Image from 'next/image';
 import SectionHeader from './SectionHeader';
 import LinkWithIcon from './LinkWithIcon';
@@ -20,9 +19,9 @@ export default function Barbers() {
           description="Meet our team of expert barbers, each with their own unique style and expertise"
         />
         
-        <ContainerQueries 
-          containerName="barber-grid" 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 container-queries-fallback"
+        <div 
+          style={{ containerType: 'inline-size' }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
           {barbersData.map((barber) => (
             <div key={barber.id} className="barber-card text-center group container-card">
@@ -31,6 +30,7 @@ export default function Barbers() {
                   src={barber.image}
                   alt={barber.name}
                   fill
+                  placeholder="blur"
                   quality={75}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -52,7 +52,7 @@ export default function Barbers() {
               </div>
             </div>
           ))}
-        </ContainerQueries>
+        </div>
         
         <div className="text-center mt-12">
           <LinkWithIcon

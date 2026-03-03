@@ -1,6 +1,7 @@
-import { BUSINESS_INFO, EXTERNAL_LINKS, SITE_URL } from '@/data/constants';
+import { BUSINESS_INFO, EXTERNAL_LINKS, SITE_URL, BUSINESS_METRICS } from '@/data/constants';
+import { Service } from '@/data/services';
 
-interface BreadcrumbData {
+export interface BreadcrumbData {
   breadcrumbs: Array<{
     "@type": "ListItem";
     position: number;
@@ -12,15 +13,11 @@ interface BreadcrumbData {
 interface ServiceData {
   name?: string;
   description?: string;
-  services?: Array<{
-    title: string;
-    description: string;
-    price: string;
-  }>;
+  services?: Service[];
 }
 
 type StructuredDataProps =
-  | { type: 'Organization' | 'LocalBusiness'; data?: never }
+  | { type: 'Organization' | 'HairSalon'; data?: never }
   | { type: 'BreadcrumbList'; data: BreadcrumbData }
   | { type: 'Service'; data: ServiceData };
 
@@ -50,11 +47,7 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             "latitude": BUSINESS_INFO.coordinates.latitude,
             "longitude": BUSINESS_INFO.coordinates.longitude
           },
-          "openingHours": [
-            "Mo-Fr 09:00-19:00",
-            "Sa 08:00-20:00",
-            "Su 10:00-18:00"
-          ],
+          "openingHours": BUSINESS_METRICS.structuredDataHours.map(hours => `${hours.days} ${hours.open}-${hours.close}`),
           "priceRange": "$$",
           "sameAs": [
             EXTERNAL_LINKS.instagram,
@@ -70,10 +63,10 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           }
         };
 
-      case 'LocalBusiness':
+      case 'HairSalon':
         return {
           "@context": "https://schema.org",
-          "@type": "LocalBusiness",
+          "@type": "HairSalon",
           "name": BUSINESS_INFO.name,
           "description": BUSINESS_INFO.description,
           "url": SITE_URL,
@@ -91,13 +84,8 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
             "latitude": BUSINESS_INFO.coordinates.latitude,
             "longitude": BUSINESS_INFO.coordinates.longitude
           },
-          "openingHours": [
-            "Mo-Fr 09:00-19:00",
-            "Sa 08:00-20:00",
-            "Su 10:00-18:00"
-          ],
+          "openingHours": BUSINESS_METRICS.structuredDataHours.map(hours => `${hours.days} ${hours.open}-${hours.close}`),
           "priceRange": "$$",
-          "servesCuisine": "Barber Services",
           "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": BUSINESS_INFO.rating,
@@ -146,18 +134,37 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
             "name": "Barber Services Menu",
-            "itemListElement": data?.services?.map((service: any) => ({
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": service.title,
-                "description": service.description,
-                "serviceType": "Barber Service"
-              },
-              "price": service.price,
-              "priceCurrency": "USD",
-              "availability": "https://schema.org/InStock"
-            })) || []
+            "itemListElement": data?.services?.map((service: Service) => {
+              const offer: any = {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": service.title,
+                  "description": service.description,
+                  "serviceType": "Barber Service"
+                },
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock"
+              };
+
+              // Use PriceSpecification for ranges, simple price for fixed amounts
+              if (service.priceMin !== undefined && service.priceMax !== undefined) {
+                if (service.priceMin === service.priceMax) {
+                  // Fixed price
+                  offer.price = service.priceMin;
+                } else {
+                  // Price range
+                  offer.priceSpecification = {
+                    "@type": "PriceSpecification",
+                    "minPrice": service.priceMin,
+                    "maxPrice": service.priceMax,
+                    "priceCurrency": "USD"
+                  };
+                }
+              }
+
+              return offer;
+            }) || []
           }
         };
 

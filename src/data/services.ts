@@ -14,7 +14,9 @@
  * @property {string} id - Unique identifier for the service (used for booking and analytics)
  * @property {string} title - Display name of the service
  * @property {string} description - Detailed description of what the service includes
- * @property {string} price - Formatted price string (e.g., "$50", "$40-$60", "$10 OFF")
+ * @property {string} price - Formatted price string for display (e.g., "$50", "$40-$60", "$10 OFF")
+ * @property {number} [priceMin] - Minimum price in USD for Schema.org PriceSpecification (numeric only)
+ * @property {number} [priceMax] - Maximum price in USD for Schema.org PriceSpecification (numeric only)
  * @property {string} duration - Estimated service duration (e.g., "1 hour", "45 min")
  * @property {string} icon - Icon name from Lucide React for visual representation
  */
@@ -24,7 +26,7 @@
  * @description TypeScript interface for barber service data structure
  *
  * Defines the contract for service objects used throughout the application.
- * Ensures type safety and consistency for service data handling.
+ * Supports both display strings and structured numeric prices for Schema.org compliance.
  *
  * @example
  * ```typescript
@@ -33,8 +35,22 @@
  *   title: 'Example Service',
  *   description: 'Service description',
  *   price: '$50',
+ *   priceMin: 50,
+ *   priceMax: 50,
  *   duration: '1 hour',
  *   icon: 'Scissors'
+ * };
+ *
+ * // For price ranges
+ * const rangeService: Service = {
+ *   id: 'range-service',
+ *   title: 'Range Service',
+ *   description: 'Service with price range',
+ *   price: '$40-$60',
+ *   priceMin: 40,
+ *   priceMax: 60,
+ *   duration: '45 min',
+ *   icon: 'Star'
  * };
  * ```
  */
@@ -43,6 +59,8 @@ export interface Service {
   title: string;
   description: string;
   price: string;
+  priceMin?: number;
+  priceMax?: number;
   duration: string;
   icon: string;
 }
@@ -120,6 +138,8 @@ export const services: Service[] = [
     title: 'Ultimate Grooming (with beard)',
     description: 'Deep cleanse exfoliating facial, shampoo, beard wash, haircut of choice, magic drip',
     price: '$100',
+    priceMin: 100,
+    priceMax: 100,
     duration: '2 hours',
     icon: 'Crown'
   },
@@ -128,6 +148,8 @@ export const services: Service[] = [
     title: 'Presidential Service (no beard)',
     description: 'Deep cleanse hot towel Facial, shampoo, haircut of choice, magic drip, razor, enhancements (if you have a beard please book ultimate grooming service)',
     price: '$80',
+    priceMin: 80,
+    priceMax: 80,
     duration: '1.5 hours',
     icon: 'Scissors'
   },
@@ -136,6 +158,8 @@ export const services: Service[] = [
     title: 'Bald & Bearded DELUXE',
     description: 'Warm lather hot towel head razor shave, beard wash, lining and shaping for the complete look',
     price: '$50-$70',
+    priceMin: 50,
+    priceMax: 70,
     duration: '1 hour',
     icon: 'Star'
   },
@@ -144,6 +168,8 @@ export const services: Service[] = [
     title: 'Bald & Bearded STANDARD',
     description: 'Clipper head shave & hot towel razor beard lining & shaping',
     price: '$40-$55',
+    priceMin: 40,
+    priceMax: 55,
     duration: '45 min',
     icon: 'Zap'
   },
@@ -152,6 +178,8 @@ export const services: Service[] = [
     title: "Men's Haircut",
     description: 'Professional haircut without beard service, precision cutting and styling',
     price: '$40-$60',
+    priceMin: 40,
+    priceMax: 60,
     duration: '45-60 min',
     icon: 'Users'
   },
@@ -160,6 +188,8 @@ export const services: Service[] = [
     title: 'Men\'s Haircut with Beard',
     description: 'Complete service including haircut and beard grooming with or without enhancements',
     price: '$45-$65',
+    priceMin: 45,
+    priceMax: 65,
     duration: '60-75 min',
     icon: 'Award'
   },
@@ -168,6 +198,8 @@ export const services: Service[] = [
     title: 'Men\'s Haircut with Beard Wash & grooming',
     description: 'Haircut with beard wash, line up, products & enhancements',
     price: '$50-$65',
+    priceMin: 50,
+    priceMax: 65,
     duration: '1-1.25 hours',
     icon: 'Sparkles'
   },
@@ -176,6 +208,7 @@ export const services: Service[] = [
     title: 'New Client Special $10 Off',
     description: '$10 off any service except edge ups. Price will be adjusted in person. 1st timers only!',
     price: '$10 OFF',
+    // Special pricing, no numeric min/max
     duration: 'First visit',
     icon: 'ChevronRight'
   },
@@ -184,6 +217,8 @@ export const services: Service[] = [
     title: 'Trill Sophisticated Package',
     description: 'Shampoo, Haircut, Hot Towel & Lather Razor Line Up & Mustache/Goatee, Enhancements, Exfoliating Facial and Massage',
     price: '$100',
+    priceMin: 100,
+    priceMax: 100,
     duration: '1.25 hours',
     icon: 'Gem'
   },
@@ -192,6 +227,8 @@ export const services: Service[] = [
     title: 'Trill Sophisticated Package W/ Beard',
     description: 'Shampoo, Haircut, Hot Towel & Lather Razor Line Up, Beard Wash, Beard Hot Comb, Enhancements, Exfoliating Facial and Massage',
     price: '$120',
+    priceMin: 120,
+    priceMax: 120,
     duration: '1.5 hours',
     icon: 'Crown'
   },
@@ -200,6 +237,8 @@ export const services: Service[] = [
     title: 'Beard Grooming + Facial Mask',
     description: 'Beard grooming with facial mask treatment',
     price: '$40',
+    priceMin: 40,
+    priceMax: 40,
     duration: '45 min',
     icon: 'Heart'
   },
@@ -208,6 +247,8 @@ export const services: Service[] = [
     title: 'Edge Up hairline ONLY',
     description: 'Edge up hair & neck line only',
     price: '$25-$30',
+    priceMin: 25,
+    priceMax: 30,
     duration: '30 min',
     icon: 'Target'
   },
@@ -216,6 +257,8 @@ export const services: Service[] = [
     title: 'Beard Line up (no wash)',
     description: 'Beard Line up only hot towel treatment with razor & enhancements',
     price: '$30-$40',
+    priceMin: 30,
+    priceMax: 40,
     duration: '30 min',
     icon: 'Move'
   },
@@ -224,6 +267,8 @@ export const services: Service[] = [
     title: 'Kids Haircut',
     description: 'Professional haircut for children K-17',
     price: '$30',
+    priceMin: 30,
+    priceMax: 30,
     duration: '30 min',
     icon: 'Smile'
   },
@@ -232,6 +277,8 @@ export const services: Service[] = [
     title: 'Women\'s haircut',
     description: 'Professional women\'s haircut service',
     price: '$50',
+    priceMin: 50,
+    priceMax: 50,
     duration: '1 hour',
     icon: 'Flower'
   },
@@ -240,6 +287,8 @@ export const services: Service[] = [
     title: 'VIP off day cuts',
     description: 'VIP service on off days - call for booking',
     price: '$100',
+    priceMin: 100,
+    priceMax: 100,
     duration: '1 hour',
     icon: 'Diamond'
   },
@@ -248,6 +297,8 @@ export const services: Service[] = [
     title: 'Early Bird (6am-7am)',
     description: 'Any cut before 8am - BOOK 24 HRS IN ADVANCE',
     price: '$75',
+    priceMin: 75,
+    priceMax: 75,
     duration: '1 hour',
     icon: 'Sun'
   },
@@ -256,14 +307,18 @@ export const services: Service[] = [
     title: 'After hours 7pm-8pm',
     description: 'Premium after-hours service',
     price: '$65',
+    priceMin: 65,
+    priceMax: 65,
     duration: '1 hour',
     icon: 'Moon'
   },
   {
     id: 'after-hours-8pm',
-    title: 'After hours 8pm-9pm',
+    title: 'After hours 8pm-8pm',
     description: 'Premium late evening service',
     price: '$70',
+    priceMin: 70,
+    priceMax: 70,
     duration: '1 hour',
     icon: 'Moon'
   },
@@ -272,6 +327,8 @@ export const services: Service[] = [
     title: 'After hours 9pm-10pm',
     description: 'Premium late night service',
     price: '$80',
+    priceMin: 80,
+    priceMax: 80,
     duration: '1 hour',
     icon: 'Moon'
   },
@@ -280,6 +337,8 @@ export const services: Service[] = [
     title: 'Loc Retwist',
     description: 'Professional loc retwisting service',
     price: '$75',
+    priceMin: 75,
+    priceMax: 75,
     duration: '1 hour',
     icon: 'RefreshCw'
   },
@@ -288,6 +347,8 @@ export const services: Service[] = [
     title: 'Loc Retwist/Style',
     description: 'Loc retwist with styling service',
     price: '$85',
+    priceMin: 85,
+    priceMax: 85,
     duration: '1h 15min',
     icon: 'Sparkles'
   },
@@ -296,6 +357,8 @@ export const services: Service[] = [
     title: 'Loc Detox',
     description: 'Deep cleansing loc detox treatment',
     price: '$40',
+    priceMin: 40,
+    priceMax: 40,
     duration: '30 min',
     icon: 'Wind'
   },
@@ -304,6 +367,8 @@ export const services: Service[] = [
     title: 'Loc Bleach (Semi Color On Ends)',
     description: 'Semi color application on loc ends',
     price: '$75',
+    priceMin: 75,
+    priceMax: 75,
     duration: '2 hours',
     icon: 'Droplet'
   },
@@ -312,6 +377,8 @@ export const services: Service[] = [
     title: 'Loc retie/interlock',
     description: 'Loc retie/interlock service - price varies by loc size',
     price: '$85+',
+    priceMin: 85,
+    // Open-ended range, max undefined
     duration: '1h 30min',
     icon: 'Link'
   },
@@ -320,6 +387,8 @@ export const services: Service[] = [
     title: 'Starter Locks',
     description: 'Professional starter loc installation',
     price: '$85',
+    priceMin: 85,
+    priceMax: 85,
     duration: '1 hour',
     icon: 'Plus'
   },
@@ -328,6 +397,8 @@ export const services: Service[] = [
     title: '2 Strand Twist with shampoo',
     description: 'Two-strand twist with shampoo service',
     price: '$85',
+    priceMin: 85,
+    priceMax: 85,
     duration: '1h 15min',
     icon: 'RotateCcw'
   },
@@ -336,6 +407,8 @@ export const services: Service[] = [
     title: '2 strand twist with shampoo and blow out',
     description: 'Two-strand twist with shampoo and blowout styling',
     price: '$115',
+    priceMin: 115,
+    priceMax: 115,
     duration: '2h 15min',
     icon: 'Wind'
   }
