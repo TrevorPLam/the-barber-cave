@@ -51,7 +51,7 @@ const createBookingStore = () =>
 const BookingStoreContext = createContext<ReturnType<typeof createBookingStore> | null>(null)
 
 export function BookingStoreProvider({ children }: { children: ReactNode }) {
-  const storeRef = useRef<ReturnType<typeof createBookingStore>>()
+  const storeRef = useRef<ReturnType<typeof createBookingStore> | undefined>(undefined)
   if (!storeRef.current) {
     storeRef.current = createBookingStore()
   }
