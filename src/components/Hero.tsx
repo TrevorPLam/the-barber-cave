@@ -77,7 +77,6 @@ export default function Hero() {
           alt=""
           fill
           preload
-          placeholder="blur"
           quality={90}
           sizes="100vw"
           className="object-cover"
