@@ -1,16 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
   cacheComponents: true,
   
   // Image optimization configuration for Next.js 16
   images: {
-    // Enable modern image formats
     formats: ['image/webp', 'image/avif'],
-    
-    // Configure remote image patterns (temporarily for Unsplash during migration)
     remotePatterns: [
       {
         protocol: 'https',
@@ -18,18 +14,62 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    
-    // Device screen density multiplier
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    
-    // Image sizes for responsive images
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    
-    // Enable image optimization in development
     unoptimized: false,
-    
-    // Minimum cache TTL in seconds
     minimumCacheTTL: 60,
+  },
+
+  // Security headers (Issue #1 - CSP implementation)
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+          },
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "img-src 'self' data: https: blob:",
+              "font-src 'self' https://fonts.gstatic.com",
+              "connect-src 'self' https://vitals.vercel-insights.com",
+              "media-src 'self'",
+              "object-src 'none'",
+              "frame-ancestors 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "upgrade-insecure-requests",
+            ].join('; '),
+          },
+        ],
+      },
+    ];
   },
 };
 

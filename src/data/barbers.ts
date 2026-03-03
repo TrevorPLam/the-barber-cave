@@ -44,7 +44,7 @@ export interface Barber {
   id: string;
   name: string;
   title: string;
-  rating: string;
+  rating: string | null;
   reviews: string;
   available: string;
   image: string;
@@ -158,7 +158,7 @@ export const barbers: Barber[] = [
     id: 'tru-b',
     name: 'Tru B.',
     title: 'Blend Specialist',
-    rating: 'No ratings',
+    rating: null,
     reviews: '0',
     available: 'Today',
     image: '/images/barbers/tru-b.svg'
@@ -173,13 +173,13 @@ export const barbers: Barber[] = [
     image: '/images/barbers/shay-25.svg'
   },
   {
-    id: 'rob-pro_edge_cutz',
+    id: 'rob-pro-edge-cut',
     name: 'Rob Pro_edge_cutz',
     title: 'Master Barber',
     rating: '5.0',
     reviews: '0',
     available: 'Today',
-    image: '/images/barbers/rob-pro_edge_cutz.svg'
+    image: '/images/barbers/rob-pro-edge-cut.svg'
   },
   {
     id: 'lee-thebarber',

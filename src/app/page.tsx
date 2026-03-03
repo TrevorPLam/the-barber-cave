@@ -51,9 +51,12 @@ export default function Home() {
       <Navigation />
       <div className="min-h-screen bg-white">
         <StructuredData type="Service" data={serviceStructuredData} />
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <Breadcrumbs items={breadcrumbItems} />
-        </div>
+        {/* Only render breadcrumbs if there's actual navigation value (more than 1 item) */}
+        {breadcrumbItems.length > 1 && (
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <Breadcrumbs items={breadcrumbItems} />
+          </div>
+        )}
         <Hero />
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <Gallery />

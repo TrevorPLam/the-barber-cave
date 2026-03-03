@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ErrorBoundary from './ErrorBoundary';
 
 // A component that throws an error for testing

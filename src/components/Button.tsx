@@ -38,7 +38,7 @@ interface BaseButtonProps {
   children: React.ReactNode;
 }
 
-interface ButtonElementProps extends BaseButtonProps, Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'variant'> {
+interface ButtonElementProps extends BaseButtonProps, Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'variant' | 'children'> {
   ref?: React.Ref<HTMLButtonElement>;
 }
 
@@ -95,11 +95,11 @@ export default function Button(props: ButtonProps) {
   }
 
   // Button variant
-  const { ref, ...buttonProps } = props;
+  const { ref, ...buttonProps } = props as ButtonElementProps;
   return (
     <button
       className={classes}
-      ref={ref}
+      ref={ref as React.Ref<HTMLButtonElement>}
       {...buttonProps}
     />
   );

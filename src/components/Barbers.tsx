@@ -1,4 +1,4 @@
-import { ChevronRight, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { barbers } from '@/data/barbers';
 import { EXTERNAL_LINKS } from '@/data/constants';
 import Image from 'next/image';
@@ -44,7 +44,7 @@ export default function Barbers() {
               <div className="flex items-center justify-center space-x-1">
                 <Star className="h-4 w-4 text-amber-500 fill-current" />
                 <span className="text-sm font-semibold">
-                  {barber.rating === 'No ratings' ? 'New' : barber.rating}
+                  {barber.rating === null ? 'New' : barber.rating}
                 </span>
                 <span className="text-sm text-gray-500">
                   {barber.reviews === '0' ? '' : `(${barber.reviews})`}
@@ -56,11 +56,11 @@ export default function Barbers() {
         
         <div className="text-center mt-12">
           <LinkWithIcon
-            href={EXTERNAL_LINKS.services}
+            href={EXTERNAL_LINKS.booking}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Meet All {barbersData.length} Barbers
+            Book With Our Barbers
           </LinkWithIcon>
         </div>
       </div>

@@ -73,14 +73,16 @@ export default memo(function Navigation() {
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100" aria-label="Main navigation">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <header className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100" role="banner">
+      <nav className="max-w-7xl mx-auto px-6 lg:px-8" aria-label="Main navigation">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
-              <Scissors className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-black">{BUSINESS_INFO.name}</span>
+            <a href="#home" className="flex items-center space-x-3" aria-label={`${BUSINESS_INFO.name} - Back to home`}>
+              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center">
+                <Scissors className="h-5 w-5 text-white" aria-hidden="true" />
+              </div>
+              <span className="text-xl font-bold text-black">{BUSINESS_INFO.name}</span>
+            </a>
           </div>
           
           {/* Desktop Navigation */}
@@ -110,7 +112,6 @@ export default memo(function Navigation() {
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
-      </div>
 
       {/* Mobile Menu */}
       {isMenuOpen && (
@@ -130,6 +131,7 @@ export default memo(function Navigation() {
           </div>
         </div>
       )}
-    </nav>
+      </nav>
+    </header>
   );
 });

@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
+        form-factor: [mobile, desktop]
     
     steps:
     - name: Checkout code
@@ -35,25 +36,24 @@ jobs:
         npm start &
         sleep 10
         
-    - name: Run performance tests
+    - name: Run ${{ matrix.form-factor }} performance tests
       run: npm run test:performance
+      env:
+        LHCI_FORM_FACTOR: ${{ matrix.form-factor }}
       
-    - name: Run performance tests with detailed collection
-      run: npm run test:performance:collect
-      
-    - name: Upload Lighthouse results
+    - name: Upload Lighthouse ${{ matrix.form-factor }} results
       uses: actions/upload-artifact@v4
       with:
-        name: lighthouse-results
+        name: lighthouse-results-${{ matrix.form-factor }}
         path: .lighthouseci
         
-    - name: Comment PR with performance results
+    - name: Comment PR with ${{ matrix.form-factor }} performance results
       if: github.event_name == 'pull_request'
       uses: actions/github-script@v7
       with:
         script: |
           const fs = require('fs');
-          const path = '.lighthouseci/lhr-*.json';
+          const formFactor = '${{ matrix.form-factor }}';
           
           // Find the latest Lighthouse result file
           const files = fs.readdirSync('.lighthouseci').filter(f => f.endsWith('.json'));
@@ -63,30 +63,32 @@ jobs:
             
             const categories = results.categories;
             const audits = results.audits;
+            const runWarnings = results.runWarnings || [];
             
             const comment = `
-            ## 🚀 Performance Test Results
+            ## 🚀 Performance Test Results (${formFactor.toUpperCase()})
             
             ### Overall Scores
-            🎯 **Performance**: ${Math.round(categories.performance.score * 100)}%
-            ♿ **Accessibility**: ${Math.round(categories.accessibility.score * 100)}%
-            🔧 **Best Practices**: ${Math.round(categories['best-practices'].score * 100)}%
-            🔍 **SEO**: ${Math.round(categories.seo.score * 100)}%
+            🎯 **Performance**: ${Math.round((categories.performance.score || 0) * 100)}%
+            ♿ **Accessibility**: ${Math.round((categories.accessibility.score || 0) * 100)}%
+            🔧 **Best Practices**: ${Math.round((categories['best-practices'].score || 0) * 100)}%
+            🔍 **SEO**: ${Math.round((categories.seo.score || 0) * 100)}%
             
             ### Core Web Vitals
-            ⚡ **First Contentful Paint**: ${audits['first-contentful-paint'].displayValue}
-            🖼️ **Largest Contentful Paint**: ${audits['largest-contentful-paint'].displayValue}
-            📊 **Cumulative Layout Shift**: ${audits['cumulative-layout-shift'].displayValue}
-            🚫 **Total Blocking Time**: ${audits['total-blocking-time'].displayValue}
+            ⚡ **First Contentful Paint**: ${audits['first-contentful-paint']?.displayValue || 'N/A'}
+            🖼️ **Largest Contentful Paint**: ${audits['largest-contentful-paint']?.displayValue || 'N/A'}
+            📊 **Cumulative Layout Shift**: ${audits['cumulative-layout-shift']?.displayValue || 'N/A'}
+            🚫 **Total Blocking Time**: ${audits['total-blocking-time']?.displayValue || 'N/A'}
             
-            ### Resource Summary
-            📦 **Total Size**: ${audits['total-byte-weight'].displayValue}
-            📄 **Script Size**: ${audits['script-treemap-data'].details?.items?.reduce((sum, item) => sum + (item.bytes || 0), 0) || 'N/A'} bytes
-            🎨 **Stylesheet Size**: ${audits['stylesheet-treemap-data'].details?.items?.reduce((sum, item) => sum + (item.bytes || 0), 0) || 'N/A'} bytes
+            ### Environment
+            � **Form Factor**: ${results.configSettings?.formFactor || formFactor}
+            🌐 **URL**: ${results.requestedUrl}
+            
+            ${runWarnings.length > 0 ? `⚠️ **Warnings**: ${runWarnings.join(', ')}` : ''}
             
             ---
             
-            *This PR was automatically checked for performance regressions using Lighthouse CI.*
+            *Tested on ${formFactor} with Lighthouse CI.*
             `;
             
             github.rest.issues.createComment({
@@ -97,12 +99,12 @@ jobs:
             });
           }
       
-    - name: Check performance budget compliance
+    - name: Check ${{ matrix.form-factor }} performance budget compliance
       run: |
-        echo "Checking if performance budgets were met..."
+        echo "Checking if ${{ matrix.form-factor }} performance budgets were met..."
         if [ -f ".lighthouseci/lhr-*.json" ]; then
-          echo "✅ Performance tests completed successfully"
+          echo "✅ ${{ matrix.form-factor }} performance tests completed successfully"
         else
-          echo "❌ Performance tests failed or incomplete"
+          echo "❌ ${{ matrix.form-factor }} performance tests failed or incomplete"
           exit 1
         fi

@@ -75,7 +75,10 @@ describe('Navigation', () => {
   it('has proper accessibility attributes', () => {
     render(<Navigation />)
     
-    const nav = screen.getByRole('navigation')
+    const banner = screen.getByRole('banner')
+    expect(banner).toBeInTheDocument()
+    
+    const nav = screen.getByRole('navigation', { name: 'Main navigation' })
     expect(nav).toHaveAttribute('aria-label', 'Main navigation')
     
     const menuButton = screen.getByRole('button')
@@ -87,8 +90,8 @@ describe('Navigation', () => {
 
   it('should have no accessibility violations', async () => {
     render(<Navigation />)
-    const nav = screen.getByRole('navigation')
-    const results = await axe(nav)
+    const banner = screen.getByRole('banner')
+    const results = await axe(banner)
     console.log('Axe results:', results)
     expect(results.violations).toHaveLength(0)
   })
@@ -107,8 +110,8 @@ describe('Navigation', () => {
     const mobileMenu = document.getElementById('mobile-menu')
     expect(mobileMenu).toHaveAttribute('id', 'mobile-menu')
     
-    const nav = screen.getByRole('navigation')
-    const results = await axe(nav)
+    const banner = screen.getByRole('banner')
+    const results = await axe(banner)
     console.log('Axe results (mobile open):', results)
     expect(results.violations).toHaveLength(0)
   })

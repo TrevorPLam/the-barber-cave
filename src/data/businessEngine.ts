@@ -139,7 +139,7 @@ export class BusinessEngine {
   static calculateAverageRating(barbers: Barber[]): number {
     const validRatings = barbers
       .map(barber => barber.rating)
-      .filter(rating => rating !== 'No ratings' && rating !== null && rating !== undefined)
+      .filter((rating): rating is string => rating !== null && rating !== undefined)
       .map(rating => parseFloat(rating))
       .filter(rating => !isNaN(rating));
 
@@ -268,6 +268,7 @@ export class BusinessEngine {
 
     // Check for invalid ratings
     const invalidRatings = barbers.filter(b => {
+      if (b.rating === null) return false;
       const rating = parseFloat(b.rating);
       return isNaN(rating) || rating < 0 || rating > 5;
     });

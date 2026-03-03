@@ -17,7 +17,7 @@ interface ServiceData {
 }
 
 type StructuredDataProps =
-  | { type: 'Organization' | 'HairSalon'; data?: never }
+  | { type: 'Organization' | 'LocalBusiness' | 'HairSalon'; data?: never }
   | { type: 'BreadcrumbList'; data: BreadcrumbData }
   | { type: 'Service'; data: ServiceData };
 
@@ -25,9 +25,10 @@ export default function StructuredData({ type, data }: StructuredDataProps) {
   const getStructuredData = () => {
     switch (type) {
       case 'Organization':
+      case 'LocalBusiness':
         return {
           "@context": "https://schema.org",
-          "@type": "Organization",
+          "@type": type,
           "name": BUSINESS_INFO.name,
           "description": BUSINESS_INFO.description,
           "url": SITE_URL,

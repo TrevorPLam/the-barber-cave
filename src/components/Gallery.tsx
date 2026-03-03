@@ -7,12 +7,12 @@ export default function Gallery() {
   // - High-quality images showing actual barber skills
   // - Optimized web formats (WebP/AVIF) for performance
   const galleryItems = [
-    { id: 1, src: '/images/gallery/work-1.svg', title: 'Classic Fade', barber: 'Master Barber' },
-    { id: 2, src: '/images/gallery/work-2.svg', title: 'Beard Trim', barber: 'Expert Barber' },
-    { id: 3, src: '/images/gallery/work-3.svg', title: 'Modern Cut', barber: 'Senior Barber' },
-    { id: 4, src: '/images/gallery/work-4.svg', title: 'Pompadour', barber: 'Master Barber' },
-    { id: 5, src: '/images/gallery/work-5.svg', title: 'Crew Cut', barber: 'Expert Barber' },
-    { id: 6, src: '/images/gallery/work-6.svg', title: 'Hot Towel Shave', barber: 'Senior Barber' },
+    { id: 1, src: '/images/gallery/work-1.svg', title: 'Classic Fade', barber: 'Master Barber', alt: 'Side profile view of a classic fade haircut with clean blended lines' },
+    { id: 2, src: '/images/gallery/work-2.svg', title: 'Beard Trim', barber: 'Expert Barber', alt: 'Well-groomed beard with precise edge shaping and neckline definition' },
+    { id: 3, src: '/images/gallery/work-3.svg', title: 'Modern Cut', barber: 'Senior Barber', alt: 'Contemporary textured haircut with volume on top and tapered sides' },
+    { id: 4, src: '/images/gallery/work-4.svg', title: 'Pompadour', barber: 'Master Barber', alt: 'Classic pompadour style with high volume swept back and clean sides' },
+    { id: 5, src: '/images/gallery/work-5.svg', title: 'Crew Cut', barber: 'Expert Barber', alt: 'Traditional crew cut with uniform length and neat military-style finish' },
+    { id: 6, src: '/images/gallery/work-6.svg', title: 'Hot Towel Shave', barber: 'Senior Barber', alt: 'Traditional straight razor shave with hot towel treatment preparation' },
   ];
 
   return (
@@ -30,7 +30,7 @@ export default function Gallery() {
             <div key={item.id} className="group relative overflow-hidden rounded-2xl bg-gray-200 aspect-square">
               <Image 
                 src={item.src}
-                alt={item.title}
+                alt={item.alt}
                 fill
                 placeholder="blur"
                 quality={75}

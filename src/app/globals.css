@@ -24,19 +24,6 @@
   }
 }
 
-/* Hardware-specific P3 optimization */
-@media (color-gamut: p3) {
-  :root {
-    --background: color(display-p3 1 1 1);
-    --foreground: color(display-p3 0.090 0.090 0.090);
-    --primary: color(display-p3 0.102 0.102 0.102);
-    --accent: color(display-p3 0.831 0.647 0.455);
-    --accent-bright: color(display-p3 0.902 0.753 0.533);
-    --gradient-start: color(display-p3 0 0 0);
-    --gradient-end: color(display-p3 0.2 0.2 0.2);
-  }
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
