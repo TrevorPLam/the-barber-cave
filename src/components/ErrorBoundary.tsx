@@ -1,13 +1,26 @@
 'use client';
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode, RefObject, useState, useRef } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { Sentry } from '@/lib/sentry';
+import { useAnnouncement } from '@/hooks/useAnnouncement';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
   onError?: (error: Error, errorInfo: ErrorInfo) => void;
   resetKeys?: Array<string | number>;
+}
+
+// Internal props extend the public API with hook-provided functionality
+interface InnerProps extends Props {
+  announce: (message: string, options?: { politeness?: 'polite' | 'assertive' | 'off'; timeout?: number }) => void;
+  containerRef: RefObject<HTMLElement>;
+  onErrorDetected: () => void;
+  onResetComplete: () => void;
+  /** Registers the class instance's reset handler so the focus trap's Escape key can invoke it */
+  setEscapeResetFn: (fn: (() => void) | null) => void;
 }
 
 interface State {
@@ -19,12 +32,21 @@ interface State {
   retryTimeoutId: number | null;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+class ErrorBoundaryCore extends Component<InnerProps, State> {
   private errorRef = React.createRef<HTMLHeadingElement>();
 
-  constructor(props: Props) {
+  constructor(props: InnerProps) {
     super(props);
     this.state = { hasError: false, retryCount: 0 };
+  }
+
+  componentDidMount() {
+    // Expose handleReset to the functional wrapper so Escape key can trigger it
+    this.props.setEscapeResetFn(this.handleReset);
+  }
+
+  componentWillUnmount() {
+    this.props.setEscapeResetFn(null);
   }
 
   // Calculate exponential backoff delay with jitter
@@ -53,25 +75,33 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.setState({
-      error,
-      errorInfo,
-    });
+    this.setState({ error, errorInfo });
 
     // Call the external error handler if provided
     this.props.onError?.(error, errorInfo);
+
+    // Notify the functional wrapper so it can activate the focus trap
+    this.props.onErrorDetected();
 
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {
       console.error('ErrorBoundary caught an error:', error, errorInfo);
     }
 
-    // In production, you would send this to an error reporting service
-    // like Sentry, LogRocket, etc.
-    // Example: Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
+    // Send to Sentry for production error monitoring
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.captureException(error, {
+        contexts: { react: { componentStack: errorInfo.componentStack } },
+      });
+    }
+
+    // Announce error to screen readers immediately (assertive)
+    this.props.announce('An error occurred. Use the Try Again button to recover.', {
+      politeness: 'assertive',
+    });
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: InnerProps, prevState: State) {
     const { resetKeys } = this.props;
     const { resetKeys: prevResetKeys } = prevProps;
 
@@ -81,6 +111,7 @@ class ErrorBoundary extends Component<Props, State> {
       const valuesChanged = !lengthChanged && resetKeys.some((key, index) => key !== prevResetKeys[index]);
       if (lengthChanged || valuesChanged) {
         this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+        this.props.onResetComplete();
       }
     }
 
@@ -98,31 +129,29 @@ class ErrorBoundary extends Component<Props, State> {
 
     // Prevent infinite retries - show permanent error after 3 attempts
     if (newRetryCount >= 3) {
-      // Don't reset error state, just update retry count so UI shows permanent error
+      this.props.announce('Maximum retry attempts reached. Please refresh the page.', {
+        politeness: 'assertive',
+      });
       return;
     }
+
+    // Announce retry attempt to screen readers
+    this.props.announce(`Retrying… attempt ${newRetryCount} of 3.`, { politeness: 'polite' });
 
     // Calculate backoff delay for production environments
     const delay = process.env.NODE_ENV === 'production'
       ? this.calculateBackoffDelay(newRetryCount - 1) // -1 because we want delay for this attempt
       : 0; // No delay in development for faster testing
 
+    const doReset = () => {
+      this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+      this.props.onResetComplete();
+    };
+
     if (delay === 0) {
-      // Instant reset in development
-      this.setState({
-        hasError: false,
-        error: undefined,
-        errorInfo: undefined
-      });
+      doReset();
     } else {
-      // Apply backoff delay in production
-      setTimeout(() => {
-        this.setState({
-          hasError: false,
-          error: undefined,
-          errorInfo: undefined
-        });
-      }, delay);
+      setTimeout(doReset, delay);
     }
   };
 
@@ -133,9 +162,10 @@ class ErrorBoundary extends Component<Props, State> {
         return this.props.fallback;
       }
 
-      // Default error UI
+      // Default error UI — attach containerRef for focus trapping
       return (
-        <div 
+        <div
+          ref={this.props.containerRef as RefObject<HTMLDivElement>}
           role="alertdialog"
           aria-modal="true"
           aria-live="assertive"
@@ -147,11 +177,11 @@ class ErrorBoundary extends Component<Props, State> {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <AlertTriangle className="w-8 h-8 text-red-600" aria-hidden="true" />
             </div>
-            
+
             <h1 id="error-title" ref={this.errorRef} tabIndex={-1} className="text-2xl font-bold text-gray-900 mb-4">
               Something went wrong
             </h1>
-            
+
             <p id="error-description" className="text-gray-700 mb-6">
               {this.state.retryCount >= 3
                 ? "We're experiencing technical difficulties. Please refresh the page to try again."
@@ -184,7 +214,7 @@ class ErrorBoundary extends Component<Props, State> {
                 {this.sanitizeError(this.state.error.message)}
               </p>
             )}
-            
+
             <div className="space-y-3" role="group" aria-label="Error recovery options">
               {this.state.retryCount < 3 ? (
                 <button
@@ -203,7 +233,7 @@ class ErrorBoundary extends Component<Props, State> {
                   Refresh Page
                 </button>
               )}
-              
+
               <button
                 onClick={() => window.location.href = '/'}
                 className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
@@ -220,4 +250,28 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-export default ErrorBoundary;
+/**
+ * ErrorBoundary — functional wrapper that supplies the useAnnouncement and
+ * useFocusTrap hooks to the class-based error boundary core.
+ */
+export default function ErrorBoundary(props: Props) {
+  const [hasError, setHasError] = useState(false);
+  const { announce } = useAnnouncement();
+  // Holds the class instance's handleReset so the Escape key can invoke it
+  const escapeResetRef = useRef<(() => void) | null>(null);
+  const containerRef = useFocusTrap({
+    isActive: hasError,
+    onEscape: () => escapeResetRef.current?.(),
+  });
+
+  return (
+    <ErrorBoundaryCore
+      {...props}
+      announce={announce}
+      containerRef={containerRef}
+      onErrorDetected={() => setHasError(true)}
+      onResetComplete={() => setHasError(false)}
+      setEscapeResetFn={(fn) => { escapeResetRef.current = fn; }}
+    />
+  );
+}

@@ -13,9 +13,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
   // Skip build-time database connection for demo
-  experimental: {
-    serverComponentsExternalPackages: ['@next-auth/prisma-adapter'],
-  },
+  serverExternalPackages: ['@next-auth/prisma-adapter'],
 
   // Advanced security headers with nonce support for CSP (Issue #1 - CSP implementation)
   async headers() {

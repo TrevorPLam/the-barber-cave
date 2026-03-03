@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { Sentry } from '@/lib/sentry';
 
 interface ErrorState {
   error: Error | null;
@@ -21,9 +22,9 @@ export function useErrorHandler() {
       isError: true,
     });
 
-    // In production, you would send this to an error reporting service
+    // In production, send to Sentry for monitoring
     if (process.env.NODE_ENV === 'production') {
-      // Example: Sentry.captureException(error);
+      Sentry.captureException(normalizedError);
     }
   }, []);
 
