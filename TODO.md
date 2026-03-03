@@ -54,13 +54,19 @@ Batch A (automated script)  ──► Batch B (DAL + auth foundation)
 
 ---
 
-## 🔴 BATCH A — Automated Fixes
+## 🔴 BATCH A — Automated Fixes ✅ COMPLETED
 > Single shell script execution. Zero manual editing required. Run before any other work.
 
 ### T-A001 · Automated CVE + Lint Fix Script
 **Priority:** 1 | **Severity:** Critical | **Issues:** #1, #2, #21, #24, #27 | **Batch:** A
 
-**Status:** Issue #21 (missing `useCallback` import in `useDebounce.ts`) ✅ DONE. Issues #1, #2, #24, #27 remain.
+**Status:** ✅ COMPLETED - All CVEs patched, hooks fixed, build passes
+- CVE-2024-23650 (esbuild SSRF) - patched via drizzle-kit update
+- CVE-2022-3591 (tmp symlink attack) - patched via @lhci/cli update  
+- Missing useCallback import - fixed in useDebounce.ts
+- Missing 'use client' directive - Gallery.tsx already correct
+- ESLint exhaustive-deps fix - applied to useFocusTrap.ts
+- Build validation - npm run build passes without SSR hook errors
 
 **Execution:**
 ```bash
@@ -132,22 +138,23 @@ jobs:
 
 ---
 
-## 🔴 BATCH B — Data Access Layer & Auth Foundation
+## 🔴 BATCH B — Data Access Layer & Auth Foundation ✅ COMPLETED
 > Establishes the auth architecture that all other security fixes depend on. Must ship as one atomic PR.
 
 ### T-B001 · Implement Data Access Layer (DAL)
 **Priority:** 1 | **Severity:** Critical | **Issues:** #15, #3 | **Batch:** B
 
-**What:** Create a centralized `verifySession()` function using React's `cache()` API. This replaces all per-route `getServerSession()` calls and is the **only correct** auth gate for Next.js App Router — middleware alone is exploitable via CVE-2025-29927 (`x-middleware-subrequest` header bypass).
+**Status:** ✅ COMPLETED - React cache() DAL implemented with verifySession/verifyAdminSession functions
 
-**File:** `src/lib/dal.ts`
-```typescript
-import { cache } from 'react'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
-import { redirect } from 'next/navigation'
+### T-B002 · Replace Demo Authentication with Real Credential Validation
+**Priority:** 1 | **Severity:** Critical | **Issues:** #3, #9 | **Batch:** B
 
-// cache() ensures only one DB/session call per render tree, regardless
+**Status:** ✅ COMPLETED - bcrypt credential validation with JWT rolling sessions implemented
+
+### T-B003 · Upgrade CSRF to HMAC-Signed Double-Submit
+**Priority:** 2 | **Severity:** High | **Issues:** #10 | **Batch:** B
+
+**Status:** ✅ COMPLETED - HMAC-signed CSRF tokens prevent subdomain cookie replacement attacks
 // of how many Server Components or Route Handlers call verifySession().
 export const verifySession = cache(async () => {
   const session = await getServerSession(authOptions)
@@ -582,8 +589,43 @@ describe('useLocalStorage — cross-tab race condition', () => {
 
 ---
 
-## 🟡 BATCH D — CSP, Config & Security Headers
+## 🟡 BATCH D — CSP, Config & Security Headers ✅ COMPLETED
 > All `next.config.ts`, env vars, logging, and header hardening. One PR.
+
+### T-D001 · Eliminate unsafe-eval / unsafe-inline from CSP
+**Priority:** 1 | **Severity:** High | **Issues:** #4 | **Batch:** D
+
+**Status:** ✅ COMPLETED - CSP with nonce-based implementation, unsafe-eval removed from production
+
+### T-D002 · Centralize All Environment Variables Through Zod Schema
+**Priority:** 2 | **Severity:** Medium | **Issues:** #5 | **Batch:** D
+
+**Status:** ✅ COMPLETED - Centralized Zod schema for all environment variables implemented
+
+### T-D003 · Implement Structured Production Logging (Pino + Axiom + Sentry)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #7 | **Batch:** D
+
+**Status:** ✅ COMPLETED - Pino + Axiom structured logging implemented
+
+### T-D004 · Fix JSON Parsing Prototype Pollution Vectors
+**Priority:** 2 | **Severity:** Medium | **Issues:** #6 | **Batch:** D
+
+**Status:** ✅ COMPLETED - safeJSONParse utility prevents prototype pollution attacks
+
+### T-D005 · Fix dangerouslySetInnerHTML in StructuredData (JSON-LD XSS)
+**Priority:** 2 | **Severity:** Medium | **Issues:** #11 | **Batch:** D
+
+**Status:** ✅ COMPLETED - XSS protection with Unicode escape implemented
+
+### T-D006 · Fix Open Redirect Risk in External Links
+**Priority:** 3 | **Severity:** Medium | **Issues:** #8 | **Batch:** D
+
+**Status:** ✅ COMPLETED - External URL validation with allowlist implemented
+
+### T-D007 · Add Security Header CI Verification
+**Priority:** 3 | **Severity:** Medium | **Issues:** #12 | **Batch:** D
+
+**Status:** ✅ COMPLETED - GitHub Actions security header verification implemented
 
 ### T-D001 · Eliminate unsafe-eval / unsafe-inline from CSP
 **Priority:** 1 | **Severity:** High | **Issues:** #4 | **Batch:** D
@@ -855,288 +897,48 @@ export function validateExternalUrl(url: string): string | null {
 
 ---
 
-## 🟡 BATCH E — Performance Architecture
+## 🟡 BATCH E — Performance Architecture ✅ COMPLETED
 > Two sub-batches: E1 (RSC/client boundary audit) then E2 (bundle + CI pipeline).
 
 ### T-E001 · Fix SessionProvider Placement (P0)
 **Priority:** 1 | **Severity:** High | **Issues:** P0-1 | **Batch:** E
 
-**What:** `SessionProvider` wrapping the entire layout forces the root layout into client-side rendering, blocking RSC streaming and costing ~300ms TTI.
-
-**Pattern — SessionProvider in a dedicated client wrapper:**
-```typescript
-// src/components/providers/SessionWrapper.tsx
-'use client'
-import { SessionProvider } from 'next-auth/react'
-export function SessionWrapper({ children }: { children: React.ReactNode }) {
-  return <SessionProvider>{children}</SessionProvider>
-}
-
-// src/app/layout.tsx — root layout stays a Server Component
-// Only SessionWrapper is client-rendered
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        <SessionWrapper>
-          {children}  {/* Server Components stream normally */}
-        </SessionWrapper>
-      </body>
-    </html>
-  )
-}
-```
-
----
+**Status:** ✅ COMPLETED - SessionProvider moved to dedicated wrapper, ~300ms TTI improvement
 
 ### T-E002 · Remove Unnecessary 'use client' from Static Components (P0)
 **Priority:** 1 | **Severity:** High | **Issues:** P0-2 | **Batch:** E
 
-**What:** Static components (Footer, StatCard, Hero section content) with `'use client'` directive opt the entire component subtree out of RSC streaming. Audit and convert to RSC where no hooks are used.
-
-**Audit script:**
-```bash
-# Find 'use client' components that contain no hooks or event handlers
-grep -rn "'use client'" src/components/ | while read line; do
-  file=$(echo $line | cut -d: -f1)
-  # Check if file uses any React hooks or browser APIs
-  if ! grep -qE "useState|useEffect|useCallback|useMemo|useRef|onClick|onChange|window\.|document\." "$file"; then
-    echo "SAFE TO CONVERT TO RSC: $file"
-  fi
-done
-```
-
-**Conversion checklist per component:**
-- No `useState` / `useEffect` / `useCallback` / `useRef` → safe RSC
-- No `onClick`, `onChange`, or other event handlers → safe RSC
-- No `window`, `document`, `localStorage` access → safe RSC
-- Uses Context → extract context consumer to thin client wrapper
-
----
+**Status:** ✅ COMPLETED - Removed 'use client' from Hero and P3Gradient components
 
 ### T-E003 · Fix EventCountdown Hydration Mismatch (P1)
 **Priority:** 2 | **Severity:** Medium | **Issues:** #28 | **Batch:** E
 
-**What:** `new Date().getTime()` executes on the server during SSR, producing a timestamp that differs from the client timestamp — causing hydration mismatch and CLS.
-
-**File:** `src/components/EventCountdown.tsx`
-```typescript
-'use client'
-import { useState, useEffect, useCallback, useMemo } from 'react'
-
-export function EventCountdown({ targetDateStr }: { targetDateStr: string }) {
-  // Render nothing server-side — countdown is inherently client-only
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  const targetDate = useMemo(() => new Date(targetDateStr).getTime(), [targetDateStr])
-
-  const calculateTimeLeft = useCallback(() => {
-    const diff = targetDate - Date.now()
-    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 }
-    return {
-      days: Math.floor(diff / 86_400_000),
-      hours: Math.floor((diff % 86_400_000) / 3_600_000),
-      minutes: Math.floor((diff % 3_600_000) / 60_000),
-      seconds: Math.floor((diff % 60_000) / 1000),
-    }
-  }, [targetDate])
-
-  // SSR skeleton — exact same dimensions as the rendered countdown
-  // prevents CLS (Cumulative Layout Shift)
-  if (!isClient) {
-    return <div className="h-24 w-full animate-pulse rounded-lg bg-gray-800" aria-hidden="true" />
-  }
-
-  // ... rest of countdown render
-}
-```
-
----
+**Status:** ✅ COMPLETED - Hydration mismatch fixed with SSR skeleton and client-side only rendering
 
 ### T-E004 · Tree-Shake lucide-react Icon Imports (P1)
 **Priority:** 2 | **Severity:** Medium | **Issues:** P1-3 | **Batch:** E
 
-**What:** Barrel imports of `lucide-react` pull the entire icon library (~800 icons, ~40KB gzipped) into the bundle. Named imports enable tree-shaking.
-
-```typescript
-// ❌ Before — imports entire library
-import { Calendar, Clock, User, Star, Phone } from 'lucide-react'
-// (lucide-react barrel export prevents tree-shaking in some bundler configs)
-
-// ✅ After — direct module path import, always tree-shakeable
-import Calendar from 'lucide-react/dist/esm/icons/calendar'
-import Clock from 'lucide-react/dist/esm/icons/clock'
-import User from 'lucide-react/dist/esm/icons/user'
-```
-
-**Or configure in `next.config.ts`:**
-```typescript
-experimental: {
-  optimizePackageImports: ['lucide-react'],
-}
-```
-`optimizePackageImports` instructs Next.js to automatically rewrite barrel imports to direct imports at build time — zero code change required in components.
-
----
+**Status:** ✅ COMPLETED - Updated Navigation.tsx to use direct module path imports
 
 ### T-E005 · Move axe-core to Dev-Only Dynamic Import (P1)
 **Priority:** 2 | **Severity:** Medium | **Issues:** P1-4 | **Batch:** E
 
-**What:** `axe-core` (~150KB) should never ship to production users.
-
-```typescript
-// src/lib/axe.ts — conditionally loaded, never in prod bundle
-export async function initAxe() {
-  if (process.env.NODE_ENV !== 'development') return
-  if (typeof window === 'undefined') return
-
-  const React = (await import('react')).default
-  const ReactDOM = (await import('react-dom')).default
-  const axe = (await import('@axe-core/react')).default
-
-  axe(React, ReactDOM, 1000)
-}
-```
-
-```typescript
-// src/app/layout.tsx
-useEffect(() => {
-  import('@/lib/axe').then(({ initAxe }) => initAxe())
-}, [])
-```
-
----
+**Status:** ✅ COMPLETED - axe-core (~150KB) now only loads in development
 
 ### T-E006 · Remove Gallery Custom IntersectionObserver (P1)
 **Priority:** 1 | **Severity:** Critical | **Issues:** #27, #29 | **Batch:** E
 
-> **Note:** This is the atomic merge of Issues #27 and #29. Fixing #29 (remove redundant IntersectionObserver) eliminates the need for `'use client'` in Gallery (Issue #27), potentially converting it to an RSC.
-
-**What:** Next.js `<Image>` implements its own internal IntersectionObserver for lazy loading. The custom `useIntersectionObserver` hook in `Gallery.tsx` is entirely redundant and caused the SSR crash in Issue #27.
-
-**File:** `src/components/Gallery.tsx`
-```typescript
-// Remove 'use client' directive (may no longer be needed post-refactor)
-// Remove useIntersectionObserver import and usage
-
-// Before — manual lazy loading
-function LazyImage({ src, alt, ...props }) {
-  const { ref, isIntersecting } = useIntersectionObserver({ threshold: 0.1 })
-  return (
-    <div ref={ref}>
-      {isIntersecting && <Image src={src} alt={alt} {...props} />}
-    </div>
-  )
-}
-
-// After — Next.js Image handles lazy loading natively
-// loading="lazy" is the default for non-priority images
-function GalleryImage({ src, alt, priority = false, ...props }) {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      priority={priority}     // true only for above-fold images
-      // loading="lazy" is implicit when priority={false}
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      quality={85}
-      {...props}
-    />
-  )
-}
-```
-
-**After this change:** audit whether any other client hooks remain in `Gallery.tsx`. If none, remove `'use client'` directive and convert to RSC.
-
----
+**Status:** ✅ COMPLETED - Removed redundant IntersectionObserver, Next.js Image handles lazy loading natively
 
 ### T-E007 · Add Bundle Analysis + Performance Budget CI (P2)
 **Priority:** 3 | **Severity:** Medium | **Issues:** #33, P2 | **Batch:** E
 
-**Install:** `npm install --save-dev @next/bundle-analyzer knip`
-
-**`package.json` scripts:**
-```json
-{
-  "analyze": "ANALYZE=true next build",
-  "deadcode": "knip",
-  "perf:ci": "lhci autorun"
-}
-```
-
-**File:** `.github/workflows/performance.yml`
-```yaml
-name: Performance Budget
-on: [push]
-jobs:
-  lighthouse:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci && npm run build
-      - name: Run Lighthouse CI
-        run: npx lhci autorun
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-```
-
----
+**Status:** ✅ COMPLETED - Bundle analysis and performance budget CI implemented
 
 ### T-E008 · Add Rate Limiting Tests with Vitest Fake Timers (P2)
 **Priority:** 3 | **Severity:** Medium | **Issues:** #14 | **Batch:** E
 
-**What:** Rate limiter tests require time manipulation. The critical detail: `toFake` must include `'Date'` — not just `'setTimeout'` — so `Date.now()` inside the `RateLimiter` class is mocked.
-
-**File:** `src/__tests__/rate-limiter.test.ts`
-```typescript
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { RateLimiter } from '@/lib/security'
-
-describe('RateLimiter', () => {
-  beforeEach(() => {
-    // Must include 'Date' so Date.now() calls in RateLimiter are mocked
-    vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] })
-  })
-
-  afterEach(() => vi.useRealTimers())
-
-  it('allows requests within limit', () => {
-    const limiter = new RateLimiter(5, 300_000) // 5 req per 5 min
-    for (let i = 0; i < 5; i++) {
-      expect(limiter.isAllowed('127.0.0.1')).toBe(true)
-    }
-  })
-
-  it('blocks requests exceeding limit', () => {
-    const limiter = new RateLimiter(5, 300_000)
-    for (let i = 0; i < 5; i++) limiter.isAllowed('127.0.0.1')
-    expect(limiter.isAllowed('127.0.0.1')).toBe(false)
-  })
-
-  it('resets after window expires', () => {
-    const limiter = new RateLimiter(5, 300_000)
-    for (let i = 0; i < 5; i++) limiter.isAllowed('127.0.0.1')
-
-    // Advance past the 5-minute window
-    vi.advanceTimersByTime(300_001)
-
-    expect(limiter.isAllowed('127.0.0.1')).toBe(true)
-  })
-
-  it('isolates limits per IP', () => {
-    const limiter = new RateLimiter(1, 300_000)
-    expect(limiter.isAllowed('192.168.1.1')).toBe(true)
-    expect(limiter.isAllowed('192.168.1.1')).toBe(false)
-    expect(limiter.isAllowed('192.168.1.2')).toBe(true) // different IP
-  })
-})
-```
-
----
+**Status:** ✅ COMPLETED - Rate limiting tests with Vitest fake timers implemented
 
 ## 🟢 BATCH F — Data Architecture & State Management
 > Resolves static/DB data duplication (Issues #17 + #19 merged) and state fragmentation.
