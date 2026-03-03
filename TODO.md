@@ -6284,15 +6284,221 @@ Example:
 
 ---
 
-# 🧠 Enhancements Section (Reclassified)
+# 🎯 Page Rendering Tasks
 
-Your “Enhancement/Optimization List” has been reclassified as:
+* [ ] `T-7001` **Optimize hero image loading**
 
-## Enhancement Backlog (Non-Committed)
+  * priority: 3
+  * estimate_m: 30
+  * labels: [performance, images, rendering]
+  * assignee: @frontend
+  * status: open
+  * due: 2026-03-15
+  * deps: []
+  * target_files: [src/components/Hero.tsx]
+  * related_files: [src/app/page.tsx]
+  * sub-tasks:
 
-These are architectural improvements — not actionable tasks yet.
+    - [ ] Ensure hero image uses priority loading in src/components/Hero.tsx.
+    - [ ] Ensure proper image optimization settings in src/components/Hero.tsx.
+    - [ ] Ensure LCP optimization implemented in src/components/Hero.tsx.
+    - [ ] Add priority attribute to hero Image component.
+    - [ ] Optimize quality settings for hero image.
+    - [ ] Test LCP performance impact.
 
-To promote one to active work:
+    1. Hero image loads with priority.
+    2. LCP performance improved.
+    3. No layout shift during hero load.
+  * test_steps:
+
+    - Test hero image loading performance.
+    - Verify LCP metrics.
+    - Check for layout shift.
+  * notes: Critical for first impression and Core Web Vitals.
+
+* [ ] `T-7002` **Convert gallery SVG placeholders to optimized WebP images**
+
+  * priority: 4
+  * estimate_m: 60
+  * labels: [performance, images, optimization]
+  * assignee: @frontend
+  * status: open
+  * due: 2026-03-20
+  * deps: []
+  * target_files: [src/components/Gallery.tsx, public/images/gallery/**/*]
+  * related_files: [src/__tests__/image-optimization.test.tsx]
+  * sub-tasks:
+
+    - [ ] Ensure real barber work photos created in public/images/gallery/**/*.
+    - [ ] Ensure SVG placeholders replaced with WebP images in src/components/Gallery.tsx.
+    - [ ] Ensure proper alt texts maintained in src/components/Gallery.tsx.
+    - [ ] Create high-quality photos of actual barber work.
+    - [ ] Convert images to WebP format with optimization.
+    - [ ] Update Gallery component to use real images.
+    - [ ] Update image optimization tests.
+
+    1. Real barber work photos implemented.
+    2. WebP format optimized for performance.
+    3. Gallery loading performance improved.
+  * test_steps:
+
+    - Test gallery image loading.
+    - Verify WebP optimization.
+    - Check performance impact.
+  * notes: Replace placeholders with actual work to showcase skills.
+
+* [ ] `T-7003` **Implement intersection observer for gallery lazy loading**
+
+  * priority: 4
+  * estimate_m: 45
+  * labels: [performance, lazy-loading, user-experience]
+  * assignee: @frontend
+  * status: open
+  * due: 2026-03-25
+  * deps: [T-7002]
+  * target_files: [src/components/Gallery.tsx]
+  * related_files: [src/hooks/useIntersectionObserver.ts]
+  * sub-tasks:
+
+    - [ ] Ensure intersection observer hook created in src/hooks/useIntersectionObserver.ts.
+    - [ ] Ensure gallery uses intersection observer in src/components/Gallery.tsx.
+    - [ ] Ensure images load only when visible in src/components/Gallery.tsx.
+    - [ ] Create custom intersection observer hook.
+    - [ ] Implement lazy loading for gallery images.
+    - [ ] Add smooth fade-in animations for loaded images.
+    - [ ] Test performance improvements.
+
+    1. Intersection observer implemented.
+    2. Gallery images load only when needed.
+    3. Initial page load performance improved.
+  * test_steps:
+
+    - Test lazy loading functionality.
+    - Verify performance improvements.
+    - Check user experience impact.
+  * notes: Improves initial page load performance.
+
+* [ ] `T-7004` **Add resource hints for critical CSS and fonts**
+
+  * priority: 4
+  * estimate_m: 30
+  * labels: [performance, css, fonts, optimization]
+  * assignee: @frontend
+  * status: open
+  * due: 2026-03-18
+  * deps: []
+  * target_files: [src/app/layout.tsx]
+  * related_files: [src/app/globals.css]
+  * sub-tasks:
+
+    - [ ] Ensure preconnect hints added for fonts in src/app/layout.tsx.
+    - [ ] Ensure preload hints added for critical CSS in src/app/layout.tsx.
+    - [ ] Ensure DNS prefetch for external resources in src/app/layout.tsx.
+    - [ ] Add preconnect for Google Fonts.
+    - [ ] Add preload for critical CSS.
+    - [ ] Add DNS prefetch for external domains.
+    - [ ] Test resource loading performance.
+
+    1. Resource hints implemented.
+    2. Font loading performance improved.
+    3. Critical CSS loads faster.
+  * test_steps:
+
+    - Test font loading performance.
+    - Verify CSS loading optimization.
+    - Check resource timing metrics.
+  * notes: Improves perceived loading performance.
+
+* [ ] `T-7005` **Optimize barber profile images**
+
+  * priority: 3
+  * estimate_m: 45
+  * labels: [performance, images, team]
+  * assignee: @frontend
+  * status: open
+  * due: 2026-03-22
+  * deps: []
+  * target_files: [src/components/Barbers.tsx, public/images/barbers/**/*]
+  * related_files: [src/data/barbers.ts]
+  * sub-tasks:
+
+    - [ ] Ensure individual barber photos created in public/images/barbers/**/*.
+    - [ ] Ensure proper image optimization in src/components/Barbers.tsx.
+    - [ ] Ensure consistent image sizes and formats in src/components/Barbers.tsx.
+    - [ ] Create professional headshots for each barber.
+    - [ ] Optimize images for web performance.
+    - [ ] Update Barbers component with optimized images.
+    - [ ] Update barber data with new image paths.
+
+    1. Professional barber photos implemented.
+    2. Image optimization applied.
+    3. Team section performance maintained.
+  * test_steps:
+
+    - Test barber image loading.
+    - Verify optimization settings.
+    - Check team section performance.
+  * notes: Professional appearance is crucial for client trust.
+
+* [ ] `T-7006` **Implement speculative prefetching for booking flow**
+
+  * priority: 4
+  * estimate_m: 30
+  * labels: [performance, booking, user-experience]
+  * assignee: @frontend
+  * status: open
+  * due: 2026-03-28
+  * deps: []
+  * target_files: [src/components/Services.tsx, src/components/Barbers.tsx]
+  * related_files: [src/app/page.tsx]
+  * sub-tasks:
+
+    - [ ] Ensure prefetch hints added for booking pages in src/components/Services.tsx.
+    - [ ] Ensure prefetch hints added for barber profiles in src/components/Barbers.tsx.
+    - [ ] Ensure intelligent prefetching based on user interaction in src/app/page.tsx.
+    - [ ] Add prefetch for booking system.
+    - [ ] Add prefetch for barber detail pages.
+    - [ ] Implement interaction-based prefetching.
+    - [ ] Test booking flow performance.
+
+    1. Prefetching implemented for booking flow.
+    2. Booking navigation is instant.
+    3. User experience improved.
+  * test_steps:
+
+    - Test prefetching functionality.
+    - Verify booking flow performance.
+    - Check user experience impact.
+  * notes: Anticipates user behavior for smoother experience.
+
+---
+
+* [ ] `T-5003` **Update documentation**
+
+  * priority: 3
+  * estimate_m: 60
+  * labels: [docs, maintenance]
+  * assignee: @docs
+  * status: planned
+  * recurring:
+
+    type: after major changes
+    next_due: after significant updates
+  * target_files: [README.md, docs/**/*]
+  * related_files: []
+  * sub-tasks:
+
+    - [ ] Document API changes in README.md and docs/**/*.
+    - [ ] Document behavioral changes from fixes in README.md and docs/**/*.
+    - [ ] Update README and docs as needed.
+    - [ ] Review recent changes for documentation needs.
+    - [ ] Update relevant documentation files.
+    - [ ] Check docs build.
+
+    1. Document API changes.
+    2. Document behavioral changes from fixes.
+    3. Update README and docs as needed.
+  * test_steps:
 
 * Assign T-ID
 * Assign priority
