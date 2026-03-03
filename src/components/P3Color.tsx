@@ -27,8 +27,9 @@ export function P3Gradient({
   fallbackFrom,
   fallbackTo,
 }: P3GradientProps) {
-  const resolvedFallbackFrom = fallbackFrom ?? from;
-  const resolvedFallbackTo = fallbackTo ?? to;
+  const hasCustomFallback = typeof fallbackFrom === 'string' || typeof fallbackTo === 'string';
+  const resolvedFallbackFrom = hasCustomFallback ? (fallbackFrom ?? fallbackTo ?? from) : from;
+  const resolvedFallbackTo = hasCustomFallback ? (fallbackTo ?? fallbackFrom ?? to) : to;
     <div
       className={className}
       style={{
