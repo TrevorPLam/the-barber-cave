@@ -65,6 +65,30 @@ export default function Community() {
                   <li>• Supportive brotherhood environment</li>
                 </ul>
               </div>
+              
+              <div className="bg-green-50 p-4 rounded-lg">
+                <div className="font-semibold text-black mb-2">Join Our Community</div>
+                <p className="text-sm text-gray-700 mb-3">
+                  Become part of something bigger than just a haircut. Build connections, 
+                  find support, and grow with your community.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={`tel:682-812-4154`}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors text-center"
+                  >
+                    Call to Join
+                  </a>
+                  <a
+                    href={EXTERNAL_LINKS.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-300 transition-colors text-center"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -118,13 +142,21 @@ export default function Community() {
                   Follow @bringwhachagot
                 </a>
                 <a
-                  href={EXTERNAL_LINKS.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                  href={`tel:601-629-8972`}
+                  className="bg-yellow-500 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
                 >
-                  View Past Events
+                  Competitor Info
                 </a>
+              </div>
+              
+              <div className="mt-6 bg-yellow-50 p-4 rounded-lg">
+                <div className="font-semibold text-black mb-2">Event Production</div>
+                <div className="text-sm text-gray-700">
+                  <div>• Production: IMOC Productions (@imoc_productions)</div>
+                  <div>• Venue: Unique Visions, DeSoto, TX</div>
+                  <div>• Format: 2 shows in 1 night</div>
+                  <div>• Purpose: Showcase DFW barber talent</div>
+                </div>
               </div>
             </div>
           </div>

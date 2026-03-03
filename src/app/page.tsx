@@ -7,6 +7,10 @@ import StructuredData from "@/components/StructuredData";
 import { services } from '@/data/services';
 
 // Lazy load components that are not immediately visible with Suspense boundaries
+const EventCountdown = dynamic(() => import("@/components/EventCountdown"), {
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
+});
+
 const Gallery = dynamic(() => import("@/components/Gallery"), {
   loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
 });
@@ -62,6 +66,9 @@ export default function Home() {
           </div>
         )}
         <Hero />
+        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
+          <EventCountdown />
+        </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <Gallery />
         </Suspense>
