@@ -121,19 +121,46 @@ export const BUSINESS_METRICS: BusinessMetrics = BusinessEngine.getMetrics(barbe
 export const BUSINESS_INFO = {
   name: 'The Barber Cave',
   tagline: 'Where Style Meets Excellence',
-  description: 'Experience the art of barbering at The Barber Cave. Premium cuts, luxury grooming, and master barbers dedicated to your perfect look.',
+  description: 'Experience luxury grooming at The Barber Cave, Dallas\' premier barbershop. Owned by Trill LadiBarber, a female barber and SMP specialist, offering premium cuts, scalp micropigmentation, and master barber services in an upscale urban environment.',
   location: 'Dallas, Texas',
   fullLocation: 'Dallas, Texas\nDFW Metro Area',
-  address: '1234 Real Street, Dallas, TX 75201',
-  phone: '(214) 555-0123',
-  rating: String(BUSINESS_METRICS.averageRating),
-  totalReviews: '178',
+  address: '2629 N Stemmons Fwy, Suite 104, Dallas, TX 75207',
+  phone: '(682) 812-4154',
+  email: 'Trill_connections@yahoo.com',
+  rating: '4.9',
+  totalReviews: '194+',
   totalBarbers: String(BUSINESS_METRICS.totalBarbers),
   totalServices: String(BUSINESS_METRICS.totalServices),
   newClientDiscount: '$10',
+  owner: {
+    name: 'Trevalyn M. Parker',
+    professionalAlias: 'Trill LadiBarber',
+    title: 'Owner, Master Barber, SMP Artist, Entrepreneur',
+    education: 'Texas Barber College graduate',
+    experience: '5+ years',
+    awards: ['Social Media Influencer of the Year Award', 'Featured twice in Krave Magazine'],
+    specializations: ['Scalp Micropigmentation (SMP)', 'Master Barber Services', 'Product Development']
+  },
   coordinates: {
-    latitude: '32.7767',
-    longitude: '-96.7970'
+    latitude: '32.8062204',
+    longitude: '-96.8418925'
+  },
+  internationalExpansion: {
+    london: {
+      address: '10A Homsey Green, Beck Row, Bury St. Edmunds, IP28 8AJ, United Kingdom',
+      status: 'Active international location'
+    }
+  },
+  productLine: {
+    name: 'Magic Drip',
+    products: ['Foam wrap solution', 'Pomade', 'Beard growth oil'],
+    hashtag: '#magicdrip'
+  },
+  socialMedia: {
+    instagram: ['@trill_ladibarber91', '@the_barbercave_', '@the_barbercave_uk'],
+    tiktok: '@trill_ladibarber',
+    facebook: 'TrillBarberCave',
+    bringWhaChaGot: '@bringwhachagot'
   },
   openingHours: [
     { days: 'Mon-Fri', hours: '9am–7pm' },
@@ -175,11 +202,16 @@ export const BUSINESS_INFO = {
  * - External links include security attributes to prevent referrer leakage
  */
 export const EXTERNAL_LINKS = {
-  booking: 'https://getsquire.com/booking/book/the-barber-cave-dallas',
+  booking: 'https://getsquire.com/booking/book/the-barber-cave-dallas?ig_ix=true&owner=shop',
   services: 'https://getsquire.com/discover/barbershop/the-barber-cave-dallas',
   instagram: 'https://www.instagram.com/the_barbercave_',
   facebook: 'https://www.facebook.com/TrillBarberCave/',
-  youtube: 'https://www.youtube.com/@TheBarberCave'
+  youtube: 'https://www.youtube.com/@TheBarberCave',
+  ownerInstagram: 'https://www.instagram.com/trill_ladibarber91',
+  londonInstagram: 'https://www.instagram.com/the_barbercave_uk',
+  bringWhaChaGot: 'https://www.instagram.com/bringwhachagot',
+  ownerTiktok: 'https://www.tiktok.com/@trill_ladibarber',
+  linktree: 'https://linktr.ee/Trill_ladibarber'
 } as const;
 
 /**
@@ -214,6 +246,7 @@ export const NAVIGATION_ITEMS = [
   { href: '#services', label: 'Services' },
   { href: '#barbers', label: 'Barbers' },
   { href: '#work', label: 'Our Work' },
+  { href: '#community', label: 'Community' },
   { href: '#about', label: 'About' },
   { href: '#contact', label: 'Contact' }
 ] as const;

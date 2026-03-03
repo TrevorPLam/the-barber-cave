@@ -14,14 +14,14 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    template: '%s | The Barber Cave - Premier Barber Shop in Dallas',
-    default: 'The Barber Cave - Premier Barber Shop in Dallas'
+    template: '%s | The Barber Cave - Luxury Barber Shop & SMP Services Dallas',
+    default: 'The Barber Cave - Luxury Barber Shop & SMP Services Dallas'
   },
-  description: `Experience the best barber services in Dallas at The Barber Cave. ${BUSINESS_INFO.totalBarbers} expert barbers, ${BUSINESS_INFO.totalServices} specialized services including loc services, premium grooming, and flexible scheduling.`,
-  keywords: "barber shop Dallas, The Barber Cave, luxury grooming, expert barber, fade specialist, loc services, beard grooming, hot towel shave, Dallas haircut, men's grooming Texas, early bird appointments, after hours grooming",
+  description: `Experience luxury grooming at The Barber Cave, Dallas' premier barbershop. Owned by Trill LadiBarber, offering premium cuts, scalp micropigmentation (SMP), and master barber services. 4.9 stars (194+ reviews). International locations in Dallas & London.`,
+  keywords: "barber shop Dallas, The Barber Cave, luxury grooming, Trill LadiBarber, scalp micropigmentation Dallas, SMP services, expert barber, fade specialist, loc services, beard grooming, hot towel shave, Dallas haircut, men's grooming Texas, Magic Drip products, international barber shop, female barber Dallas, premium grooming services",
   openGraph: {
-    title: "The Barber Cave - Premier Barber Shop in Dallas",
-    description: `Experience the best barber services in Dallas at The Barber Cave. ${BUSINESS_INFO.totalBarbers} expert barbers, ${BUSINESS_INFO.totalServices} specialized services including loc services, premium grooming, and flexible scheduling.`,
+    title: "The Barber Cave - Luxury Barber Shop & SMP Services Dallas",
+    description: `Experience luxury grooming at The Barber Cave, Dallas' premier barbershop. Owned by Trill LadiBarber, offering premium cuts, scalp micropigmentation (SMP), and master barber services. 4.9 stars (194+ reviews). International locations in Dallas & London.`,
     type: "website",
     locale: "en_US",
     url: SITE_URL,
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Barber Cave - Dallas' Premier Barber Shop",
-    description: `Where style meets excellence. Experience luxury grooming with ${BUSINESS_INFO.totalBarbers} master barbers and ${BUSINESS_INFO.totalServices} specialized services including loc services, premium time slots, and flexible scheduling in Dallas.`,
+    title: "The Barber Cave - Dallas' Luxury Barber Shop & SMP Services",
+    description: `Luxury grooming at The Barber Cave. Owned by Trill LadiBarber, offering premium cuts, scalp micropigmentation (SMP), and master barber services. 4.9 stars (194+ reviews). International locations in Dallas & London.`,
   },
   robots: {
     index: true,

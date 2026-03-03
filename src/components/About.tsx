@@ -77,29 +77,80 @@ export default function About() {
             
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
               <p>
-                Located in the heart of Dallas, The Barber Cave isn't just a barbershop—it's a destination 
-                where craftsmanship meets community. With {businessInfo.totalReviews} five-star reviews and a team of {businessInfo.totalBarbers} master barbers, 
-                we've established ourselves as Dallas' premier grooming destination.
+                The Barber Cave is a luxury barbershop located in Dallas, Texas, offering premium grooming services 
+                in an upscale urban environment. **As of 2026, the brand has expanded internationally with a second location in London, UK**, 
+                positioning it as a global grooming destination.
               </p>
               <p>
-                Our barbers specialize in everything from classic cuts to modern fades, luxury shaves to 
-                complete grooming transformations. We offer {businessInfo.totalServices} specialized services to ensure every client 
-                leaves looking and feeling their absolute best.
+                Owned and operated by <strong>Trevalyn M. Parker</strong> (professionally known as Trill LadiBarber), 
+                a female barber and SMP (Scalp Micropigmentation) specialist, the shop maintains a strong reputation with 
+                <strong>4.9 stars on Squire (194+ reviews)</strong> and <strong>4.7 stars on Birdeye (121+ reviews)</strong>.
+              </p>
+              <p>
+                Our award-winning owner entered the male-dominated barbering industry facing significant challenges, 
+                driven by "pure will and refusal to be shut down." Her grandmother, who passed away from cancer, 
+                serves as her primary motivation and inspiration.
               </p>
             </div>
             
-            <div className="grid grid-cols-3 gap-8 mt-12">
+            <div className="mt-12 space-y-8">
               <div>
-                <div className="text-3xl font-bold text-black mb-2">{businessInfo.rating}/5</div>
-                <div className="text-gray-600">Average Rating</div>
+                <h3 className="text-2xl font-bold text-black mb-4">Owner Excellence</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="font-semibold text-black mb-2">Awards & Recognition</div>
+                    <ul className="text-gray-600 space-y-1">
+                      <li>• Social Media Influencer of the Year Award</li>
+                      <li>• Featured twice in Krave Magazine</li>
+                      <li>• International brand expansion to London</li>
+                    </ul>
+                  </div>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="font-semibold text-black mb-2">Specializations</div>
+                    <ul className="text-gray-600 space-y-1">
+                      <li>• Scalp Micropigmentation (SMP)</li>
+                      <li>• Master Barber Services</li>
+                      <li>• Magic Drip Product Line</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
+              
               <div>
-                <div className="text-3xl font-bold text-black mb-2">{businessInfo.totalBarbers}+</div>
-                <div className="text-gray-600">Expert Barbers</div>
+                <h3 className="text-2xl font-bold text-black mb-4">SMP Services - Advanced Hair Loss Solutions</h3>
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <p className="text-gray-700 mb-3">
+                    Non-surgical, painless hair loss solution using organic ink pigments to create the appearance of hair follicles.
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-gray-600">
+                    <div>• 1-4 hour procedures</div>
+                    <div>• 2-3 treatments required</div>
+                    <div>• Custom ink blending</div>
+                    <div>• Low maintenance</div>
+                  </div>
+                </div>
               </div>
+              
               <div>
-                <div className="text-3xl font-bold text-black mb-2">{businessInfo.totalServices}</div>
-                <div className="text-gray-600">Services</div>
+                <h3 className="text-2xl font-bold text-black mb-4">Global Presence</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="font-semibold text-black mb-2">Dallas Flagship</div>
+                    <div className="text-gray-600">
+                      <div>2629 N Stemmons Fwy, Suite 104</div>
+                      <div>Dallas, TX 75207</div>
+                      <div>(682) 812-4154</div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="font-semibold text-black mb-2">London Expansion</div>
+                    <div className="text-gray-600">
+                      <div>10A Homsey Green, Beck Row</div>
+                      <div>Bury St. Edmunds, IP28 8AJ</div>
+                      <div>United Kingdom</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -108,12 +159,42 @@ export default function About() {
             <div className="aspect-square rounded-2xl overflow-hidden bg-gray-200">
               <Image 
                 src="/images/about/shop-interior.svg"
-                alt="The Barber Cave Interior"
+                alt="The Barber Cave Interior - Luxury Barber Shop Environment"
                 fill
                 quality={75}
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
+            </div>
+            
+            <div className="mt-8 grid grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-black mb-2">{businessInfo.rating}/5</div>
+                <div className="text-gray-600 text-sm">Squire Rating</div>
+                <div className="text-2xl font-bold text-black mt-1 mb-2">4.7/5</div>
+                <div className="text-gray-600 text-sm">Birdeye Rating</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-black mb-2">{businessInfo.totalBarbers}+</div>
+                <div className="text-gray-600 text-sm">Expert Barbers</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-black mb-2">{businessInfo.totalServices}</div>
+                <div className="text-gray-600 text-sm">Services</div>
+              </div>
+            </div>
+            
+            <div className="mt-8 bg-gradient-to-r from-black to-gray-800 p-6 rounded-2xl text-white">
+              <h4 className="text-xl font-bold mb-3">Magic Drip Product Line</h4>
+              <p className="text-gray-300 mb-4">
+                Developed and launched by Trill LadiBarber, our premium grooming products deliver exceptional results.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="bg-white/20 px-3 py-1 rounded-full text-sm">Foam Wrap Solution</span>
+                <span className="bg-white/20 px-3 py-1 rounded-full text-sm">Premium Pomade</span>
+                <span className="bg-white/20 px-3 py-1 rounded-full text-sm">Beard Growth Oil</span>
+                <span className="bg-white/20 px-3 py-1 rounded-full text-sm">#{businessInfo.productLine?.hashtag}</span>
+              </div>
             </div>
           </div>
         </div>

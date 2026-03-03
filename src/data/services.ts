@@ -63,6 +63,9 @@ export interface Service {
   priceMax?: number;
   duration: string;
   icon: string;
+  category?: string;
+  popular?: boolean;
+  note?: string;
 }
 
 /**
@@ -250,7 +253,9 @@ export const services: Service[] = [
     priceMin: 25,
     priceMax: 30,
     duration: '30 min',
-    icon: 'Target'
+    icon: 'Target',
+    category: 'express',
+    popular: false
   },
   {
     id: 'beard-lineup',
@@ -260,7 +265,9 @@ export const services: Service[] = [
     priceMin: 30,
     priceMax: 40,
     duration: '30 min',
-    icon: 'Move'
+    icon: 'Move',
+    category: 'express',
+    popular: false
   },
   {
     id: 'kids-haircut',
@@ -270,7 +277,9 @@ export const services: Service[] = [
     priceMin: 30,
     priceMax: 30,
     duration: '30 min',
-    icon: 'Smile'
+    icon: 'Smile',
+    category: 'kids',
+    popular: false
   },
   {
     id: 'womens-haircut',
@@ -280,57 +289,9 @@ export const services: Service[] = [
     priceMin: 50,
     priceMax: 50,
     duration: '1 hour',
-    icon: 'Flower'
-  },
-  {
-    id: 'vip-off-day',
-    title: 'VIP off day cuts',
-    description: 'VIP service on off days - call for booking',
-    price: '$100',
-    priceMin: 100,
-    priceMax: 100,
-    duration: '1 hour',
-    icon: 'Diamond'
-  },
-  {
-    id: 'early-bird-special',
-    title: 'Early Bird (6am-7am)',
-    description: 'Any cut before 8am - BOOK 24 HRS IN ADVANCE',
-    price: '$75',
-    priceMin: 75,
-    priceMax: 75,
-    duration: '1 hour',
-    icon: 'Sun'
-  },
-  {
-    id: 'after-hours-7pm',
-    title: 'After hours 7pm-8pm',
-    description: 'Premium after-hours service',
-    price: '$65',
-    priceMin: 65,
-    priceMax: 65,
-    duration: '1 hour',
-    icon: 'Moon'
-  },
-  {
-    id: 'after-hours-8pm',
-    title: 'After hours 8pm-8pm',
-    description: 'Premium late evening service',
-    price: '$70',
-    priceMin: 70,
-    priceMax: 70,
-    duration: '1 hour',
-    icon: 'Moon'
-  },
-  {
-    id: 'after-hours-9pm',
-    title: 'After hours 9pm-10pm',
-    description: 'Premium late night service',
-    price: '$80',
-    priceMin: 80,
-    priceMax: 80,
-    duration: '1 hour',
-    icon: 'Moon'
+    icon: 'Flower',
+    category: 'women',
+    popular: false
   },
   {
     id: 'loc-retwist',
@@ -340,7 +301,9 @@ export const services: Service[] = [
     priceMin: 75,
     priceMax: 75,
     duration: '1 hour',
-    icon: 'RefreshCw'
+    icon: 'RefreshCw',
+    category: 'loc',
+    popular: false
   },
   {
     id: 'loc-retwist-style',
@@ -350,7 +313,9 @@ export const services: Service[] = [
     priceMin: 85,
     priceMax: 85,
     duration: '1h 15min',
-    icon: 'Sparkles'
+    icon: 'Sparkles',
+    category: 'loc',
+    popular: false
   },
   {
     id: 'loc-detox',
@@ -360,7 +325,9 @@ export const services: Service[] = [
     priceMin: 40,
     priceMax: 40,
     duration: '30 min',
-    icon: 'Wind'
+    icon: 'Wind',
+    category: 'loc',
+    popular: false
   },
   {
     id: 'loc-bleach',
@@ -370,7 +337,9 @@ export const services: Service[] = [
     priceMin: 75,
     priceMax: 75,
     duration: '2 hours',
-    icon: 'Droplet'
+    icon: 'Droplet',
+    category: 'loc',
+    popular: false
   },
   {
     id: 'loc-retie-interlock',
@@ -378,9 +347,11 @@ export const services: Service[] = [
     description: 'Loc retie/interlock service - price varies by loc size',
     price: '$85+',
     priceMin: 85,
-    // Open-ended range, max undefined
+    priceMax: undefined,
     duration: '1h 30min',
-    icon: 'Link'
+    icon: 'Link',
+    category: 'loc',
+    popular: false
   },
   {
     id: 'starter-locks',
@@ -390,7 +361,9 @@ export const services: Service[] = [
     priceMin: 85,
     priceMax: 85,
     duration: '1 hour',
-    icon: 'Plus'
+    icon: 'Plus',
+    category: 'loc',
+    popular: false
   },
   {
     id: 'two-strand-twist',
@@ -400,7 +373,9 @@ export const services: Service[] = [
     priceMin: 85,
     priceMax: 85,
     duration: '1h 15min',
-    icon: 'RotateCcw'
+    icon: 'RotateCcw',
+    category: 'twist',
+    popular: false
   },
   {
     id: 'two-strand-twist-blowout',

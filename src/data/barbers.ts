@@ -48,6 +48,15 @@ export interface Barber {
   reviews: string;
   available: string;
   image: string;
+  specialties?: string[];
+  achievements?: string[];
+  instagram?: string;
+  facebook?: string;
+  personalBrand?: string;
+  availability?: string;
+  vipContact?: string;
+  upcomingEvent?: string;
+  spotify?: string;
 }
 
 /**
@@ -128,75 +137,133 @@ export interface Barber {
  */
 export const barbers: Barber[] = [
   {
-    id: 'trill-l',
-    name: 'Trill L.',
-    title: 'Master Barber',
+    id: 'trill-ladibarber',
+    name: 'Trill LadiBarber',
+    title: 'Owner, Master Barber, SMP Artist',
     rating: '4.8',
     reviews: '82',
     available: 'Available Friday',
-    image: '/images/barbers/trill-l.svg'
+    image: '/images/barbers/trill-l.svg',
+    specialties: ['Scalp Micropigmentation', 'Master Barber Services', 'Product Development'],
+    achievements: ['Social Media Influencer of the Year', 'Featured in Krave Magazine'],
+    instagram: '@trill_ladibarber91'
   },
   {
-    id: 'charlo-f',
-    name: 'Charlo F.',
-    title: 'Fade Specialist',
-    rating: '5.0',
-    reviews: '28',
-    available: 'Tomorrow',
-    image: '/images/barbers/charlo-f.svg'
-  },
-  {
-    id: 'daplug-jcox',
-    name: 'Daplug_jcox',
-    title: 'Expert Barber',
-    rating: '5.0',
-    reviews: '39',
-    available: 'Tomorrow',
-    image: '/images/barbers/daplug-jcox.svg'
-  },
-  {
-    id: 'tru-b',
-    name: 'Tru B.',
-    title: 'Blend Specialist',
-    rating: null,
-    reviews: '0',
-    available: 'Today',
-    image: '/images/barbers/tru-b.svg'
-  },
-  {
-    id: 'shay-25',
-    name: 'Shay',
-    title: 'Loc Specialist',
-    rating: '5.0',
-    reviews: '16',
-    available: 'Tomorrow',
-    image: '/images/barbers/shay-25.svg'
-  },
-  {
-    id: 'rob-pro-edge-cut',
-    name: 'Rob Pro_edge_cutz',
-    title: 'Master Barber',
-    rating: '5.0',
-    reviews: '0',
-    available: 'Today',
-    image: '/images/barbers/rob-pro-edge-cut.svg'
-  },
-  {
-    id: 'lee-thebarber',
-    name: 'Lee T.',
-    title: 'VIP Specialist',
+    id: 'lee-the-barber',
+    name: 'Lee the Barber',
+    title: 'VIP Services, Top Promoter',
     rating: '5.0',
     reviews: '13',
     available: 'Tomorrow',
-    image: '/images/barbers/lee-thebarber.svg'
+    image: '/images/barbers/lee-thebarber.svg',
+    specialties: ['VIP Monday Service', 'Brand Ambassador'],
+    achievements: ['Award-winning barber', '#REDPRO, #MenbyGR, #Groomane ambassador'],
+    instagram: '@lee_dabarber85',
+    vipContact: '601-629-8972',
+    upcomingEvent: 'Competing in "SHES MY BARBER 2026" - March 29, 2026'
   },
   {
-    id: 'larro-cuts',
-    name: 'Larro C.',
-    title: 'Expert Barber',
+    id: 'rob-pro-edge',
+    name: 'Rob P (Pro Edge)',
+    title: 'Precision Cuts',
     rating: '5.0',
-    reviews: '14',
+    reviews: '16',
+    available: 'Today',
+    image: '/images/barbers/rob-pro-edge-cut.svg',
+    specialties: ['Precision Cuts', 'Perfect 5.0 Rating'],
+    achievements: ['Highest rating on team', 'Perfect 5.0 stars'],
+    instagram: '@proedgecutz',
+    availability: 'Tuesdays only'
+  },
+  {
+    id: 'shay-the-barber',
+    name: 'Shay the Barber',
+    title: 'Locs Specialist, Kids Cuts',
+    rating: '5.0',
+    reviews: '16',
     available: 'Tomorrow',
-    image: '/images/barbers/larro-cuts.svg'
+    image: '/images/barbers/shay-25.svg',
+    specialties: ['Locs maintenance', 'Kids haircuts', 'Diverse styling'],
+    achievements: ['5.0 stars on Squire'],
+    instagram: '@shaythebarber',
+    personalBrand: '#katchingfadez',
+    availability: 'Wednesdays only'
+  },
+  {
+    id: 'charlofadez',
+    name: 'Charlo (Charlofadez)',
+    title: 'Precision Fades, Blades',
+    rating: '5.0',
+    reviews: '28',
+    available: 'Tomorrow',
+    image: '/images/barbers/charlo-f.svg',
+    specialties: ['Premium fade work', 'Blade specialist'],
+    achievements: ['Featured in "Barber Cave Chronicles"'],
+    instagram: '@charlofadez',
+    personalBrand: '#charlofadez',
+    availability: 'Tue-Sat by appointment'
+  },
+  {
+    id: 'tru-blendz',
+    name: 'Tru Blendz',
+    title: 'Sharp Lineups, Blends',
+    rating: null,
+    reviews: '0',
+    available: 'Today',
+    image: '/images/barbers/tru-b.svg',
+    specialties: ['Sharp lineups', 'Blends'],
+    achievements: ['Newer team member'],
+    instagram: '@tr.u_blendz'
+  },
+  {
+    id: 'daplug-jcox',
+    name: 'Daplug JCox',
+    title: 'Veteran Barber',
+    rating: '5.0',
+    reviews: '39',
+    available: 'Tomorrow',
+    image: '/images/barbers/daplug-jcox.svg',
+    specialties: ['20+ years experience', 'Old-school techniques'],
+    achievements: ['Most experienced on team'],
+    instagram: '@daplug_jcox',
+    availability: 'Tue-Sat'
+  },
+  {
+    id: 'dee-kutt-punisha',
+    name: 'Dee Kutt-Punisha',
+    title: 'Design/SMP Specialist',
+    rating: null,
+    reviews: '0',
+    available: 'Today',
+    image: '/images/barbers/dee-kutt-punisha.svg',
+    specialties: ['Complex designs', 'SMP backup'],
+    achievements: ['SMP assistant to Trill'],
+    instagram: '@kutt_punisha'
+  },
+  {
+    id: 'jay-will-special',
+    name: 'Jay Will Special',
+    title: 'Barber & Music Artist',
+    rating: null,
+    reviews: '0',
+    available: 'Today',
+    image: '/images/barbers/jay-will-special.svg',
+    specialties: ['Music industry connections', 'Creative energy'],
+    achievements: ['Spotify artist (42 monthly listeners)', 'Co-hosts barber battles'],
+    instagram: '@jaywillspecial',
+    spotify: '42 monthly listeners, 492 followers',
+    availability: 'Open 7 days, walk-ins welcome'
+  },
+  {
+    id: 'so-pretty-porter',
+    name: 'So Pretty Porter',
+    title: 'Stylist',
+    rating: null,
+    reviews: '0',
+    available: 'Today',
+    image: '/images/barbers/so-pretty-porter.svg',
+    specialties: ['Styling services'],
+    achievements: ['Books exclusively via Squire'],
+    facebook: 'So.PrEtTy.PoRtEr'
   }
 ];

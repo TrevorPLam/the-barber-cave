@@ -19,6 +19,10 @@ const Barbers = dynamic(() => import("@/components/Barbers"), {
   loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
 });
 
+const Community = dynamic(() => import("@/components/Community"), {
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
+});
+
 const About = dynamic(() => import("@/components/About"), {
   loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
 });
@@ -66,6 +70,9 @@ export default function Home() {
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <Barbers />
+        </Suspense>
+        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
+          <Community />
         </Suspense>
         <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <About />
