@@ -3397,22 +3397,22 @@ const getBusinessInfo = (rawData: unknown) => {
 
 ---
 
-* [ ] `T-1006` **Fix Services.tsx icon fallback**
+* [x] `T-1006` **Fix Services.tsx icon fallback**
 
   * priority: 1
   * estimate_m: 30
   * labels: [bug, frontend, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-05
   * target_files: [src/components/Services.tsx]
   * related_files: [src/data/services.ts, src/components/IconContainer.tsx]
   * sub-tasks:
 
-    - [ ] Implement fallback icon in src/components/Services.tsx.
-    - [ ] Ensure no runtime crashes in src/components/Services.tsx.
-    - [ ] Test services with missing icons to ensure fallback renders using src/data/services.ts and src/components/IconContainer.tsx.
-    - [ ] Run the app and navigate to services page without crashes.
+    - [x] Implement fallback icon in src/components/Services.tsx.
+    - [x] Ensure no runtime crashes in src/components/Services.tsx.
+    - [x] Test services with missing icons to ensure fallback renders using src/data/services.ts and src/components/IconContainer.tsx.
+    - [x] Run the app and navigate to services page without crashes.
 
     1. Fallback icon implemented.
     2. No runtime crashes.

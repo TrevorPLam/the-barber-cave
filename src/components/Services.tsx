@@ -86,7 +86,7 @@ const iconMap = {
  * ```
  */
 const ServiceCard = memo(({ service }: { service: typeof services[0] }) => {
-  const IconComponent = iconMap[service.icon as keyof typeof iconMap];
+  const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Star;
   const isSpecial = service.id === 'new-client-special';
   
   return (
