@@ -93,7 +93,9 @@ the-barber-cave/
 │   └── utils/             # Utility functions
 ├── tests/                 # E2E tests
 ├── .storybook/           # Storybook configuration
-└── TESTING_GUIDE.md      # Comprehensive testing documentation
+├── TESTING_GUIDE.md      # Comprehensive testing documentation
+├── CONTRIBUTING.md       # Git workflow, PR standards, code quality
+└── DEBUGGING.md          # Common errors and troubleshooting
 ```
 
 ## 🚀 Getting Started
@@ -337,11 +339,15 @@ The project has been enhanced with enterprise-grade implementations following ad
 
 ## 🤝 Contributing
 
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full Git workflow, branch conventions, commit standards, and PR checklist.
+
+Quick steps:
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit your changes following [Conventional Commits](https://www.conventionalcommits.org/)
+4. Push to the branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request against `main`
 
 ## 📄 License
 
@@ -359,6 +365,7 @@ For technical questions about this project:
 
 - Open an issue on GitHub
 - Review the [TESTING_GUIDE.md](./TESTING_GUIDE.md) for testing information
+- Check [DEBUGGING.md](./DEBUGGING.md) for common errors and troubleshooting
 - Check Storybook for component documentation
 
 ## 🗺️ Roadmap
