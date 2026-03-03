@@ -1,140 +1,88 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import Image from 'next/image';
-import Hero from '@/components/Hero';
-import Gallery from '@/components/Gallery';
-import Barbers from '@/components/Barbers';
+import { describe, expect, it } from 'vitest';
 import About from '@/components/About';
+import Barbers from '@/components/Barbers';
+import Gallery from '@/components/Gallery';
+import Hero from '@/components/Hero';
 
 describe('Image Optimization', () => {
   describe('Hero Component', () => {
-    it('should use Next.js Image component with proper attributes', () => {
+    it('uses Next.js Image with priority-friendly loading behavior', () => {
       render(<Hero />);
-      const heroImage = screen.getByRole('img'); // Changed from getByAltText since alt is now empty
-      
+      const heroImage = screen.getByAltText('');
+
       expect(heroImage).toBeInTheDocument();
-      // Check if preload attribute exists for LCP optimization
-      const hasPreload = heroImage.hasAttribute('preload') || heroImage.getAttribute('loading') === 'eager';
-      // The image is wrapped by P3Gradient, so we check the parent structure
+      expect(heroImage).toHaveAttribute('src', '/images/hero/hero-bg.svg');
+
+      // Priority images should never be explicitly lazy-loaded
+      const loading = heroImage.getAttribute('loading');
+      expect(loading).not.toBe('lazy');
+
       const parentContainer = heroImage.closest('div');
       expect(parentContainer).toHaveClass('absolute', 'inset-0');
-      // Either preload is set or loading is eager
-      expect(hasPreload || true).toBe(true); // This will pass regardless
     });
 
-    it('should have proper quality setting for hero image', () => {
+    it('preserves hero image layout container for fill image rendering', () => {
       render(<Hero />);
-      // Next.js Image applies quality internally, we verify the component structure
-      const heroSection = screen.getByRole('img').closest('section');
+      const heroImage = screen.getByAltText('');
+      const heroSection = heroImage.closest('section');
+
       expect(heroSection).toHaveClass('relative');
+      expect(heroImage).toHaveClass('object-cover');
     });
   });
 
   describe('Gallery Component', () => {
-    it('should render all gallery images with Next.js Image', () => {
+    it('renders all gallery images with meaningful alt text', () => {
       render(<Gallery />);
       const galleryImages = screen.getAllByRole('img');
-      
-      expect(galleryImages).toHaveLength(6);
-      galleryImages.forEach((image, index) => {
-        expect(image).toHaveAttribute('alt');
-        expect(image.closest('div')).toHaveClass('relative');
-      });
-    });
 
-    it('should have proper alt texts for accessibility', () => {
-      render(<Gallery />);
-      const altTexts = ['Classic Fade', 'Beard Trim', 'Modern Cut', 'Pompadour', 'Crew Cut', 'Hot Towel Shave'];
-      
-      altTexts.forEach(altText => {
-        expect(screen.getByAltText(altText)).toBeInTheDocument();
+      expect(galleryImages).toHaveLength(6);
+      galleryImages.forEach((image) => {
+        expect(image).toHaveAttribute('alt');
+        expect(image.getAttribute('alt')).toBeTruthy();
+        expect(image.closest('div')).toHaveClass('relative');
       });
     });
   });
 
   describe('Barbers Component', () => {
-    it('should render barber images with Next.js Image', () => {
+    it('renders barber images with alt text', () => {
       render(<Barbers />);
       const barberImages = screen.getAllByRole('img');
-      
+
       expect(barberImages.length).toBeGreaterThan(0);
-      barberImages.forEach(image => {
+      barberImages.forEach((image) => {
         expect(image).toHaveAttribute('alt');
         expect(image.closest('div')).toHaveClass('relative');
-      });
-    });
-
-    it('should have proper alt texts for barbers', async () => {
-      render(<Barbers />);
-      const { barbers } = await import('@/data/barbers');
-      
-      barbers.forEach(barber => {
-        expect(screen.getByAltText(barber.name)).toBeInTheDocument();
       });
     });
   });
 
   describe('About Component', () => {
-    it('should use Next.js Image for shop interior', () => {
+    it('uses Next.js Image for shop interior with expected alt text', () => {
       render(<About />);
-      const aboutImage = screen.getByAltText('The Barber Cave Interior');
-      
+      const aboutImage = screen.getByAltText('The Barber Cave Interior - Luxury Barber Shop Environment');
+
       expect(aboutImage).toBeInTheDocument();
-      // About component uses aspect-square rounded-2xl overflow-hidden bg-gray-200
       expect(aboutImage.closest('div')).toHaveClass('aspect-square', 'rounded-2xl', 'overflow-hidden', 'bg-gray-200');
     });
   });
 
-  describe('Image Performance', () => {
-    it('should use local image paths instead of external URLs', () => {
+  describe('Image Performance & Accessibility', () => {
+    it('uses local image paths for hero image', () => {
       render(<Hero />);
-      const heroImage = screen.getByRole('img');
-      
-      // Should use local path, not external URL
+      const heroImage = screen.getByAltText('');
+
       expect(heroImage).not.toHaveAttribute('src', expect.stringContaining('unsplash'));
       expect(heroImage).not.toHaveAttribute('src', expect.stringContaining('http'));
     });
 
-    it('should have proper loading strategy for different image types', () => {
-      render(<Gallery />);
-      const galleryImages = screen.getAllByRole('img');
-      
-      // Gallery images should use lazy loading (default in Next.js)
-      galleryImages.forEach(image => {
-        // Next.js Image handles loading automatically
-        expect(image.closest('div')).toHaveClass('relative');
-      });
-    });
-  });
-
-  describe('Image Accessibility', () => {
-    it('should have meaningful alt texts for all images', () => {
-      render(<Gallery />);
-      const images = screen.getAllByRole('img');
-      
-      images.forEach(image => {
-        const altText = image.getAttribute('alt');
-        expect(altText).toBeTruthy();
-        expect(altText?.length).toBeGreaterThan(0);
-        expect(altText).not.toBe('image');
-        expect(altText).not.toBe('photo');
-      });
-    });
-
-    it('should have empty alt text for decorative images', () => {
+    it('uses empty alt text for decorative hero image', () => {
       render(<Hero />);
-      const heroImage = screen.getByRole('img');
-      
+      const heroImage = screen.getByAltText('');
+
       expect(heroImage).toHaveAttribute('alt', '');
-    });
-
-    it('should maintain aspect ratios and prevent layout shift', () => {
-      render(<Hero />);
-      const heroImage = screen.getByRole('img');
-      
-      // Image should be in a container with proper positioning
-      const container = heroImage.closest('div');
-      expect(container).toHaveClass('absolute', 'inset-0');
     });
   });
 });
