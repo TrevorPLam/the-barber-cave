@@ -1,5 +1,5 @@
 /**
- * @fileoverview Hero section component for the barber shop homepage
+ * @file Hero section component for the barber shop homepage
  * @author Development Team
  * @version 1.0.0
  * @license MIT
@@ -10,8 +10,7 @@
  */
 
 /**
- * @component
- * @description Main hero section component for the barber shop homepage
+ * Main hero section component for the barber shop homepage.
  *
  * Features premium visual design with:
  * - Full-screen background image with P3 color gradients
@@ -42,16 +41,16 @@
  * }
  * ```
  *
- * @returns {JSX.Element} The hero section with branding, CTAs, and statistics
+ * @returns The hero section with branding, CTAs, and statistics.
  *
- * @accessibility
+ * Accessibility notes:
  * - High contrast text on gradient background
  * - Semantic heading hierarchy
  * - Keyboard navigable buttons
  * - Screen reader friendly content
  *
- * @performance
- * - Optimized background image loading with preload
+ * Performance notes:
+ * - Optimized background image loading with priority
  * - WebP/AVIF format support via Next.js Image
  * - Efficient CSS gradients with P3 color space
  */
@@ -63,6 +62,11 @@ import Image from 'next/image';
 import Button from './Button';
 import StatCard from './StatCard';
 
+/**
+ * Renders the homepage hero section with the prioritized background image.
+ *
+ * @returns Hero section content.
+ */
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -76,6 +80,7 @@ export default function Hero() {
           src="/images/hero/hero-bg.svg"
           alt=""
           fill
+          priority
           quality={90}
           sizes="100vw"
           className="object-cover"

@@ -3083,25 +3083,25 @@ const getBusinessInfo = (rawData: unknown) => {
   * estimate_m: 30
   * labels: [bug, frontend, performance]
   * assignee: @frontend
-  * status: open
+  * status: blocked
   * due: 2026-03-05
   * deps: []
   * target_files: [src/components/Hero.tsx]
   * related_files: [src/__tests__/image-optimization.test.tsx, src/components/Hero.stories.tsx]
   * sub-tasks:
 
-    - [ ] Replace invalid `preload` prop with `priority` in src/components/Hero.tsx.
-    - [ ] Ensure no TypeScript or ESLint errors in src/components/Hero.tsx.
-    - [ ] Verify no Lighthouse FCP regression using src/__tests__/image-optimization.test.tsx.
-    - [ ] Run `npm run dev` locally and inspect browser network tab for image loading behavior.
+    - [x] Replace invalid `preload` prop with `priority` in src/components/Hero.tsx.
+    - [x] Ensure no TypeScript or ESLint errors in src/components/Hero.tsx.
+    - [x] Verify no Lighthouse FCP regression using src/__tests__/image-optimization.test.tsx.
+    - [x] Run `npm run dev` locally and inspect browser network tab for image loading behavior.
     - [ ] Run Lighthouse audit and verify FCP score with src/components/Hero.stories.tsx.
 
     1. Replace invalid `preload` prop with `priority` in src/components/Hero.tsx.
     2. No TypeScript or ESLint errors.
     3. No Lighthouse FCP regression.
   * test_steps:
-    - [ ] Run `npm run dev` locally.
-    - [ ] Inspect browser network tab for image loading behavior.
+    - [x] Run `npm run dev` locally.
+    - [x] Inspect browser network tab for image loading behavior.
     - [ ] Run Lighthouse audit and verify FCP score.
 
   * **Existing Code Pattern:**
