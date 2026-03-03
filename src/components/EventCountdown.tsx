@@ -173,6 +173,7 @@ export default function EventCountdown() {
             </div>
           </div>
         </div>
+          </div>
       </section>
     )
   }
