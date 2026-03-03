@@ -36,7 +36,7 @@ tech_stack:
 
 timezone: America/Chicago
 review_cycle_days: 7
-last_reviewed: 2026-03-02
+last_reviewed: 2026-03-03
 next_review: 2026-03-09
 ```
 
@@ -3481,22 +3481,22 @@ const getBusinessInfo = (rawData: unknown) => {
 
 ---
 
-* [ ] `T-1007` **Fix About.tsx Image fill positioning**
+* [x] `T-1007` **Fix About.tsx Image fill positioning**
 
   * priority: 1
   * estimate_m: 30
   * labels: [bug, frontend, images]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-05
   * target_files: [src/components/About.tsx]
   * related_files: [src/components/__tests__/About.test.tsx, src/__tests__/image-optimization.test.tsx]
   * sub-tasks:
 
-    - [ ] Ensure parent wrapper uses `position: relative` in src/components/About.tsx.
-    - [ ] Ensure layout stable across breakpoints in src/components/About.tsx.
-    - [ ] Check About page layout on different screen sizes.
-    - [ ] Verify image fill positioning works correctly using src/components/__tests__/About.test.tsx and src/__tests__/image-optimization.test.tsx.
+    - [x] Ensure parent wrapper uses `position: relative` in src/components/About.tsx.
+    - [x] Ensure layout stable across breakpoints in src/components/About.tsx.
+    - [x] Check About page layout on different screen sizes.
+    - [x] Verify image fill positioning works correctly using src/components/__tests__/About.test.tsx and src/__tests__/image-optimization.test.tsx.
 
     1. Parent wrapper uses `position: relative`.
     2. Layout stable across breakpoints.
@@ -4136,13 +4136,13 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
       };
     }
     ```
-* [ ] `T-2003` **Consolidate duplicate structured data in layout.tsx**
+* [x] `T-2003` **Consolidate duplicate structured data in layout.tsx**
 
   * priority: 2
   * estimate_m: 30
   * labels: [cleanup, seo, performance]
   * assignee: @seo
-  * status: open
+  * status: completed
   * due: 2026-03-08
   * deps: []
   * target_files: [src/app/layout.tsx]
@@ -4204,24 +4204,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
   * **Files to Update:**
     - Remove Organization/LocalBusiness StructuredData from all components except layout.tsx
     - Keep only BreadcrumbList and Service types in other components
-* [ ] `T-2004` **Fix page.tsx breadcrumbs rendering**
+* [x] `T-2004` **Fix page.tsx breadcrumbs rendering**
 
   * priority: 2
   * estimate_m: 45
   * labels: [bug, frontend, navigation]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-08
   * deps: []
   * target_files: [src/app/page.tsx]
   * related_files: [src/components/Breadcrumbs.tsx]
   * sub-tasks:
 
-    - [ ] Ensure breadcrumbs render when breadcrumbItems.length >= 2 in src/app/page.tsx.
-    - [ ] Ensure navigation links are correct in src/app/page.tsx using src/components/Breadcrumbs.tsx.
-    - [ ] Verify visual and functional testing passes.
-    - [ ] Navigate to pages with different breadcrumb depths.
-    - [ ] Verify breadcrumbs appear and link correctly.
+    - [x] Ensure breadcrumbs render when breadcrumbItems.length >= 2 in src/app/page.tsx.
+    - [x] Ensure navigation links are correct in src/app/page.tsx using src/components/Breadcrumbs.tsx.
+    - [x] Verify visual and functional testing passes.
+    - [x] Navigate to pages with different breadcrumb depths.
+    - [x] Verify breadcrumbs appear and link correctly.
 
     1. Breadcrumbs render when breadcrumbItems.length >= 2.
     2. Navigation links are correct.
@@ -4608,24 +4608,24 @@ Tasks normalized for consistency. All P2 tasks follow same structure.
 
 ---
 
-* [ ] `T-3003` **Add accessibility improvements to ErrorBoundary**
+* [x] `T-3003` **Add accessibility improvements to ErrorBoundary**
 
   * priority: 3
   * estimate_m: 45
   * labels: [enhancement, accessibility, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-12
   * deps: []
   * target_files: [src/components/ErrorBoundary.tsx]
   * related_files: [src/components/ErrorBoundary.stories.tsx]
   * sub-tasks:
 
-    - [ ] Add ARIA live region announcements for error states in src/components/ErrorBoundary.tsx.
-    - [ ] Improve keyboard navigation for error recovery buttons in src/components/ErrorBoundary.tsx.
-    - [ ] Add screen reader-friendly error messages in src/components/ErrorBoundary.tsx.
-    - [ ] Test with screen readers and keyboard navigation.
-    - [ ] Verify WCAG compliance of error UI.
+    - [x] Add ARIA live region announcements for error states in src/components/ErrorBoundary.tsx.
+    - [x] Improve keyboard navigation for error recovery buttons in src/components/ErrorBoundary.tsx.
+    - [x] Add screen reader-friendly error messages in src/components/ErrorBoundary.tsx.
+    - [x] Test with screen readers and keyboard navigation.
+    - [x] Verify WCAG compliance of error UI.
 
     1. ARIA live region announcements added.
     2. Keyboard navigation improved.

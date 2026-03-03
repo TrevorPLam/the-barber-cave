@@ -18,6 +18,8 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
+  private errorRef = React.createRef<HTMLHeadingElement>();
+
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false, retryCount: 0 };
@@ -58,7 +60,7 @@ class ErrorBoundary extends Component<Props, State> {
     // Example: Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const { resetKeys } = this.props;
     const { resetKeys: prevResetKeys } = prevProps;
 
@@ -69,6 +71,11 @@ class ErrorBoundary extends Component<Props, State> {
       if (lengthChanged || valuesChanged) {
         this.setState({ hasError: false, error: undefined, errorInfo: undefined });
       }
+    }
+
+    // Focus error container when error first occurs for keyboard/screen reader users
+    if (!prevState.hasError && this.state.hasError && this.errorRef.current) {
+      this.errorRef.current.focus();
     }
   }
 
@@ -118,8 +125,11 @@ class ErrorBoundary extends Component<Props, State> {
       // Default error UI
       return (
         <div 
-          role="alert" 
+          role="alertdialog"
+          aria-modal="true"
           aria-live="assertive"
+          aria-labelledby="error-title"
+          aria-describedby="error-description"
           className="min-h-screen flex items-center justify-center bg-gray-50 px-4"
         >
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
@@ -127,11 +137,11 @@ class ErrorBoundary extends Component<Props, State> {
               <AlertTriangle className="w-8 h-8 text-red-600" aria-hidden="true" />
             </div>
             
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            <h1 id="error-title" ref={this.errorRef} tabIndex={-1} className="text-2xl font-bold text-gray-900 mb-4">
               Something went wrong
             </h1>
             
-            <p className="text-gray-700 mb-6">
+            <p id="error-description" className="text-gray-700 mb-6">
               {this.state.retryCount >= 3
                 ? "We're experiencing technical difficulties. Please refresh the page to try again."
                 : "We're sorry, but something unexpected happened. Our team has been notified and is working on a fix."
@@ -159,28 +169,28 @@ class ErrorBoundary extends Component<Props, State> {
               </details>
             )}
             
-            <div className="space-y-3">
+            <div className="space-y-3" role="group" aria-label="Error recovery options">
               {this.state.retryCount < 3 ? (
                 <button
                   onClick={this.handleReset}
-                  className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium"
+                  className="w-full flex items-center justify-center px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
                 >
-                  <RefreshCw className="w-4 h-4 mr-2" />
+                  <RefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
                   Try Again
                 </button>
               ) : (
                 <button
                   onClick={() => window.location.reload()}
-                  className="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                  className="w-full flex items-center justify-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
                 >
-                  <RefreshCw className="w-4 h-4 mr-2" />
+                  <RefreshCw className="w-4 h-4 mr-2" aria-hidden="true" />
                   Refresh Page
                 </button>
               )}
               
               <button
                 onClick={() => window.location.href = '/'}
-                className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium"
+                className="w-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
               >
                 Go Home
               </button>
