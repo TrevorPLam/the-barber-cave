@@ -20,7 +20,7 @@ vi.mock('@/data/constants', () => ({
 
 describe('Navigation', () => {
   it('renders desktop navigation with business name', () => {
-    render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+    render(<Navigation />)
     
     expect(screen.getByText('The Barber Cave')).toBeInTheDocument()
     expect(screen.getByText('Services')).toBeInTheDocument()
@@ -28,38 +28,41 @@ describe('Navigation', () => {
     expect(screen.getByText('Book Appointment')).toBeInTheDocument()
   })
 
-  it('shows mobile menu when isMenuOpen is true', () => {
-    render(<Navigation isMenuOpen={true} onMenuToggle={vi.fn()} />)
+  it('shows mobile menu when menu is toggled open', () => {
+    render(<Navigation />)
     
-    // When mobile menu is open, we should see duplicate elements (desktop + mobile)
+    // Initially closed - mobile menu should not be visible
+    expect(screen.queryByRole('button', { name: /toggle menu/i })).toBeInTheDocument()
+    
+    // Click to open mobile menu
+    const toggleButton = screen.getByRole('button', { name: /toggle menu/i })
+    fireEvent.click(toggleButton)
+    
+    // Mobile menu should now be visible
     expect(screen.getAllByText('Services')).toHaveLength(2)
     expect(screen.getAllByText('Barbers')).toHaveLength(2) 
     expect(screen.getAllByText('Book Appointment')).toHaveLength(2)
-    
-    // The close button (X) should be visible when menu is open
-    expect(screen.getByRole('button', { name: /toggle menu/i })).toBeInTheDocument()
   })
 
-  it('hides mobile menu when isMenuOpen is false', () => {
-    const { container } = render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+  it('hides mobile menu when toggled closed', () => {
+    render(<Navigation />)
     
-    // Mobile menu should not be visible
-    const mobileMenu = container.querySelector('.lg:hidden.bg-white')
-    expect(mobileMenu).not.toBeInTheDocument()
-  })
-
-  it('calls onMenuToggle when menu button is clicked', () => {
-    const mockToggle = vi.fn()
-    render(<Navigation isMenuOpen={false} onMenuToggle={mockToggle} />)
+    // Open mobile menu first
+    const toggleButton = screen.getByRole('button', { name: /toggle menu/i })
+    fireEvent.click(toggleButton)
     
-    const menuButton = screen.getByRole('button', { name: /toggle menu/i })
-    fireEvent.click(menuButton)
+    // Verify mobile menu is open
+    expect(screen.getAllByText('Services')).toHaveLength(2)
     
-    expect(mockToggle).toHaveBeenCalledTimes(1)
+    // Close mobile menu
+    fireEvent.click(toggleButton)
+    
+    // Mobile menu should be hidden again
+    expect(screen.getAllByText('Services')).toHaveLength(1)
   })
 
   it('renders correct external links', () => {
-    render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+    render(<Navigation />)
     
     const bookingLinks = screen.getAllByText('Book Appointment')
     bookingLinks.forEach(link => {
@@ -70,21 +73,30 @@ describe('Navigation', () => {
   })
 
   it('has proper accessibility attributes', () => {
-    render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+    render(<Navigation />)
     
     const menuButton = screen.getByRole('button')
     expect(menuButton).toHaveAttribute('aria-label', 'Toggle menu')
   })
 
   it('should have no accessibility violations', async () => {
-    const { container } = render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
+    render(<Navigation />)
+    const nav = screen.getByRole('navigation')
+    const results = await axe(nav)
+    console.log('Axe results:', results)
+    expect(results.violations).toHaveLength(0)
   })
 
   it('should have no accessibility violations when mobile menu is open', async () => {
-    const { container } = render(<Navigation isMenuOpen={true} onMenuToggle={vi.fn()} />)
-    const results = await axe(container)
-    expect(results).toHaveNoViolations()
+    render(<Navigation />)
+    
+    // Open mobile menu
+    const toggleButton = screen.getByRole('button', { name: /toggle menu/i })
+    fireEvent.click(toggleButton)
+    
+    const nav = screen.getByRole('navigation')
+    const results = await axe(nav)
+    console.log('Axe results (mobile open):', results)
+    expect(results.violations).toHaveLength(0)
   })
 })

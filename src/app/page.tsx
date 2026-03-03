@@ -1,13 +1,12 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import dynamic from "next/dynamic";
-import MobileMenuWrapper from "@/components/MobileMenuWrapper";
+import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import StructuredData from "@/components/StructuredData";
-import SafeComponent from "@/components/SafeComponent";
 import { services } from '@/data/services';
 
-// Lazy load components that are not immediately visible
+// Lazy load components that are not immediately visible with Suspense boundaries
 const Gallery = dynamic(() => import("@/components/Gallery"), {
   loading: () => <div className="h-96 bg-gray-100 animate-pulse" />,
 });
@@ -48,35 +47,36 @@ export default function Home() {
   };
 
   return (
-    <MobileMenuWrapper>
+    <>
+      <Navigation />
       <div className="min-h-screen bg-white">
         <StructuredData type="Service" data={serviceStructuredData} />
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
         <Hero />
-        <SafeComponent componentName="Gallery">
+        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <Gallery />
-        </SafeComponent>
-        <SafeComponent componentName="Services">
+        </Suspense>
+        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <Services />
-        </SafeComponent>
-        <SafeComponent componentName="Barbers">
+        </Suspense>
+        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <Barbers />
-        </SafeComponent>
-        <SafeComponent componentName="About">
+        </Suspense>
+        <Suspense fallback={<div className="h-96 bg-gray-100 animate-pulse" />}>
           <About />
-        </SafeComponent>
-        <SafeComponent componentName="Contact">
+        </Suspense>
+        <Suspense fallback={<div className="h-64 bg-gray-100 animate-pulse" />}>
           <Contact />
-        </SafeComponent>
-        <SafeComponent componentName="Social">
+        </Suspense>
+        <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse" />}>
           <Social />
-        </SafeComponent>
-        <SafeComponent componentName="Footer">
+        </Suspense>
+        <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse" />}>
           <Footer />
-        </SafeComponent>
+        </Suspense>
       </div>
-    </MobileMenuWrapper>
+    </>
   );
 }

@@ -28,16 +28,10 @@
 
 'use client';
 
+import { useState } from 'react';
 import { Menu, X, Scissors } from 'lucide-react';
 import { memo } from 'react';
 import { NAVIGATION_ITEMS, EXTERNAL_LINKS, BUSINESS_INFO } from '@/data/constants';
-
-interface NavigationProps {
-  /** Whether mobile menu is currently open */
-  isMenuOpen: boolean;
-  /** Function to toggle mobile menu state */
-  onMenuToggle: () => void;
-}
 
 interface NavigationItemProps {
   /** Navigation item data */
@@ -71,7 +65,13 @@ const NavigationItem = memo(({ item, onClick }: NavigationItemProps) => (
 
 NavigationItem.displayName = 'NavigationItem';
 
-export default memo(function Navigation({ isMenuOpen, onMenuToggle }: NavigationProps) {
+export default memo(function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -100,7 +100,7 @@ export default memo(function Navigation({ isMenuOpen, onMenuToggle }: Navigation
 
           {/* Mobile Menu Button */}
           <button 
-            onClick={onMenuToggle}
+            onClick={handleMenuToggle}
             className="lg:hidden"
             aria-label="Toggle menu"
           >
@@ -114,7 +114,7 @@ export default memo(function Navigation({ isMenuOpen, onMenuToggle }: Navigation
         <div className="lg:hidden bg-white border-b border-gray-100">
           <div className="px-6 py-4 space-y-3">
             {NAVIGATION_ITEMS.map((item) => (
-              <NavigationItem key={item.href} item={item} onClick={onMenuToggle} />
+              <NavigationItem key={item.href} item={item} onClick={handleMenuToggle} />
             ))}
             <a 
               href={EXTERNAL_LINKS.booking}
