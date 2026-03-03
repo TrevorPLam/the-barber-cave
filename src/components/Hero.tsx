@@ -73,8 +73,11 @@ export default function Hero() {
       {/* Background Image - Replace with actual shop photo */}
       <P3Gradient 
         className="absolute inset-0"
+        angle="165deg"
         from="color(display-p3 0 0 0 / 0.6)"
         to="color(display-p3 0 0 0 / 0.4)"
+        fallbackFrom="rgba(0, 0, 0, 0.6)"
+        fallbackTo="rgba(0, 0, 0, 0.4)"
       >
         <Image 
           src="/images/hero/hero-bg.svg"

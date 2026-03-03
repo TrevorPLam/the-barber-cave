@@ -3265,23 +3265,23 @@ const getBusinessInfo = (rawData: unknown) => {
 
 ---
 
-* [ ] `T-1004` **Fix P3Color.tsx rendering**
+* [x] `T-1004` **Fix P3Color.tsx rendering**
 
   * priority: 1
   * estimate_m: 60
   * labels: [bug, frontend, components]
   * assignee: @frontend
-  * status: open
+  * status: completed
   * due: 2026-03-05
   * target_files: [src/components/P3Color.tsx]
   * related_files: [src/components/Hero.tsx]
   * sub-tasks:
 
-    - [ ] Ensure gradient renders from props (colors + angle) in src/components/P3Color.tsx.
-    - [ ] Ensure children render correctly in src/components/P3Color.tsx.
-    - [ ] Run unit tests for P3Color component.
-    - [ ] Check Storybook story for visual rendering using src/components/Hero.tsx.
-    - [ ] Verify gradient appearance in different browsers.
+    - [x] Ensure gradient renders from props (colors + angle) in src/components/P3Color.tsx.
+    - [x] Ensure children render correctly in src/components/P3Color.tsx.
+    - [x] Run unit tests for P3Color component.
+    - [x] Check Storybook story for visual rendering using src/components/Hero.tsx.
+    - [x] Verify gradient appearance in different browsers.
 
     1. Gradient renders from props (colors + angle).
     2. Children render correctly.
