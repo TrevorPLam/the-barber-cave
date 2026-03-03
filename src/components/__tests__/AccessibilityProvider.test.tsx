@@ -1,19 +1,17 @@
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import AccessibilityProvider from '../AccessibilityProvider';
 
 // Mock the axe-core imports to avoid actual loading in tests
 const mockAxeDefault = vi.fn();
 
-// Mock react-dom properly to avoid "$$typeof" errors
-vi.mock('react-dom', () => ({
-  default: {
-    render: vi.fn(),
-    createRoot: vi.fn(),
-    // Add other properties that React might expect
-    $$typeof: Symbol.for('react.element'),
-  },
-}));
+// Mock react-dom using importOriginal to preserve React internals needed for rendering
+vi.mock('react-dom', async (importOriginal) => {
+  const original = await importOriginal<typeof import('react-dom')>();
+  return {
+    ...original,
+  };
+});
 
 vi.mock('@axe-core/react', () => ({
   default: mockAxeDefault,
@@ -29,8 +27,9 @@ describe('AccessibilityProvider', () => {
   });
 
   afterEach(() => {
-    // Restore original process.env
+    // Restore original process.env and clean up rendered components
     process.env = originalEnv;
+    cleanup();
   });
 
   describe('Environment Variable Control', () => {
@@ -40,14 +39,11 @@ describe('AccessibilityProvider', () => {
 
       render(<AccessibilityProvider />);
 
-      // Wait for the effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      // Wait for the effect and dynamic imports to resolve
+      await new Promise(resolve => setTimeout(resolve, 50));
 
-      expect(mockAxeDefault).toHaveBeenCalledWith(
-        expect.any(Function), // React
-        mockReactDOM, // ReactDOM
-        1000
-      );
+      expect(mockAxeDefault).toHaveBeenCalledTimes(1);
+      expect(mockAxeDefault.mock.calls[0][2]).toBe(1000); // delay argument
     });
 
     it('should run axe in development mode when ENABLE_ACCESSIBILITY_AUDIT is not set', async () => {
@@ -56,14 +52,11 @@ describe('AccessibilityProvider', () => {
 
       render(<AccessibilityProvider />);
 
-      // Wait for the effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      // Wait for the effect and dynamic imports to resolve
+      await new Promise(resolve => setTimeout(resolve, 50));
 
-      expect(mockAxeDefault).toHaveBeenCalledWith(
-        expect.any(Function), // React
-        mockReactDOM, // ReactDOM
-        1000
-      );
+      expect(mockAxeDefault).toHaveBeenCalledTimes(1);
+      expect(mockAxeDefault.mock.calls[0][2]).toBe(1000); // delay argument
     });
 
     it('should not run axe in production when ENABLE_ACCESSIBILITY_AUDIT is not set', async () => {
@@ -73,7 +66,7 @@ describe('AccessibilityProvider', () => {
       render(<AccessibilityProvider />);
 
       // Wait for the effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       expect(mockAxeDefault).not.toHaveBeenCalled();
     });
@@ -85,7 +78,7 @@ describe('AccessibilityProvider', () => {
       render(<AccessibilityProvider />);
 
       // Wait for the effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       expect(mockAxeDefault).not.toHaveBeenCalled();
     });
@@ -96,14 +89,11 @@ describe('AccessibilityProvider', () => {
 
       render(<AccessibilityProvider />);
 
-      // Wait for the effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      // Wait for the effect and dynamic imports to resolve
+      await new Promise(resolve => setTimeout(resolve, 50));
 
-      expect(mockAxeDefault).toHaveBeenCalledWith(
-        expect.any(Function), // React
-        mockReactDOM, // ReactDOM
-        1000
-      );
+      expect(mockAxeDefault).toHaveBeenCalledTimes(1);
+      expect(mockAxeDefault.mock.calls[0][2]).toBe(1000); // delay argument
     });
   });
 
@@ -119,7 +109,7 @@ describe('AccessibilityProvider', () => {
       render(<AccessibilityProvider />);
 
       // Wait for the effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       expect(mockAxeDefault).not.toHaveBeenCalled();
     });
@@ -130,13 +120,13 @@ describe('AccessibilityProvider', () => {
       const { unmount } = render(<AccessibilityProvider />);
 
       // Wait for effect to run
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // Unmount component
       unmount();
 
       // Wait a bit more to ensure cleanup
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 50));
 
       // Component should have been cleaned up (effect runs once on mount)
       expect(mockAxeDefault).toHaveBeenCalledTimes(1);

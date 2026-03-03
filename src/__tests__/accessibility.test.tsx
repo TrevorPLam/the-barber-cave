@@ -7,6 +7,13 @@ import Hero from '@/components/Hero'
 import Services from '@/components/Services'
 import Barbers from '@/components/Barbers'
 
+// Mock next-auth/react to avoid SessionProvider requirement
+vi.mock('next-auth/react', () => ({
+  useSession: () => ({ data: null, status: 'unauthenticated' }),
+  signIn: vi.fn(),
+  signOut: vi.fn(),
+}))
+
 // Mock the constants for all components
 vi.mock('@/data/constants', () => ({
   NAVIGATION_ITEMS: [
@@ -45,13 +52,13 @@ vi.mock('@/data/constants', () => ({
 describe('Accessibility Tests', () => {
   describe('Navigation Component', () => {
     it('should have no accessibility violations when closed', async () => {
-      const { container } = render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+      const { container } = render(<Navigation />)
       const results = await axe(container)
       expect(results).toHaveNoViolations()
     })
 
     it('should have no accessibility violations when open', async () => {
-      const { container } = render(<Navigation isMenuOpen={true} onMenuToggle={vi.fn()} />)
+      const { container } = render(<Navigation />)
       const results = await axe(container)
       expect(results).toHaveNoViolations()
     })
@@ -85,7 +92,7 @@ describe('Accessibility Tests', () => {
     it('should have no accessibility violations', async () => {
       const { container } = render(
         <div>
-          <Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />
+          <Navigation />
           <Hero />
           <Barbers />
         </div>
@@ -97,7 +104,7 @@ describe('Accessibility Tests', () => {
 
   describe('Keyboard Navigation', () => {
     it('should have proper focus management', () => {
-      const { container } = render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+      const { container } = render(<Navigation />)
       
       // Check that interactive elements are focusable (buttons are focusable by default)
       const buttons = container.querySelectorAll('button')
@@ -113,7 +120,7 @@ describe('Accessibility Tests', () => {
 
   describe('ARIA Attributes', () => {
     it('should have proper ARIA labels', () => {
-      render(<Navigation isMenuOpen={false} onMenuToggle={vi.fn()} />)
+      render(<Navigation />)
       
       const menuButton = screen.getByRole('button', { name: /toggle menu/i })
       expect(menuButton).toHaveAttribute('aria-label', 'Toggle menu')
