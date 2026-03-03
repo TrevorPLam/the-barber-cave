@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface AnnouncementOptions {
   politeness?: 'polite' | 'assertive' | 'off';
@@ -7,37 +7,43 @@ interface AnnouncementOptions {
 }
 
 export function useAnnouncement() {
-  const announcementRef = useRef<HTMLDivElement>(null);
+  const announcementRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    // Create the ARIA live region once on mount
+    const element = document.createElement('div');
+    element.setAttribute('aria-live', 'polite');
+    element.setAttribute('aria-atomic', 'true');
+    element.setAttribute('aria-relevant', 'additions text');
+    element.className = 'sr-only';
+    document.body.appendChild(element);
+    announcementRef.current = element;
+
+    return () => {
+      // Critical: clear pending timeout before DOM removal
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
+      }
+      // Safe removal: check parentNode before removeChild to avoid
+      // NotFoundError if parent changed during async operations
+      if (element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+      announcementRef.current = null;
+    };
+  }, []); // Mount/unmount only — element lifecycle matches component lifecycle
 
   const announce = useCallback((message: string, options: AnnouncementOptions = {}) => {
-    if (!isMounted || typeof window === 'undefined') return;
+    const announcementElement = announcementRef.current;
+    if (!announcementElement || typeof window === 'undefined') return;
 
     const {
       politeness = 'polite',
       timeout = 1000,
       clearPrevious = true
     } = options;
-
-    // Create or get announcement region
-    let announcementElement = announcementRef.current;
-    if (!announcementElement) {
-      announcementElement = document.createElement('div');
-      announcementElement.setAttribute('aria-live', 'polite');
-      announcementElement.setAttribute('aria-atomic', 'true');
-      announcementElement.className = 'sr-only fixed top-0 left-0 w-px h-px overflow-hidden';
-      announcementElement.style.position = 'absolute';
-      announcementElement.style.left = '-10000px';
-      announcementElement.style.width = '1px';
-      announcementElement.style.height = '1px';
-      document.body.appendChild(announcementElement);
-      announcementRef.current = announcementElement;
-    }
 
     // Clear any existing timeout
     if (timeoutRef.current) {
@@ -61,32 +67,7 @@ export function useAnnouncement() {
         announcementElement.textContent = '';
       }
     }, timeout);
-  }, [isMounted]);
-
-  const AnnouncementRegion = useCallback(() => {
-    if (!isMounted) return null;
-
-    return (
-      <div
-        ref={announcementRef}
-        className="sr-only"
-        aria-live="polite"
-        aria-atomic="true"
-      />
-    );
-  }, [isMounted]);
-
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-      if (announcementRef.current && announcementRef.current.parentNode) {
-        announcementRef.current.parentNode.removeChild(announcementRef.current);
-      }
-    };
   }, []);
 
-  return { announce, AnnouncementRegion };
+  return { announce };
 }
