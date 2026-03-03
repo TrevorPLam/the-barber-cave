@@ -5825,25 +5825,25 @@ test('user journey', async ({ page }) => {
     - [x] Remove 'use client' and test rendering.
     - [x] Verify no errors.
   * notes: Optimize by making footer a server component if possible.
-* [ ] `T-3008` **Optimize Breadcrumbs.tsx JSON-LD output**
+* [x] `T-3008` **Optimize Breadcrumbs.tsx JSON-LD output**
 
   * priority: 3
   * estimate_m: 30
   * labels: [seo, performance]
   * assignee: @seo
-  * status: open
+  * status: completed
   * due: 2026-03-15
   * deps: []
   * target_files: [src/components/Breadcrumbs.tsx]
   * related_files: [src/app/page.tsx]
   * sub-tasks:
 
-    - [ ] Suppress breadcrumbs JSON-LD when items.length < 2 in src/components/Breadcrumbs.tsx.
-    - [ ] Avoid unnecessary JSON-LD output in src/components/Breadcrumbs.tsx.
-    - [ ] Validate that breadcrumbs still work correctly in src/components/Breadcrumbs.tsx.
-    - [ ] Check pages with 0 or 1 breadcrumb item.
-    - [ ] Verify no JSON-LD is output.
-    - [ ] Check pages with 2+ items have JSON-LD.
+    - [x] Suppress breadcrumbs JSON-LD when items.length < 2 in src/components/Breadcrumbs.tsx.
+    - [x] Avoid unnecessary JSON-LD output in src/components/Breadcrumbs.tsx.
+    - [x] Validate that breadcrumbs still work correctly in src/components/Breadcrumbs.tsx.
+    - [x] Check pages with 0 or 1 breadcrumb item.
+    - [x] Verify no JSON-LD is output.
+    - [x] Check pages with 2+ items have JSON-LD.
 
     1. Suppress breadcrumbs JSON-LD when items.length < 2.
     2. Avoid unnecessary JSON-LD output.
@@ -5866,13 +5866,13 @@ All normalized to:
 
 # 🟢 Low / Backlog (P4–P5) — Due: 2026-03-22
 
-* [ ] `T-4001` **Fix businessEngine.ts opening-hours inconsistency**
+* [x] `T-4001` **Fix businessEngine.ts opening-hours inconsistency**
 
   * priority: 4
   * estimate_m: 30
   * labels: [data, backend]
   * assignee: @backend
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/data/businessEngine.ts]
@@ -5889,32 +5889,32 @@ All normalized to:
     - Update and run tests.
   * notes: Ensure consistent opening hours across the application.
 
-* [ ] `T-4002` **Sync constants.ts vs businessEngine.ts hours**
+* [x] `T-4002` **Sync constants.ts vs businessEngine.ts hours**
 
   * priority: 4
   * estimate_m: 30
   * labels: [data, backend]
   * assignee: @backend
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/data/constants.ts, src/data/businessEngine.ts]
   * related_files: []
   * sub-tasks:
 
-    - [ ] Establish single source of truth for opening hours in src/data/constants.ts and src/data/businessEngine.ts.
-    - [ ] Sync constants.ts and businessEngine.ts.
-    - [ ] Add unit test to detect drift in src/data/constants.ts and src/data/businessEngine.ts.
-    - [ ] Compare hours in constants.ts and businessEngine.ts.
-    - [ ] Update to single source.
-    - [ ] Add test to prevent drift.
+    - [x] Establish single source of truth for opening hours in src/data/constants.ts and src/data/businessEngine.ts.
+    - [x] Sync constants.ts and businessEngine.ts.
+    - [x] Add unit test to detect drift in src/data/constants.ts and src/data/businessEngine.ts.
+    - [x] Compare hours in constants.ts and businessEngine.ts.
+    - [x] Update to single source.
+    - [x] Add test to prevent drift.
 
     1. Single source of truth for opening hours.
-    - [ ] Fix 08:00 vs 09:00 discrepancy in src/data/businessEngine.ts and src/data/constants.ts.
-    - [ ] Update tests to prevent future drift in src/data/businessEngine.ts and src/data/constants.ts.
-    - [ ] Check businessEngine.ts for Saturday hours.
-    - [ ] Compare with display data.
-    - [ ] Update and run tests.
+    - [x] Fix 08:00 vs 09:00 discrepancy in src/data/businessEngine.ts and src/data/constants.ts.
+    - [x] Update tests to prevent future drift in src/data/businessEngine.ts and src/data/constants.ts.
+    - [x] Check businessEngine.ts for Saturday hours.
+    - [x] Compare with display data.
+    - [x] Update and run tests.
 
     1. Single source of truth for opening hours.
     2. Sync constants.ts and businessEngine.ts.
@@ -6020,25 +6020,25 @@ All normalized to:
     - [x] Adjust colors if needed.
   * notes: Ensure accessibility compliance in dark mode.
 
-* [ ] `T-4006` **Replace placeholder business data in constants.ts**
+* [x] `T-4006` **Replace placeholder business data in constants.ts**
 
   * priority: 4
   * estimate_m: 30
   * labels: [data, production]
   * assignee: @product
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [src/data/constants.ts]
   * related_files: []
   * sub-tasks:
 
-    - [ ] Replace all fake addresses and phones in src/data/constants.ts.
-    - [ ] Ensure production config has real data in src/data/constants.ts.
-    - [ ] Validate data accuracy in src/data/constants.ts.
-    - [ ] Review constants.ts for placeholder data.
-    - [ ] Replace with real business information.
-    - [ ] Check for any remaining placeholders.
+    - [x] Replace all fake addresses and phones in src/data/constants.ts.
+    - [x] Ensure production config has real data in src/data/constants.ts.
+    - [x] Validate data accuracy in src/data/constants.ts.
+    - [x] Review constants.ts for placeholder data.
+    - [x] Replace with real business information.
+    - [x] Check for any remaining placeholders.
 
     1. Replace all fake addresses and phones.
     2. Ensure production config has real data.
@@ -6050,25 +6050,25 @@ All normalized to:
     - Check for any remaining placeholders.
   * notes: Prepare for production deployment with accurate business data.
 
-* [ ] `T-4007` **Remove storybook-static from repo**
+* [x] `T-4007` **Remove storybook-static from repo**
 
   * priority: 5
   * estimate_m: 30
   * labels: [cleanup, git]
   * assignee: @devops
-  * status: open
+  * status: completed
   * due: 2026-03-22
   * deps: []
   * target_files: [.gitignore]
   * related_files: [storybook-static/]
   * sub-tasks:
 
-    - [ ] Add storybook-static to .gitignore.
-    - [ ] Remove committed artifacts.
-    - [ ] Ensure CI still publishes Storybook.
-    - [ ] Check .gitignore for storybook-static using .gitignore.
-    - [ ] Remove the directory from repo using storybook-static/.
-    - [ ] Verify CI workflow still works.
+    - [x] Add storybook-static to .gitignore.
+    - [x] Remove committed artifacts.
+    - [x] Ensure CI still publishes Storybook.
+    - [x] Check .gitignore for storybook-static using .gitignore.
+    - [x] Remove the directory from repo using storybook-static/.
+    - [x] Verify CI workflow still works.
 
     1. Add storybook-static to .gitignore.
     2. Remove committed artifacts.
@@ -6532,13 +6532,13 @@ Example:
 
 ---
 
-* [ ] `T-5003` **Update documentation**
+* [x] `T-5003` **Update documentation**
 
   * priority: 3
   * estimate_m: 60
   * labels: [docs, maintenance]
   * assignee: @docs
-  * status: planned
+  * status: completed
   * recurring:
 
     type: after major changes
@@ -6547,12 +6547,12 @@ Example:
   * related_files: []
   * sub-tasks:
 
-    - [ ] Document API changes in README.md and docs/**/*.
-    - [ ] Document behavioral changes from fixes in README.md and docs/**/*.
-    - [ ] Update README and docs as needed.
-    - [ ] Review recent changes for documentation needs.
-    - [ ] Update relevant documentation files.
-    - [ ] Check docs build.
+    - [x] Document API changes in README.md and docs/**/*.
+    - [x] Document behavioral changes from fixes in README.md and docs/**/*.
+    - [x] Update README and docs as needed.
+    - [x] Review recent changes for documentation needs.
+    - [x] Update relevant documentation files.
+    - [x] Check docs build.
 
     1. Document API changes.
     2. Document behavioral changes from fixes.

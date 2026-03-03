@@ -86,7 +86,7 @@ describe('BusinessEngine', () => {
       
       expect(metrics.openingHoursDisplay).toHaveLength(3);
       expect(metrics.openingHoursDisplay[0]).toEqual({
-        days: 'Monday',
+        days: 'Mon-Fri',
         hours: '9am–7pm'
       });
       expect(metrics.openingHoursDisplay[1]).toEqual({
@@ -110,8 +110,8 @@ describe('BusinessEngine', () => {
       });
       expect(metrics.structuredDataHours[1]).toEqual({
         days: 'Sa',
-        open: '08:00',
-        close: '20:00'
+        open: '09:00',
+        close: '18:00'
       });
       expect(metrics.structuredDataHours[2]).toEqual({
         days: 'Su',
@@ -246,13 +246,13 @@ describe('BusinessEngine', () => {
   describe('Error handling', () => {
     it('should throw error for null barbers', () => {
       expect(() => {
-        BusinessEngine.getMetrics(null as any[], testServices);
+        BusinessEngine.getMetrics(null as unknown as Barber[], testServices);
       }).toThrow('Barbers data must be an array');
     });
 
     it('should throw error for undefined services', () => {
       expect(() => {
-        BusinessEngine.getMetrics(testBarbers, undefined as any[]);
+        BusinessEngine.getMetrics(testBarbers, undefined as unknown as Service[]);
       }).toThrow('Services data must be an array');
     });
 
@@ -269,18 +269,61 @@ describe('BusinessEngine', () => {
     });
   });
 
-  describe('Integration with constants', () => {
-    it('should work with BUSINESS_METRICS constant', () => {
-      // This test ensures the BUSINESS_METRICS constant in constants.ts works correctly
-      expect(() => {
-        const { BUSINESS_METRICS } = require('../constants');
-        expect(BUSINESS_METRICS.totalBarbers).toBe(8);
-        expect(BUSINESS_METRICS.totalServices).toBe(28);
-        expect(BUSINESS_METRICS.averageRating).toBeGreaterThan(0);
-        expect(BUSINESS_METRICS.servicesByCategory).toBeDefined();
-        expect(BUSINESS_METRICS.openingHoursDisplay).toBeDefined();
-        expect(BUSINESS_METRICS.structuredDataHours).toBeDefined();
-      }).not.toThrow();
+  describe('Opening Hours Consistency', () => {
+    it('should maintain consistent opening hours between display and structured formats', () => {
+      const metrics = BusinessEngine.getMetrics(testBarbers, testServices);
+      
+      // Display format should match structured format times
+      const displayToStructuredMap = {
+        '9am–7pm': { open: '09:00', close: '19:00' },
+        '9am–6pm': { open: '09:00', close: '18:00' },
+        '10am–6pm': { open: '10:00', close: '18:00' }
+      };
+      
+      metrics.openingHoursDisplay.forEach((display, index) => {
+        const expected = displayToStructuredMap[display.hours as keyof typeof displayToStructuredMap];
+        expect(expected).toBeDefined();
+        
+        const structured = metrics.structuredDataHours[index];
+        expect(structured.open).toBe(expected.open);
+        expect(structured.close).toBe(expected.close);
+      });
+    });
+
+    it('should detect drift in opening hours configuration', () => {
+      // This test ensures that if someone changes the OPENING_HOURS_CONFIG,
+      // the display and structured formats remain synchronized
+      
+      const displayHours = BusinessEngine.getOpeningHoursDisplay();
+      const structuredHours = BusinessEngine.getStructuredHours();
+      
+      expect(displayHours).toHaveLength(structuredHours.length);
+      
+      // Verify each entry corresponds correctly
+      displayHours.forEach((display, index) => {
+        const structured = structuredHours[index];
+        
+        // Verify the day mappings are consistent
+        const dayMappings: Record<string, string> = {
+          'Mon-Fri': 'Mo-Fr',
+          'Saturday': 'Sa',
+          'Sunday': 'Su'
+        };
+        
+        expect(structured.days).toBe(dayMappings[display.days]);
+        
+        // Verify time consistency
+        const timeMappings: Record<string, { open: string; close: string }> = {
+          '9am–7pm': { open: '09:00', close: '19:00' },
+          '9am–6pm': { open: '09:00', close: '18:00' },
+          '10am–6pm': { open: '10:00', close: '18:00' }
+        };
+        
+        const expectedTimes = timeMappings[display.hours];
+        expect(expectedTimes).toBeDefined();
+        expect(structured.open).toBe(expectedTimes.open);
+        expect(structured.close).toBe(expectedTimes.close);
+      });
     });
   });
 });

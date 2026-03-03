@@ -100,7 +100,7 @@ export interface BusinessMetrics {
 export class BusinessEngine {
   private static readonly OPENING_HOURS_CONFIG = [
     { days: 'Mon-Fri', displayDays: 'Mon-Fri', schemaDays: 'Mo-Fr', open: '09:00', close: '19:00', displayHours: '9am–7pm' },
-    { days: 'Sat', displayDays: 'Saturday', schemaDays: 'Sa', open: '08:00', close: '20:00', displayHours: '9am–6pm' },
+    { days: 'Sat', displayDays: 'Saturday', schemaDays: 'Sa', open: '09:00', close: '18:00', displayHours: '9am–6pm' },
     { days: 'Sun', displayDays: 'Sunday', schemaDays: 'Su', open: '10:00', close: '18:00', displayHours: '10am–6pm' }
   ] as const;
 

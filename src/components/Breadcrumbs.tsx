@@ -22,7 +22,9 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
 
   return (
     <>
-      <StructuredData type="BreadcrumbList" data={{ breadcrumbs: breadcrumbStructuredData }} />
+      {items.length >= 2 && (
+        <StructuredData type="BreadcrumbList" data={{ breadcrumbs: breadcrumbStructuredData }} />
+      )}
       <nav className="flex items-center space-x-2 text-sm text-gray-600 py-4" aria-label="Breadcrumb">
         <ol className="flex items-center space-x-2">
           {items.map((item, index) => (

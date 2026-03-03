@@ -221,11 +221,6 @@ export const BUSINESS_INFO = {
     facebook: 'TrillBarberCave',
     bringWhaChaGot: '@bringwhachagot'
   },
-  openingHours: [
-    { days: 'Mon-Fri', hours: '9am–7pm' },
-    { days: 'Sat', hours: '9am–6pm' },
-    { days: 'Sun', hours: '10am–6pm' }
-  ]
 } as const;
 
 /**

@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://trills-barber-cave.vercel.app/sitemap.xml
