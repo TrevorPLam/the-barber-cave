@@ -56,7 +56,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <StructuredData type="Organization" />
         <StructuredData type="LocalBusiness" />
       </head>
       <body

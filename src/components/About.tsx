@@ -139,7 +139,7 @@ export default function About() {
           </div>
           
           <div className="relative">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gray-200">
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-200">
               <Image 
                 src="/images/about/shop-interior.svg"
                 alt="The Barber Cave Interior - Luxury Barber Shop Environment"

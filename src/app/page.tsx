@@ -60,7 +60,7 @@ export default function Home() {
       <div className="min-h-screen bg-white">
         <StructuredData type="Service" data={serviceStructuredData} />
         {/* Only render breadcrumbs if there's actual navigation value (more than 1 item) */}
-        {breadcrumbItems.length > 1 && (
+        {breadcrumbItems.length >= 2 && (
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
             <Breadcrumbs items={breadcrumbItems} />
           </div>
