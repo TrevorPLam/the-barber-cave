@@ -1,11 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import type { Session } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { validateBookingForm, RateLimiter } from '@/lib/security';
 import { bookingRepository } from '@/lib/repositories/booking-repository';
 import { serviceRepository } from '@/lib/repositories/service-repository';
 import { barberRepository } from '@/lib/repositories/barber-repository';
+import { hasPermission, Role } from '@/lib/rbac';
+import { handleAPIError, ForbiddenError, UnauthorizedError } from '@/lib/error-handler';
 import { z } from 'zod';
+
+// Extend the next-auth Session user type to include the role field set by
+// the JWT callback in src/lib/auth.ts.
+interface SessionUser extends NonNullable<Session['user']> {
+  role?: string;
+}
 
 // Initialize rate limiter for booking endpoint
 const bookingRateLimiter = new RateLimiter(5, 300000); // 5 requests per 5 minutes
@@ -128,19 +137,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Booking API error:', error);
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid booking data', details: error.errors },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleAPIError(error);
   }
 }
 
@@ -166,20 +163,20 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100);
     const offset = Math.max(parseInt(searchParams.get('offset') || '0'), 0);
 
+    const userRole = (session?.user as SessionUser | undefined)?.role;
+
     let bookings;
 
     if (customerEmail) {
       // Allow customers to view their own bookings by email
       bookings = await bookingRepository.findByCustomerEmail(customerEmail);
-    } else if (session) {
-      // TODO: Add role-based access control
-      // For now, authenticated users can see all bookings (admin functionality)
+    } else if (session && hasPermission(userRole, 'bookings', 'read')) {
+      // Authenticated users with read permission (admin / owner) can see all bookings
       bookings = await bookingRepository.findAll(limit, offset);
+    } else if (session) {
+      throw new ForbiddenError('Insufficient permissions to view all bookings');
     } else {
-      return NextResponse.json(
-        { error: 'Authentication required or provide customer email' },
-        { status: 401 }
-      );
+      throw new UnauthorizedError('Authentication required or provide customer email');
     }
 
     return NextResponse.json({
@@ -189,10 +186,6 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Get bookings error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return handleAPIError(error);
   }
 }

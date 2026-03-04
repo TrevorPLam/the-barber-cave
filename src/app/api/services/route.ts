@@ -3,10 +3,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { serviceRepository } from '@/lib/repositories/service-repository'
 import { validateBookingForm, RateLimiter } from '@/lib/security'
 import { verifyAdminSession } from '@/lib/dal'
+import { getCachedData, appCache } from '@/lib/cache'
+import { handleAPIError } from '@/lib/error-handler'
 import { z } from 'zod'
 
 // Initialize rate limiter for services endpoint
 const servicesRateLimiter = new RateLimiter(100, 60000) // 100 requests per minute
+
+const SERVICES_CACHE_KEY = 'api:services:all'
+const SERVICES_CACHE_TTL = 3600 // 1 hour
 
 // GET /api/services - Get all active services
 export async function GET(request: NextRequest) {
@@ -18,26 +23,33 @@ export async function GET(request: NextRequest) {
 
     if (!servicesRateLimiter.isAllowed(clientIP)) {
       return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
+        { error: 'Too many requests. Please try again later.', code: 'RATE_LIMITED' },
         { status: 429 }
       )
     }
 
-    // Fetch all active services
-    const services = await serviceRepository.findAll()
+    // Fetch all active services (cached for 1 hour)
+    const services = await getCachedData(
+      SERVICES_CACHE_KEY,
+      () => serviceRepository.findAll(),
+      SERVICES_CACHE_TTL,
+    )
 
-    return NextResponse.json({
-      services,
-      count: services.length,
-      timestamp: new Date().toISOString()
-    })
+    return NextResponse.json(
+      {
+        services,
+        count: services.length,
+        timestamp: new Date().toISOString()
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        },
+      }
+    )
 
   } catch (error) {
-    console.error('Services API error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleAPIError(error)
   }
 }
 
@@ -51,19 +63,10 @@ export async function POST(request: NextRequest) {
 
     if (!servicesRateLimiter.isAllowed(clientIP)) {
       return NextResponse.json(
-        { error: 'Too many requests. Please try again later.' },
+        { error: 'Too many requests. Please try again later.', code: 'RATE_LIMITED' },
         { status: 429 }
       )
     }
-
-    // TODO: Add authentication check for admin role
-    // const session = await getServerSession(authOptions)
-    // if (!session || session.user.role !== 'admin') {
-    //   return NextResponse.json(
-    //     { error: 'Unauthorized' },
-    //     { status: 403 }
-    //   )
-    // }
 
     // DAL authentication gate - throws redirect if not admin
     await verifyAdminSession()
@@ -86,24 +89,15 @@ export async function POST(request: NextRequest) {
       price: validatedData.price,
     })
 
+    // Invalidate the services cache so the next GET reflects the new data
+    appCache.delete(SERVICES_CACHE_KEY)
+
     return NextResponse.json({
       service,
       message: 'Service created successfully'
     }, { status: 201 })
 
   } catch (error) {
-    console.error('Create service API error:', error)
-
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Invalid service data', details: error.errors },
-        { status: 400 }
-      )
-    }
-
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return handleAPIError(error)
   }
 }
