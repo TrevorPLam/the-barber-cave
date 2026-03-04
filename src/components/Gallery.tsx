@@ -18,11 +18,8 @@ function GalleryImage({ src, alt, priority = false, ...props }: any) {
 }
 
 export default function Gallery() {
-  // TODO: Replace SVG placeholders with actual barber work photos
-  // Current assets are placeholder SVGs - should be replaced with:
-  // - Real photos of haircuts, beard trims, and styling work
-  // - High-quality images showing actual barber skills
-  // - Optimized web formats (WebP/AVIF) for performance
+  // Gallery photos: replace SVG placeholders with real high-quality images
+  // (WebP/AVIF) showing actual haircut and beard work. See T-F001 in TODO.md.
   const galleryItems = [
     { id: 1, src: '/images/gallery/work-1.svg', title: 'Classic Fade', barber: 'Master Barber', alt: 'Side profile view of a classic fade haircut with clean blended lines' },
     { id: 2, src: '/images/gallery/work-2.svg', title: 'Beard Trim', barber: 'Expert Barber', alt: 'Well-groomed beard with precise edge shaping and neckline definition' },
