@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * scripts/check-bundle-size.js
+ * scripts/check-bundle-size.mjs
  * T-W002/T-N002: Bundle Size Monitoring
  *
  * Reads the Next.js build manifest and checks that each chunk stays within
@@ -133,7 +133,7 @@ function main() {
     for (const err of errors) {
       console.error(err)
     }
-    console.error('\n   Reduce bundle size or update budgets in scripts/check-bundle-size.js\n')
+    console.error('\n   Reduce bundle size or update budgets in scripts/check-bundle-size.mjs\n')
     process.exit(1)
   } else {
     console.log(`\n✅  All ${jsFiles.length} JS chunks and CSS files are within budget.\n`)
