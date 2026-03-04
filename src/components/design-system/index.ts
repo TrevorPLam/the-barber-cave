@@ -12,3 +12,5 @@
 export { default as Button } from '../Button';
 export { Card } from '../Card';
 export { default as Input } from './Input';
+export { palette, colorPairs } from './tokens';
+export type { ColorPair } from './tokens';

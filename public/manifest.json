@@ -1,0 +1,37 @@
+{
+  "name": "The Barber Cave",
+  "short_name": "Barber Cave",
+  "description": "Luxury barbershop & SMP services in Dallas. Book your appointment online.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "categories": ["lifestyle", "health", "beauty"],
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "1376x768",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book Appointment",
+      "short_name": "Book",
+      "description": "Book a barber appointment",
+      "url": "/booking",
+      "icons": [{ "src": "/logo.png", "sizes": "1376x768" }]
+    },
+    {
+      "name": "Our Services",
+      "short_name": "Services",
+      "description": "View all barber services",
+      "url": "/services",
+      "icons": [{ "src": "/logo.png", "sizes": "1376x768" }]
+    }
+  ]
+}

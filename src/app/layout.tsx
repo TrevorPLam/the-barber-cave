@@ -21,6 +21,12 @@ export const metadata: Metadata = {
   },
   description: `Experience luxury grooming at The Barber Cave, Dallas' premier barbershop. Owned by Trill LadiBarber, offering premium cuts, scalp micropigmentation (SMP), and master barber services. 4.9 stars (194+ reviews). International locations in Dallas & London.`,
   keywords: "barber shop Dallas, The Barber Cave, luxury grooming, Trill LadiBarber, scalp micropigmentation Dallas, SMP services, expert barber, fade specialist, loc services, beard grooming, hot towel shave, Dallas haircut, men's grooming Texas, Magic Drip products, international barber shop, female barber Dallas, premium grooming services",
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    title: 'The Barber Cave',
+    statusBarStyle: 'black-translucent',
+  },
   openGraph: {
     title: "The Barber Cave - Luxury Barber Shop & SMP Services Dallas",
     description: `Experience luxury grooming at The Barber Cave, Dallas' premier barbershop. Owned by Trill LadiBarber, offering premium cuts, scalp micropigmentation (SMP), and master barber services. 4.9 stars (194+ reviews). International locations in Dallas & London.`,
@@ -58,6 +64,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* PWA theme color */}
+        <meta name="theme-color" content="#d4af37" />
         {/* Resource hints for performance optimization */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
