@@ -28,6 +28,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/data/seed.ts",
+    "db:rollback": "tsx -e \"import('@/lib/migrations').then(m => m.migrationManager.rollback().then(tag => console.log(tag ? 'Rolled back: ' + tag : 'Nothing to roll back')))\"",
+    "db:status": "tsx -e \"import('@/lib/migrations').then(m => m.migrationManager.status().then(s => s.forEach(r => console.log(r.applied ? '✅' : r.rolledBack ? '↩️' : '⏳', r.tag))))\"",
     "bundle:check": "node scripts/check-bundle-size.mjs",
     "bundle:check:verbose": "VERBOSE=true node scripts/check-bundle-size.mjs"
   },

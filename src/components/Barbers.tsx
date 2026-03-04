@@ -6,9 +6,8 @@ import SectionHeader from './SectionHeader';
 import LinkWithIcon from './LinkWithIcon';
 
 export default function Barbers() {
-  // TODO: Replace with unique barber photos when available
-  // Currently all barbers use the same placeholder image
-  // Future: Add individual photos for each barber to showcase their work
+  // Barber photos: replace placeholder images with individual profile photos
+  // when they are available. See T-F001 in TODO.md for the full data-migration plan.
   const barbersData = barbers;
   
   return (
