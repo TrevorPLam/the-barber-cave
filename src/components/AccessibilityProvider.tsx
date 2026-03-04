@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { clientLogger } from '@/lib/client-logger';
 
 export default function AccessibilityProvider() {
   useEffect(() => {
@@ -20,11 +21,11 @@ export default function AccessibilityProvider() {
             axe.default(React, ReactDOM, 1000);
           })
           .catch(err => {
-            console.warn('Failed to load react-dom for accessibility testing:', err);
+            clientLogger.warn('Failed to load react-dom for accessibility testing:', err);
           });
       })
       .catch(err => {
-        console.warn('Failed to load @axe-core/react for accessibility testing:', err);
+        clientLogger.warn('Failed to load @axe-core/react for accessibility testing:', err);
       });
   }, []);
 

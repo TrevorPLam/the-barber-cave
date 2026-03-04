@@ -68,6 +68,20 @@ const eslintConfig = defineConfig([
     "storybook-static/**",
     "**/*.stories.tsx",
   ]),
+  // Disallow direct console.log / console.info / console.debug in source files.
+  // Use src/lib/logger.ts (server) or src/lib/client-logger.ts (browser) instead.
+  {
+    rules: {
+      'no-console': ['warn', { allow: ['error', 'warn'] }],
+    },
+  },
+  // CLI scripts may use console.log freely for output.
+  {
+    files: ['src/data/seed.ts'],
+    rules: {
+      'no-console': 'off',
+    },
+  },
   ...storybook.configs["flat/recommended"]
 ]);
 

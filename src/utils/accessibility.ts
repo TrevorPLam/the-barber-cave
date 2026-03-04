@@ -1,4 +1,5 @@
 import type React from 'react'
+import { clientLogger } from '@/lib/client-logger'
 
 export const reportAccessibility = async (
   App: typeof React,
@@ -13,7 +14,7 @@ export const reportAccessibility = async (
       axe.default(App, ReactDOM, 1000, config)
     } catch (error) {
       // Silently fail if axe import fails (e.g., in test environments)
-      console.warn('Accessibility reporting initialization failed:', error)
+      clientLogger.warn('Accessibility reporting initialization failed:', error)
     }
   }
 }
